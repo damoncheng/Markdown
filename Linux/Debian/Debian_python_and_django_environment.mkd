@@ -1,0 +1,10 @@
+##包管理器安装初始环境##
+
+通过Debian包管理工具apt-get来安装python2.7和相关版本pip, 以及mysqlserver
+
+通过pip来安装django和mako
+
+
+
+
+

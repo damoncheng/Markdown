@@ -1,0 +1,130 @@
+"#------Basic config--------#                                                                                                            
+"
+set encoding=utf-8
+set termencoding=utf-8
+
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
+set fileencoding=utf-8
+set fileencodings=ucs-bom,utf-8,chinese,cp936
+
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+
+"syn on "语法高亮 
+language messages zh_CN.utf-8
+set tags=tags; 
+set autochdir 
+set helplang=cn     "使用中文帮助文档
+set backspace=2
+set tabstop=4 "制表符的宽度
+set softtabstop=4
+set shiftwidth=4 "缩进的空格
+set autoindent     "自动缩进
+set cindent "C 插件
+set number "设置行号
+"set ignorecase "忽略大小写 （查找字符串时）
+set nohlsearch "高亮显示 （查找字符串是，找到后高亮显示）
+set mouse=a "使用鼠标
+set ruler     "在右下角显示光标位置
+"set showcmd     "显示未敲完的命令
+set cmdheight=1 "设定命令行的行数为 1
+set laststatus=2 "显示状态栏 (默认值为 1, 无法显示状态栏)
+set incsearch "在输入搜索的字符串同时就开始搜索已经输入的部分
+set nowrap "一行就一行，别弄到第二行去
+set sidescroll=10     "屏幕放不下时，按一次屏幕移动一个字符    
+set whichwrap=b,s,<,>,[,]     "跨行移动
+set fileformats=unix,dos
+set cursorline "突出显示当前行
+set showmatch "插入括号时，短暂地跳转到匹配的对应括号
+set matchtime=2 "短暂跳转到匹配括号的时间
+set smartindent "开启新行时使用智能自动缩进
+filetype plugin indent on "自动识别文件类型，用文件类型plugin脚本，使用缩进定义文件
+"set autochdir
+
+
+"#------- start Vundle-------#                                                                                                         
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'mileszs/ack.vim'
+Plugin 'Tagbar'
+Plugin 'ctags.vim'
+Plugin 'ctrlp.vim'
+Plugin 'EasyGrep'
+
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+" --Plugin 'tpope/vim-fugitive'--
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+" --Plugin 'git://git.wincent.com/command-t.git'--
+" git repos on your local machine (i.e. when working on your own plugin)
+" --Plugin 'file:///home/gmarik/path/to/plugin'--
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+" --Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}--
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+" Plugin 'ascenator/L9', {'name': 'newL9'}
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+" #---------end Vundle-----------#
+
+
+"#---------Ctrlp Start-----------#
+let g:ctrlp_regexp = 1
+"#---------Ctrlp End-------------#
+
+nnoremap <silent> <F6> :TagbarToggle<CR>
+
+" #--------NERDTree Start--------#
+"nnoremap <silent> <F5> :NERDTreeToggle<CR>
+:nn <M-1> 1gt
+
+:nn <M-2> 2gt
+
+:nn <M-3> 3gt
+
+:nn <M-4> 4gt
+
+:nn <M-5> 5gt
+
+:nn <M-6> 6gt
+
+:nn <M-7> 7gt
+
+:nn <M-8> 8gt
+
+:nn <M-9> 9gt
+
+:nn <M-0> :tablast<CR>
+
+map <c-n> :NERDTreeToggle<CR>
+"#---------NERDTree End----------# 
+

@@ -1,0 +1,63 @@
+#2017-12-31_21-05-27
+sending incremental file list
+
+sent 394039 bytes  received 923 bytes  263308.00 bytes/sec
+total size is 2525353413  speedup is 6393.91
+/data/webroot/release_proj/-to-10.213.149.152-release : crontab was rsyncd by shell.
+
+
+
+#2017-12-31_21-06-36
+sending incremental file list
+
+sent 394039 bytes  received 923 bytes  789924.00 bytes/sec
+total size is 2525353413  speedup is 6393.91
+/data/webroot/release_proj/-to-10.213.149.152-release : crontab was rsyncd by shell.
+
+
+
+#2017-12-31_21-09-51
+sending incremental file list
+
+sent 394039 bytes  received 923 bytes  789924.00 bytes/sec
+total size is 2525353413  speedup is 6393.91
+/data/webroot/release_proj/-to-10.213.149.152-release : crontab was rsyncd by shell.
+
+
+
+#2017-12-31_21-11-32
+sending incremental file list
+trash/
+trash/cluster.test.5
+
+sent 394095 bytes  received 947 bytes  263361.33 bytes/sec
+total size is 2525353413  speedup is 6392.62
+/data/webroot/release_proj/-to-10.213.149.152-release : 17yyy-12-31 21:11:32 /data/webroot/release_proj/trash/cluster.test.5CREATE was rsyncd by shell.
+
+
+#2017-12-31_21-11-33
+sending incremental file list
+
+sent 394051 bytes  received 923 bytes  263316.00 bytes/sec
+total size is 2525353413  speedup is 6393.72
+/data/webroot/release_proj/-to-10.213.149.152-release : 17yyy-12-31 21:11:32 /data/webroot/release_proj/trash/cluster.test.5ATTRIB was rsyncd by shell.
+
+
+#2017-12-31_21-11-34
+sending incremental file list
+
+sent 394051 bytes  received 923 bytes  789948.00 bytes/sec
+total size is 2525353413  speedup is 6393.72
+/data/webroot/release_proj/-to-10.213.149.152-release : 17yyy-12-31 21:11:32 /data/webroot/release_proj/trash/cluster.test.5CLOSE_WRITE,CLOSE was rsyncd by shell.
+
+
+#2017-12-31_21-11-37
+sending incremental file list
+trash/
+deleting trash/cluster.test.4
+
+sent 394044 bytes  received 928 bytes  263314.67 bytes/sec
+total size is 2525353413  speedup is 6393.75
+/data/webroot/release_proj/-to-10.213.149.152-release : 17yyy-12-31 21:11:37 /data/webroot/release_proj/trash/cluster.test.4DELETE was rsyncd by shell.
+
+

@@ -1,0 +1,29 @@
+#2017-12-31_21-05-27
+sending incremental file list
+
+sent 305749 bytes  received 919 bytes  204445.33 bytes/sec
+total size is 1972230401  speedup is 6431.16
+/data/webroot/release_proj_dev/-to-10.213.149.152-release_dev : crontab was rsyncd by shell.
+
+
+
+#2017-12-31_21-06-36
+sending incremental file list
+
+sent 305749 bytes  received 919 bytes  204445.33 bytes/sec
+total size is 1972230401  speedup is 6431.16
+/data/webroot/release_proj_dev/-to-10.213.149.152-release_dev : crontab was rsyncd by shell.
+
+
+
+#2017-12-31_21-09-51
+sending incremental file list
+trash/
+trash/cluster.test7
+
+sent 305804 bytes  received 943 bytes  613494.00 bytes/sec
+total size is 1972230401  speedup is 6429.50
+/data/webroot/release_proj_dev/-to-10.213.149.152-release_dev : crontab was rsyncd by shell.
+
+
+

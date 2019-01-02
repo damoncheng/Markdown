@@ -1,0 +1,16 @@
+#!/usr/bin/expect -f 
+
+spawn telnet 116.62.64.205 80
+expect { 
+    "Escape character is '^]'." {
+        send "GET /attack/test?name=damon HTTP/1.1"
+        send "\n"
+        send "HOST: 116.62.64.205"
+        send "\n\n"
+        exp_continue
+    }
+    -re "HTTP/1.. 200 OK" {
+        puts "\n\n"
+        exit
+    }
+}

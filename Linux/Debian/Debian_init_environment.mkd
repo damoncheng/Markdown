@@ -1,0 +1,68 @@
+## Firefox install adobe flash ##
+
+- Step one : install `flash_player_npapi_linux.x86_64.tar.gz` from `http://www.adobe.com/cn/#`
+
+- Step two : move `libflashplayer.so` to `/usr/lib/mozilla/plugins/`
+
+- Step three : use `about:plugins` check if the plugin is installed successfully
+
+## Firefox add dictionary add-on ##
+
+- **`趣查 GoDictionary`** is a nice dictionary add-on. it support multi-
+
+## update apt source to 163 ##
+
+- Step one : Comment out all source.
+- Step two : Append **`deb http://mirrors.163.com/debian/ jessie main contrib`** to it
+- Step three: Append **`deb-src http://mirrors.163.com/debian/ jessie main contrib`** to it
+
+
+## Allow root login by Gnome ##
+
+- Step one : Under `/etc/gdm3/daemon.conf` **Security** section to add **`AllowRoot=true`**.
+- Step Two : Comment out `"auth required pam_succeed_if.so user != root quiet_success"` in **` /etc/pam.d/gdm-password`**.
+
+
+## Disable/Turn off hardware beep sound for terminal ##
+
+- If you are using bash shell, Open **`~/.inputrc`** file and append **`set bell-style none`** 
+
+- If you are using xterm, Open **`~/.xsession`** file and append **`xset b off`**
+
+        Note: 这个功能不能用，会导致root不能登录, 上面设置就能实现警告声屏蔽。
+
+## Install markdown editor : retext ##
+
+- apt-get install retext
+
+## Install Chinese Input : fcitx ##
+
+- 安装更新输入法 : `apt-get install locales`
+
+- 编辑`/etc/locale.gen`文件，commment out **`zh_CN.UTF-8`**
+
+        locale的命名规则为<语言>_<地区>.<字符集编码>，如zh_CN.UTF-8，zh代表中文，CN代表大陆地区，UTF-8表示字符集。
+
+- 运行locale-gen命令，更新系统语言环境。
+
+- 安装fcitx : `apt-get install fcitx fcitx-googlepinyin`
+
+- im-config 设置fcitx
+
+- 按super键搜索"fcitx-configure"并打开，取消显示当前语言"勾选", 搜索googlepinyin添加。
+
+- 重启
+
+- gnome下千万记得要在命令行打多一行代码，用来去除 其他所有的输入源以及所有其他输入法的热键:
+
+        gsettings set org.gnome.settings-daemon.plugins.keyboard active false
+        
+- 如果能打字，但没有显示出打字的面板（panel），apt-get install fcitx-table-all，再重复步骤5
+
+## virtualBox addition 安装失败 ##
+
+-  apt-get install安装linux kernel headers
+
+
+
+

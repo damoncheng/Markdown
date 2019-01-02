@@ -1,0 +1,1 @@
+ netstat -tnp | grep ¶Ë¿ÚºÅ | grep -v 'TIME_WAIT' | awk '{print $7}' | grep -v 'Address' |  grep -v -r "^\s*$" | awk -F/ '{print $1}' | sed -n '1p' | xargs -n1 -I {} ps -p {}

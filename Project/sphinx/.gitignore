@@ -1,0 +1,9 @@
+*.pyc
+*.swp
+*.swo
+*.swn
+*~
+local.py
+migrations/
+logs/
+

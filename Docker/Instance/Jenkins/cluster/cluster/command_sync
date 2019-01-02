@@ -1,0 +1,53 @@
+#!/bin/bash
+
+DIR1="`dirname $BASH_SOURCE`"
+cluster_dir=`readlink -f "$DIR1"`
+source $cluster_dir/config
+
+$cluster_dir/core/command_check.sh
+[ $? != 0 ] && echo "inotifywait and rsync need be installed" && exit 2
+
+$cluster_dir/core/check.sh $cluster_dir $ipfile $logdir/log
+[ $? != 0 ] && echo "check ip list fail" && exit 2
+
+IFS=$'\n'
+ip_list=`cat $ipfile`
+exclude=`$cluster_dir/core/exclude.sh $excludefile`
+
+
+for one_ip_list in $ip_list
+do
+{
+
+    eval `echo $one_ip_list | awk '{printf("src=%s;ip=%s;dest=%s",$1,$2,$3)}'`
+
+    if ! [[ $src =~ ^/.* ]];then
+      continue
+    elif [[ $ip =~ ^[[:space:]]*$ ]];then
+      continue
+    elif [[ $dest =~ ^[[:space:]]*$ ]];then
+      continue
+    fi
+
+    echo "$one_ip_list"
+
+    log_prefix=`date +%F`
+    log_time=`date +%F_%H-%M-%S`
+    $log_file $logdir/${log_prefix}_rsync_log_${ip}_${dest} "#$log_time"
+
+    $syncfile $user $src $ip $dest $log_file $log_prefix $logdir $exclude
+
+    $log_file $logdir/${log_prefix}_rsync_log_${ip}_${dest} "$src-to-$ip-$dest : crontab was rsyncd by shell."
+    $log_file $logdir/${log_prefix}_rsync_log_${ip}_${dest} 
+    $log_file $logdir/${log_prefix}_rsync_log_${ip}_${dest} 
+    $log_file $logdir/${log_prefix}_rsync_log_${ip}_${dest} 
+
+    #log clear
+    $clear_log_file $logdir $ip $dest $clear_day
+
+} &
+done
+
+wait
+
+

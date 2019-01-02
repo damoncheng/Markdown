@@ -1,0 +1,554 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5. 资源 &mdash; django_sim 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="django_sim 1.0.0 documentation" href="../index.html"/>
+        <link rel="prev" title="4. 认证" href="django_sim_auth.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../index.html" class="fa fa-home"> django_sim</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="django_sim_introdution.html">1. 简介</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="django_sim_introdution.html#id2">1.1. 概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="django_sim_introdution.html#id3">1.2. 资源分布</a></li>
+<li class="toctree-l2"><a class="reference internal" href="django_sim_introdution.html#id4">1.3. 功能</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="django_sim_install.html">2. 安装</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="django_sim_install.html#id2">2.1. 依赖</a></li>
+<li class="toctree-l2"><a class="reference internal" href="django_sim_install.html#id3">2.2. 指定镜像安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="django_sim_install.html#id4">2.3. 本地安装</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="django_sim_config.html">3. 配置</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="django_sim_config.html#django-sim-settings-py">3.1. django_sim在 <tt class="docutils literal"><span class="pre">settings.py</span></tt> 基础配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="django_sim_config.html#django-simtof">3.2. 使用django_sim的tof认证</a></li>
+<li class="toctree-l2"><a class="reference internal" href="django_sim_config.html#django-sim">3.3. 创建django_sim超级管理员用户</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="django_sim_auth.html">4. 认证</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="django_sim_auth.html#id2">4.1. 资源推送认证搭建</a></li>
+<li class="toctree-l2"><a class="reference internal" href="django_sim_auth.html#django-sim-auth-resource-access">4.2. 资源访问认证搭建</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">5. 资源</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#django-sim-resource-structure">5.1. 资源结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">5.2. 资源访问接口</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">django_sim</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>5. 资源</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/restructed/django_sim_resource.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="id1">
+<h1>5. 资源<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="django-sim-resource-structure">
+<span id="id2"></span><h2>5.1. 资源结构<a class="headerlink" href="#django-sim-resource-structure" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3>5.1.1. 访问资源结构<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>django_sim访问资源结构图:</p>
+<blockquote>
+<div><img alt="../_images/django_sim_resource.png" src="../_images/django_sim_resource.png" />
+</div></blockquote>
+<p>SimResource</p>
+<blockquote>
+<div><p>User,Team,Role,Project都是一种Resource。SimResource作为资源适配器统一访问资源给其他类使用:</p>
+<div class="highlight-python"><div class="highlight"><pre>class SimResource(models.Model):
+
+    resource_type :
+
+        Required, 整数类型，说明该resource的类型。可取值为0(user), 1(team), 2(role), 3(project)
+
+    resource_id  :
+
+        Required, UUID字符串，每个resource的id是唯一的。
+
+    created :
+
+        Required, Datetime类型，记录resource的创建时间。
+
+    last_modified :
+
+        Required, Datetime类型，记录resource的最后修改时间。
+
+    is_valid :
+
+        Required, Boolean类型，标志该资源是否有效
+</pre></div>
+</div>
+</div></blockquote>
+<p>SimAbstract</p>
+<blockquote>
+<div><p>SimAbstract是SIM的User,Team,Role,Project的抽象类:</p>
+<div class="highlight-python"><div class="highlight"><pre>class SimAbstract(models.Model):
+
+    resource_id :
+
+        Required, UUID字符串。每个Resource的id时唯一的。
+
+    is_valid :
+
+        Required, Boolean类型，标志该资源是否有效
+
+    external_id :
+
+        Optional, 该资源的外部ID字符串。external_id由外部传入。例如时TOF的小组ID。
+
+    display_name :
+
+        Optional, 字符串类型，该资源显示名称, 不同资源允许相同显示名称。
+</pre></div>
+</div>
+</div></blockquote>
+<p>SimUser</p>
+<blockquote>
+<div><p>SimUser作为SIM User Model, 继承django.contrib.auth.models.AbstractUser和SimAbstract, 替换django原有认证User:</p>
+<div class="highlight-python"><div class="highlight"><pre>class SimUser(SimAbstract,AbstractUser):
+
+    resource_meta :
+
+        Required, 一对一外键指向一条SimResource记录。
+
+    team :
+
+        Optional, 该用户所属team，外键指向一条SimTeam记录。
+
+    manager :
+
+        Optional，该用户的manager，外间指向一条SimUser记录。
+</pre></div>
+</div>
+</div></blockquote>
+<p>SimTeam</p>
+<blockquote>
+<div><p>SimTeam的Model的定义如下:</p>
+<div class="highlight-python"><div class="highlight"><pre>class SimTeam(SimAbstract):
+
+    resource_meta :
+
+        Required, 一对一外键指向一条SimResource记录。
+
+    name :
+
+        Required, 字符串类型，该team唯一名称, 可用于保存team组织架构路径。
+
+    group :
+
+        Required, 一对一外键指向一条django.contrib.auth.models.Group记录，
+        由于AbastractUser包含一对多外键groups指向Group, 因此可通过该外键
+        给该team添加额外成员。
+
+    level :
+
+        Required, 字符串类型，该team层级, 现包括system(事业群)，department(部门)，
+        centre(中心)，team(小组)，office(事业群)，area(片区), other(其他)。
+
+    parent_team :
+
+        Optional，指向上级组织，外键指向一条SimTeam记录。
+</pre></div>
+</div>
+</div></blockquote>
+<p>SimRole</p>
+<blockquote>
+<div><p>SimRole的Model的定义如下:</p>
+<div class="highlight-python"><div class="highlight"><pre>class SimRole(SimAbstract):
+
+    resource_meta :
+
+        Required, 一对一外键指向一条SimResource记录。
+
+    name :
+
+        Required, 字符串类型，该role唯一名称。
+
+    group :
+
+        Required, 一对一外键指向一条django.contrib.auth.models.Group记录，
+        由于AbastractUser包含一对多外键groups指向Group, 因此可通过该外键
+        给该role添加额外成员。
+
+    team :
+
+        Optional，该role所属team, 外键指向一条SimTeam记录。
+</pre></div>
+</div>
+</div></blockquote>
+<p>SimProject</p>
+<blockquote>
+<div><p>SimProject的Model的定义如下:</p>
+<div class="highlight-python"><div class="highlight"><pre>class SimProject(SimAbstract):
+
+    resource_meta :
+
+        Required, 一对一外键指向一条SimResource记录。
+
+    name :
+
+        Required, 字符串类型，该project唯一名称。
+
+    owner :
+
+        Optional，外键指向这个project归属的User，team或role。
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="id4">
+<h3>5.1.2. 推送资源结构<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>SimBulk</p>
+<blockquote>
+<div><p>SimBulk的Model的定义如下:</p>
+<div class="highlight-python"><div class="highlight"><pre>class SimBulk(SimAbstract):
+
+    sender_time :
+
+        Required, Datetime类型，sender推送到receiver的时间点，标志一次推送批次
+
+    seq :
+
+        Required, 整数类型，标志该次推送批次的序列号，从0开始
+
+    method :
+
+        Required, 整数类型，标志该次批次的推送类型，
+        0表示全量同步，1表示增量同步，2表示全量同步结束BULK，3表示增量同步结束BULK
+
+    description :
+
+        Optional, 文本类型，保存本次序列号推送的内容
+
+    created :
+
+        Required, Datetime类型，BULK创建时间
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="id5">
+<h3>5.1.3. 认证资源结构<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>SimAuth</p>
+<blockquote>
+<div><p>SimAuth的model定义如下:</p>
+<div class="highlight-python"><div class="highlight"><pre>class SimAuth(SimAbstract):
+
+    client_id :
+
+        Required, 字符串类型，receiver oauth code认证的client_id
+
+    client_secret :
+
+        Required，字符串类型，receiver oauth code认证的client_secret
+
+    sim_site :
+
+        Required, 字符串类型，reciever的url前缀(格式:http://{receiver_hostname})
+
+    token_url :
+
+        Optional，字符串类型，获取receiver access token url，在认证完成后自动生成
+
+    last_push_url :
+
+        Opional , 字符串类型，获取receiver最后一次结束BULK的url，在认证完成后自动生成
+
+    push_url :
+
+        Optional , 字符串类型，sender推送资源到receiver的url，在认证完成后自动生成
+
+    code :
+
+        Optional，字符串类型，最后更新receiver的认证code, 在认证完成后自动生成
+
+    access_token :
+
+        Optinal , 字符串类型，最后更新receiver的access token，在认证完成后自动生成
+
+    refresh_token :
+
+        Optional，字符串类型，最后更新receiver的refresh token，在认证完成后自动生成
+
+    last_token_status :
+
+        Optional，字符串类型，最后更新receiver access token的http状态
+
+    last_status :
+
+        Optional，字符串类型，最后推送到receiver BULK的http状态
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>5.2. 资源访问接口<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>django_sim提供了两类资源访问接口，一类是http接口提供给client使用，另一类函数接口提供给server组装业务逻辑。</div></blockquote>
+<div class="section" id="http">
+<h3>5.2.1. Http接口<a class="headerlink" href="#http" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>django_sim的http接口需要通过 <a class="reference internal" href="django_sim_auth.html#django-sim-auth-resource-access"><em>资源访问认证搭建</em></a> 才有访问权限。</p>
+<blockquote>
+<div><p>接口支持如下:</p>
+<div class="highlight-python"><div class="highlight"><pre>GET /users
+
+    获取用户列表
+
+GET /users/&lt;username&gt;
+
+    获取指定用户信息
+
+GET /users/&lt;username&gt;/teams
+
+    获取指定用户所在team列表
+
+GET /users/&lt;username&gt;/roles
+
+    获取指定用户所在role列表
+
+GET /teams
+
+    获取team列表
+
+GET /teams/&lt;id&gt;
+
+    获取team详情
+
+GET /teams/&lt;id&gt;/users
+
+    获取team下面的user列表
+
+GET /teams/&lt;id&gt;/teams
+
+    获取team下面的team列表
+
+GET /teams/&lt;id&gt;/roles
+
+    获取team下面的role列表
+
+GET /teams/&lt;id&gt;/projects
+
+    获取team下面的project列表
+
+GET /roles
+
+    获取role列表
+
+GET /roles/&lt;id&gt;
+
+    获取role信息
+
+GET /roles/&lt;id&gt;/users
+
+    获取role的user列表
+
+GET /projects
+
+    获取project列表
+
+GET /projects/&lt;id&gt;
+
+    获取project信息
+
+GET /projects/&lt;id&gt;/users
+
+    获取project的user列表
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="id7">
+<h3>5.2.2. 函数接口<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>django_sim的函数接口提供给server方进行业务逻辑组装，函数接口都是类静态函数可直接调用。</p>
+<blockquote>
+<div><p>接口支持如下:</p>
+<div class="highlight-python"><div class="highlight"><pre>django_sim.views.UserViewSet.get_team_list(username)
+
+    获取指定用户所在team列表
+
+django_sim.views.UserViewSet.get_role_list(username)
+
+    获取指定用户所在role列表
+
+django_sim.views.TeamViewSet.get_team_users(team)
+
+    获取team下面的user列表
+
+django_sim.views.TeamViewSet.get_team_list(team)
+
+    获取team下面的team列表
+
+django_sim.views.TeamViewSet.get_team_roles(team)
+
+    获取team所在的role列表
+
+django_sim.views.TeamViewSet.get_team_projects(team)
+
+    获取team相关的project列表
+
+django_sim.views.RoleViewSet.get_role_users(role)
+
+    获取role下面的user列表
+
+django_sim.views.ProjectViewSet.get_project_users(project)
+
+    获取project相关的user列表
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="django_sim_auth.html" class="btn btn-neutral" title="4. 认证"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, damoncheng.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

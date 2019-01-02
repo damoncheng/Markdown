@@ -1,0 +1,585 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html class="dj_gecko dj_contentbox" xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>实战 SSH 端口转发</title>
+<link rel="schema.DC" href="http://purl.org/DC/elements/1.0/">
+<link rel="SHORTCUT ICON" href="https://www.ibm.com/favicon.ico">
+<meta name="DC.Rights" content="© Copyright&nbsp;IBM Corporation&nbsp;2009">
+<meta name="Keywords" content="SSH Forwarding, X11 Forwarding, SSH tunnel, tttlca">
+<meta name="DC.Date" scheme="iso8601" content="2009-10-31">
+<meta name="Source" content="v17 delivery:developerWorks">
+<meta name="Security" content="Public">
+<meta name="Abstract" content="通过本文的介绍，读者可以从中了解到如何应用 SSH 端口转发机制来解决日常工作 / 生活中的一些问题。学会在非安全环境下使用端口转发来加密网络应用，保护个人隐私以及重要商业信息。同时也能够用此技术解决工作中一些常见问题，例如解决防火墙及网络应用本身带来的一些限制。">
+<meta name="Description" content="通过本文的介绍，读者可以从中了解到如何应用 SSH 端口转发机制来解决日常工作 / 生活中的一些问题。学会在非安全环境下使用端口转发来加密网络应用，保护个人隐私以及重要商业信息。同时也能够用此技术解决工作中一些常见问题，例如解决防火墙及网络应用本身带来的一些限制。">
+<meta name="IBM.Effective" scheme="W3CDTF" content="2009-10-31">
+<meta name="Owner" content="developerWorks/China/IBM">
+<meta name="DC.Language" scheme="rfc1766" content="zh-CN">
+<meta name="IBM.SpecialPurpose" content="SP001">
+<meta name="IBM.Country" content="CN">
+<meta name="Robots" content="index,follow">
+<meta name="DC.Type" scheme="IBM_ContentClassTaxonomy" content="CT316">
+<meta name="DC.Subject" scheme="IBM_SubjectTaxonomy" content="SWGC0">
+<meta name="dW.ContentArea" content="linux">
+<meta name="dW.Topic" content="安全">
+
+<meta scheme="IBM_WTMCategory" name="IBM.WTMCategory" content="SOFDCLNXCN">
+
+<link rel="canonical" href="http://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/index.html">
+<!-- HEADER_SCRIPTS_AND_CSS_INCLUDE -->
+<link href="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/www.css" rel="stylesheet" title="www" type="text/css">
+<link href="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/cnzh.css" rel="stylesheet" title="www" type="text/css">
+<!-- Masthead/footer -->
+<link href="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/dw-mfN2015-01.css" media="screen,projection" rel="stylesheet" title="www" type="text/css">
+<link href="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/dw-article-6.css" rel="stylesheet" title="www" type="text/css">
+<link href="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/dw-common-features.css" rel="stylesheet" title="www" type="text/css">
+<link href="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/dw-local-site-v17-N2014-05.css" media="screen,projection" rel="stylesheet" title="www" type="text/css">
+<!-- BEGIN: Use this section to set page specific variables for the Unica Page Tag -->
+<script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/ebOneTag.js" id="ebOneTagUrlId" charset="utf-8" async="" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/up_loader.js" id="utag_27" charset="utf-8" async="" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/js_002" id="utag_53" charset="utf-8" async="" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/eluminate_002.js" id="tealium_cormetrics2" charset="utf-8" async="" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/p_1d8159a4b02fbf4d7a84ac0cdedec42612db085028a9e43531c7e79d0.html" id="dle_api_1d8159a4b02fbf4d7a84ac0cdedec42612db085028a9e43531c7e79d0dd5f00c" charset="utf-8" async="" type="text/javascript"></script><script async="" type="text/javascript" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/utag_004.js"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/piwik.js" defer="defer" async="" type="text/javascript"></script><script language="JavaScript">var NTPT_PGEXTRA="ibmSkillLevel=1&ibmCmaId=442463&ibmContentAreas=linux";</script>
+<!--END -->
+<script type="text/javascript" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/www.js">//</script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/eluminate.js" type="text/javascript"></script>
+<script type="text/javascript" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/dw-www-v2.js">//</script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/Dialog.js" charset="utf-8" type="text/javascript"></script>   
+<script type="text/javascript">
+//  ibmweb.config.set({ sbs: { enabled: false }});
+</script>
+<script type="text/javascript">dojo.addOnLoad(function(){var dw_cclc="hk-en";var dw_lang="zh_CN";var dw_source="dwchina";var dw_register="注册免费的 Bluemix 试用版";var dw_connect="连接 Bluemix 开发者";var dw_vp="在 IBM Bluemix 云平台上开发并部署您的下一个应用。";var dw_cta="开始您的试用";var dw_tile_alt="在 IBM Bluemix 云平台上开发并部署您的下一个应用。现在就开始免费试用";var dw_campaign="bluemix";var dw_content=window.location.pathname.split("/")[window.location.pathname.split("/").length-2];if(dw_content=="library"){dw_content=window.location.pathname.split("/")[window.location.pathname.split("/").length-1];dw_content=window.location.pathname.split("/")[window.location.pathname.split("/").length-3]+"-"+dw_content.substring(0,dw_content.indexOf(".html"))}var bluDevComURL="https://developer.ibm.com/bluemix/";var bluLink="https://www.bluemix.net/";var lnkID;var lnkIDd;var lnkIDt;var bLinkEnd;var bLinkTemp;var idTrkr=[];var idCnt;var artTop=dojo.query("div.ibm-col-1-1")[0];var artChildren=dojo.query(artTop).children();var edgy=false;if(dojo.hasClass(artChildren[0],"ibm-inset"))edgy=true;if((artChildren[0].nodeName=="H2")&&(dojo.hasClass(artChildren[1],"ibm-inset")))edgy=true;if(dojo.hasClass(artChildren[0],"codesection"))edgy=true;if((artChildren[0].nodeName=="H5")&&(dojo.hasClass(artChildren[1],"codesection")))edgy=true;if((artChildren[0].nodeName=="H5")&&(artChildren[1].width>=701))edgy=true;if(artChildren[1].width>=701)edgy=true;if(dojo.hasClass(artChildren[0],"ibm-data-table"))edgy=true;if((artChildren[0].nodeName=="H5")&&(dojo.hasClass(artChildren[1],"ibm-data-table")))edgy=true;if(!(edgy)){var sBarAB='<div class="dw-article-sidebar dw-bluemix" id="dwc-exp-a">'+'<img src="//dw1.s81c.com/developerworks/i/bluemix-graphic.png" height="64" width="64" alt=""/>'+'<p>'+dw_vp+'</p>'+'<p class="ibm-button-link-alternate dw-button-green">'+'<a id="tutc-sbar-bmix-home-btn-ABa" href="'+bluLink+'" class="dw-button-large">'+dw_cta+'</a></p></div>';dojo.place(sBarAB,artTop,"first")}var omitList=["#","/catalog","/doc","/solutions"];dojo.forEach(dojo.query("#ibm-content-main a"),function(item,index){var bLink=dojo.attr(item,"href");if(bLink&&bLink.indexOf("/marketplace/cloud/developerworks/")>-1)bLink=bLink.replace("/developerworks/","/developer-program/");if(bLink&&bLink.indexOf("/marketplace/")>-1&&bLink.indexOf("/developer-program")>-1){bLink="//www.ibm.com/"+dw_cclc+"/marketplace/developer-program"}if(bLink&&(bLink.indexOf("//bluemix.net")>-1))bLink=bLink.replace("//bluemix.net","//www.bluemix.net");if(bLink&&(bLink.indexOf("//ace.ng.bluemix.net")>-1))bLink=bLink.replace("//ace.ng.bluemix.net","//www.bluemix.net");if(bLink&&(bLink.indexOf("//console.ng.bluemix.net")>-1))bLink=bLink.replace("//console.ng.bluemix.net","//www.bluemix.net");if(bLink&&((bLink.indexOf("/marketplace/developer-program")>-1)||(bLink.indexOf("developer.ibm.com/sso/bmregistration")>-1)||(bLink.indexOf("//www.bluemix.net")>-1)||(bLink.indexOf("//hub.jazz.net")>-1)||(bLink.indexOf("//developer.ibm.com/open")>-1))){var omitIt=false;for(var i=omitList.length-1;i>=0;--i){if(bLink.indexOf(omitList[i])!=-1){omitIt=true;break}}if(!(omitIt)){var linkClass=dojo.attr(item,"class");var dw_medium="article";if((dojo.attr(item,"id")!=null)&&(dojo.attr(item,"id").indexOf("-sbar-")>-1))dw_medium="sidebar";if((dojo.attr(item,"id")!=null)&&(dojo.attr(item,"id").indexOf("-vpromo-")>-1))dw_medium="video-promotion";if(dojo.query(item).parents(".dw-article-ps-sidebar").length!=0)dw_medium="sidebar";if(dojo.query(item).children("img").length!=0)dw_medium="ad";if(dojo.query(item).parents("ul.ibm-portrait-module-list").length!=0)dw_medium="tile";bLinkEnd="";bLink=bLink.split("?");if((bLink[1])&&(bLink[1].indexOf("repository=")!=-1)){var deployBtn=true;bLink[0]=bLink[0]+"?"+bLink[1];bLink[1]=null}if((bLink[1])&&(bLink[1].indexOf("/")!=-1))bLinkEnd=bLink[1].substring(bLink[1].indexOf("/"));bLink=bLink[0];if(bLink.indexOf("//developer.ibm.com/open")==-1){if(bLink.indexOf("//hub.jazz.net")>-1){if(!(deployBtn)&&((bLink.indexOf("//hub.jazz.net/git")>-1)||(bLink.indexOf("//hub.jazz.net/project")>-1))){bLink=bLink+"?utm_source="+dw_source+"&utm_medium="+dw_medium+"&utm_content="+dw_content+"&utm_campaign="+dw_campaign}else{if(deployBtn){bLink=bLink+"&cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium}else{bLink=bLink+"?utm_source="+dw_source+"&utm_campaign="+dw_campaign+"&utm_content="+dw_content+"&utm_medium="+dw_medium}}}else{if(bLink.indexOf("/#/")==-1){if(bLink.substring(bLink.length-7)=="/docs/#"){bLink=bLink.replace("/docs/#","/docs/"+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium)}else if(bLink.substring(bLink.length-5)=="/docs"){bLink=bLink.replace("/docs","/docs/"+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium)}else if(bLink.indexOf("/marketplace/developer-program")!=-1){bLink=bLink+"?cm_sp="+dw_source+"-premium"+"-_-"+dw_content+"-_-"+dw_medium;}else{bLink=bLink+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium}}else{bLink=bLink.substring(0,bLink.indexOf("#"))+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium+bLink.substring(bLink.indexOf("#")-1)}}if(bLinkEnd)bLink=bLink+bLinkEnd;if(linkClass.indexOf("bluemix-home")==-1){if((bLink.indexOf("#")==-1)&&(bLink.indexOf("/solutions")==-1)&&(bLink.indexOf("/catalog")==-1)&&((bLink.indexOf("developer.ibm.com/sso/bmregistration")!=-1)||(bLink.indexOf("//www.bluemix.net/")!=-1))){if(bLink.indexOf("//www.bluemix.net/")!=-1)bLink=bLink.replace("//www.bluemix.net/","//developer.ibm.com/sso/bmregistration");if(bLink.indexOf("http://")==0)bLink=bLink.replace("http://","https://");if(bLink.indexOf("//")==0)bLink=bLink.replace("//","https://");if(bLink.indexOf("?cm_mmc=")!=-1)bLink=bLink.replace("?cm_mmc=","?lang="+dw_lang+"&ca=")}if((bLink.indexOf("#")==-1)&&(bLink.indexOf("/solutions")==-1)&&(bLink.indexOf("//www.bluemix.net?")!=-1)){bLink=bLink.replace("//www.bluemix.net","//developer.ibm.com/sso/bmregistration");if(bLink.indexOf("http://")==0)bLink=bLink.replace("http://","https://");if(bLink.indexOf("//")==0)bLink=bLink.replace("//","https://");if(bLink.indexOf("?cm_mmc=")!=-1)bLink=bLink.replace("?cm_mmc=","?lang="+dw_lang+"&ca=")}}else{if(bLink.indexOf("?")!=-1){bLink=bLink.split("?")[0]}bLink=bLink+"?cm_sp="+dw_source+"-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium}if((bLink.indexOf("#")!=-1)&&(bLink.indexOf("solutions")!=-1)){bLinkTemp=bLink.substring(0,bLink.indexOf("?"));bLink=bLink.substring(bLink.indexOf("/#/")+3,bLink.length);bLink=bLinkTemp+bLink;bLinkTemp=bLink.substring(0,bLink.indexOf("solution="));bLink=bLink.substring(bLink.indexOf("/solution=")+10,bLink.length);bLink=bLinkTemp+bLink;bLink=bLink+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium}if((bLink.indexOf("#")!=-1)&&(bLink.indexOf("store")!=-1)){if(bLink.indexOf("&cloudOEPaneId=store")!=-1){bLinkTemp=bLink.split("&cloudOEPaneId=store");bLink=bLinkTemp[0]}bLinkTemp=bLink.substring(bLink.indexOf("serviceOfferingGuid=")+20,bLink.length);bLink=bLink.substring(0,bLink.indexOf(".net/")+5)+"catalog/"+bLinkTemp+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium}}dojo.attr(item,"href",bLink);}}});});</script><!-- LEADSPACE_STYLES -->
+
+
+<!-- 
+<PageMap>
+	<DataObject type="document">
+		<Attribute name="topic">安全</Attribute>
+		<Attribute name="topicId">1</Attribute>
+		<Attribute name="contentArea">linux</Attribute>
+		<Attribute name="contentAreaId">2</Attribute>
+		<Attribute name="abstract">通过本文的介绍，读者可以从中了解到如何应用 SSH 端口转发机制来解决日常工作 / 生活中的一些问题。学会在非安全环境下使用端口转发来加密网络应用，保护个人隐私以及重要商业信息。同时也能够用此技术解决工作中一些常见问题，例如解决防火墙及网络应用本身带来的一些限制。</Attribute>
+		<Attribute name="pub.date">2009-10-31</Attribute>
+	</DataObject>
+</PageMap>
+-->        
+
+<script charset="utf-8" id="dojoIoScript2" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/cnzh-utf8.js" type="text/javascript"></script><script charset="utf-8" id="dojoIoScript3" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/a.json" type="text/javascript"></script><script charset="utf-8" id="dojoIoScript4" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/profiling.js" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/move.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/TimedMoveable.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/_CssStateMixin.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/_FormMixin.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/_DialogMixin.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/DialogUnderlay.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/ContentPane.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/common_002.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/TooltipDialog.js" charset="utf-8" type="text/javascript"></script><script charset="utf-8" id="dojoIoScript5" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/blackwhite_lists.asc" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/Mover.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/Moveable.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/_ContentPaneResizeMixin.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/html.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/loading.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/common.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/autoscroll.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/_LayoutWidget.js" charset="utf-8" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/utag_007.js" id="utag_ibm.web_53" charset="utf-8" async="" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/utag.js" id="utag_ibm.web_44" charset="utf-8" async="" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/utag_003.js" id="utag_ibm.web_45" charset="utf-8" async="" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/utag_002.js" id="tiqapp" charset="utf-8" async="" type="text/javascript"></script><script charset="utf-8" id="dojoIoScript6" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/atrk.js" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/utag_006.js" id="utag_ibm.web_27" charset="utf-8" async="" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/utag_005.js" id="utag_ibm.web_52" charset="utf-8" async="" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/i.js" id="tealium_setTTDid" charset="utf-8" async="" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/i.js" id="tealium_setTTDid" charset="utf-8" async="" type="text/javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/50200000.js" type="text/javascript" language="javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/cookie-id.js" type="text/javascript" language="javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/rules_50200000.js" type="text/javascript" language="javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/dispatcher-v3.js" type="text/javascript" language="javascript"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/i.js" id="tealium_setTTDid" charset="utf-8" async="" type="text/javascript"></script><script type="text/javascript" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/yahoo-min.js"></script><script type="text/javascript" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/cp-v3.js"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/i.js" id="tealium_setTTDid" charset="utf-8" async="" type="text/javascript"></script><script type="text/javascript" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/json-min.js"></script><script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/015b7ae3000d0097f1289868d1d003044003c00900bd0.js" id="tealium_visitor_service_45main" charset="utf-8" async="" type="text/javascript"></script></head>
+<body aria-busy="false" class="v17" id="ibm-com">
+	<div id="ibm-top" class="ibm-landing-page ibm-no-scroll"><img src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/ibm_logo_print.png" id="ibm-print-masthead" alt="IBM Print" width="43" height="15">
+
+<!-- MASTHEAD_BEGIN -->		
+<div role="banner" id="ibm-masthead">
+
+    <!-- TOP ROW -->    
+	<div id="dw-masthead-top-row">
+		<ul id="ibm-mast-options-dw" role="toolbar" aria-label="Masthead navigation">
+			<li id="dw-mast-top-4" role="presentation">
+				<a href="http://www.ibm.com/developerworks/cn/" tabindex="0"><img src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/dwn-dw-badge.png" alt="dW" aria-label="dW" width="43" height="22"></a>
+			</li>
+			<li id="dw-mast-top-0" role="presentation">
+				<div id="dw-mast-signin">
+					<a id="dw-mf-signin-link" class="" href="https://www.ibm.com/developerworks/dwwi/jsp/ssologin.jsp?d=https%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-sshforward%2F&amp;lang=zh_CN&amp;a=dwmav" title="" tabindex="2">登录</a>
+					<span class="dw-mf-signin-spacer">|</span>
+					<a id="dw-mf-reg-link" class="" href="https://www.ibm.com/developerworks/dwwi/jsp/ssoregister.jsp?d=https%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-sshforward%2F&amp;lang=zh_CN&amp;a=dwmav" title="" tabindex="3">注册</a>
+				</div>
+				<div id="dw-mast-auth-link" class="dw-mf-hide">
+					<a class="authenticated ibm-active" href="#" role="button" tabindex="2"></a>
+					<ul id="dw-mast-auth-menu" class="dw-mf-hide">
+						<li class="dw-mast-auth-menu-title" aria-hidden="true">developerWorks 社区</li>
+						<li>
+							<span class="dw-mast-auth-menu-arrow" aria-hidden="true">›</span><a href="https://www.ibm.com/developerworks/community/profiles/html/myProfileView.do?lang=zh" tabindex="3">我的概要信息</a>
+						</li>
+						<li>
+							<span class="dw-mast-auth-menu-arrow" aria-hidden="true">›</span><a href="https://www.ibm.com/developerworks/community/groups/service/html/mycommunities?lang=zh" tabindex="4">我的社区</a>
+						</li>
+						<li>
+							<span class="dw-mast-auth-menu-arrow" aria-hidden="true">›</span><a href="https://www.ibm.com/developerworks/community/news/?lang=zh" tabindex="5">设置</a>
+						</li>
+						<li class="dw-mast-auth-menu-divider"><hr></li>
+						<li>
+							<span class="dw-mast-auth-menu-arrow" aria-hidden="true">›</span><a id="dw-mast-signout-link" href="https://www.ibm.com/developerworks/dwwi/jsp/ssologout.jsp?d=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2F&amp;a=dwmav" tabindex="6">退出</a>
+						</li>
+					</ul>				
+				</div>
+			</li>
+			<li id="dw-mast-top-1">
+				<div></div>
+			</li>
+			<li id="dw-mast-top-3" role="presentation">
+				<a href="http://www.ibm.com/cn/zh/" tabindex="1">IBM</a>
+			</li>
+		</ul>
+	</div>
+
+    <!-- BOTTOM ROW -->
+	<div id="ibm-universal-nav-dw" aria-label="Site map">
+		<ul id="ibm-unav-links-dw">
+			<li id="ibm-unav-home-dwlogo">
+				<a href="http://www.ibm.com/developerworks/cn/"><img src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/dwn-dw-wordmark.png" alt="developerWorks®" width="225" height="28"></a>
+			</li>
+		</ul>
+		<ul id="ibm-menu-links-dw" class="ibm-menu-links-dw-cn" role="toolbar" aria-label="Site map">
+			<li id="dw-mast-nav-0" role="presentation"><a href="http://www.ibm.com/developerworks/cn/topics/" tabindex="0">技术主题</a></li>
+			<li id="dw-mast-nav-1" role="presentation"><a href="http://www.ibm.com/developerworks/cn/downloads/" tabindex="0">软件下载</a></li>
+			<li id="dw-mast-nav-2" role="presentation"><a href="http://www.ibm.com/developerworks/community/?lang=zh" tabindex="0">社区</a></li>
+			<li id="dw-mast-nav-3" role="presentation"><a href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=6d7f9e5d-5f89-4767-a006-a81b8d186370&amp;lang=zh" tabindex="0">技术讲座</a></li>
+		</ul>
+		<form id="ibm-search-form" action="//www.ibm.com/search/csass/search/" method="get" name="form1" aria-label="搜索 developerWorks" role="search">
+			<p>
+				<label for="q"><span class="ibm-access">搜索 developerWorks</span></label>
+				<input id="q" name="q" value="搜索 developerWorks" maxlength="100" type="text">
+				<input name="sn" value="dw" type="hidden">
+				<input name="lang" value="zh" type="hidden">
+				<input name="cc" value="CN" type="hidden">
+				<input name="en" value="utf" type="hidden">
+				<input name="hpp" value="20" type="hidden">
+				<input name="dws" value="cndw" type="hidden">
+				<input name="lo" value="zh" type="hidden">
+				<input id="ibm-search" class="ibm-btn-search" value="提交" type="submit">
+			</p>
+		</form>
+	</div>    
+	
+<div aria-label="社交工具" role="navigation" style="display: block;" id="ibm-social-tools"><ul aria-label="Social tool list" role="toolbar"><li><a tabindex="0" role="button" dojoattrid="0" rel="print" href="#" title="打印本页面" class="ibm-share-print">打印本页面</a></li><li><a tabindex="-1" role="button" dojoattrid="1" rel="email" href="#" title="用电子邮件发送本页面" class="ibm-share-email">用电子邮件发送本页面</a></li><li></li><li></li><li><a class="ibm-share-weibo" tabindex="-1" role="button" dojoattrid="2" rel="新浪微博" title="新浪微博" href="http://service.weibo.com/share/share.php?title=%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91&amp;url=https%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-sshforward%2F&amp;language=zh_cn" onclick="ibmweb.sbs.clickHandler(event,{url:'http://service.weibo.com/share/share.php?title=%{TITLE}&amp;url=%{URL}&amp;language=zh_cn'});">新浪微博</a></li><li><a class="ibm-share-renren" tabindex="-1" role="button" dojoattrid="3" rel="人人网" title="人人网" href="http://share.renren.com/share/buttonshare?title=%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91&amp;link=https%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-sshforward%2F" onclick="ibmweb.sbs.clickHandler(event,{url:'http://share.renren.com/share/buttonshare?title=%{TITLE}&amp;link=%{URL}'});">人人网</a></li><li><a class="dwcn-tencent-link" tabindex="-1" role="button" dojoattrid="4" rel="腾讯微博" title="腾讯微博" href="http://v.t.qq.com/share/share.php?title=%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91&amp;url=https%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-sshforward%2F" onclick="ibmweb.sbs.clickHandler(event,{url:'http://v.t.qq.com/share/share.php?title=%{TITLE}&amp;url=%{URL}'});">腾讯微博</a></li><li><a class="dwcn-sohu-link" tabindex="-1" role="button" dojoattrid="5" rel="搜狐微博" title="搜狐微博" href="http://t.sohu.com/third/post.jsp?title=%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%20&amp;link=https%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-sshforward%2F" onclick="ibmweb.sbs.clickHandler(event,{url:'http://t.sohu.com/third/post.jsp?title=%{TITLE}%20&amp;link=%{URL}'});">搜狐微博</a></li><li><a class="dwcn-netease-link" tabindex="-1" role="button" dojoattrid="6" rel="网易微博" title="网易微博" href="http://t.163.com/article/user/checkLogin.do?info=%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%20https%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-sshforward%2F" onclick="ibmweb.sbs.clickHandler(event,{url:'http://t.163.com/article/user/checkLogin.do?info=%{TITLE}%20%{URL}'});">网易微博</a></li><li><a class="ibm-share-digg" title="Digg" href="http://digg.com/submit?phase=2&amp;url=https%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-sshforward%2F&amp;title=%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91" rel="digg" dojoattrid="7" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:'http://digg.com/submit?phase=2&amp;url=%{URL}&amp;title=%{TITLE}'});">Digg</a></li><li><a class="ibm-share-facebook" title="Facebook" href="http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-sshforward%2F&amp;t=%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91" rel="facebook" dojoattrid="8" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:'http://www.facebook.com/sharer.php?u=%{URL}&amp;t=%{TITLE}'});">Facebook</a></li><li><a class="ibm-share-twitter" title="Twitter" href="http://twitter.com/?status=https%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-sshforward%2F%20-%20%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91" rel="twitter" dojoattrid="9" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:'http://twitter.com/?status=%{URL}%20-%20%{TITLE}'});">Twitter</a></li><li><a class="ibm-share-delicious" title="Delicious" href="http://delicious.com/post?url=https%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-sshforward%2F&amp;title=%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91" rel="delicious" dojoattrid="10" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:'http://delicious.com/post?url=%{URL}&amp;title=%{TITLE}'});">Delicious</a></li><li><a class="ibm-share-linkedin" title="Linked In" href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-sshforward%2F&amp;title=%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91" rel="linkedin" dojoattrid="11" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:'http://www.linkedin.com/shareArticle?mini=true&amp;url=%{URL}&amp;title=%{TITLE}'});">Linked In</a></li></ul></div></div>
+<div id="fdiv" class="ibm-access"></div><!-- MASTHEAD_END -->
+	    
+<!-- LAYOUT -->
+<!-- LEADSPACE_BEGIN --> 
+<div role="main" id="ibm-access-cntr"><div id="ibm-leadspace-head">
+	<!-- LEADSPACE_BODY_BEGIN --> 
+	<div id="ibm-leadspace-body">
+		<!-- Navigation_Trail_BEGIN -->
+      <ul aria-label="Bread Crumbs" role="directory" id="ibm-navigation-trail"><li><a href="http://www.ibm.com/developerworks/cn/">developerWorks 中国</a></li><li><a href="http://www.ibm.com/developerworks/cn/topics/">技术主题</a></li><li><a href="http://www.ibm.com/developerworks/cn/linux/">Linux</a></li><li><a href="http://www.ibm.com/developerworks/cn/views/linux/libraryview.jsp">文档库</a></li></ul>
+		<!-- END_Navigation_Trail -->
+			<!-- Title_Subtitle -->
+			<h1>实战 SSH 端口转发</h1>
+	</div>
+	<!-- LEADSPACE_BODY_END --> 
+	<!-- SUMMARY_BEGIN -->
+	<div id="dw-summary-area" class="dw-summary-columns">
+		<div class="ibm-col-6-4">
+		<p>通过本文的介绍，读者可以从中了解到如何应用 SSH 端口转发机制来解决日常工作 / 
+生活中的一些问题。学会在非安全环境下使用端口转发来加密网络应用，保护个人隐私以及重要商业信息。同时也能够用此技术解决工作中一些常见问题，例如解决
+防火墙及网络应用本身带来的一些限制。</p>
+		<p class="ibm-no-print ibm-ind-link">
+
+			
+			<span id="nCmts"><span>4</span><img class="dw-cmts-arrow" alt="" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/dw-cmts-arrow.png" width="7" height="7"> <a href="#icomments" class="dw-cmt-link">评论</a></span>
+		</p>
+		</div>
+		<div class="ibm-col-6-2 dw-toc-margin">
+			<p class="dw-summary-author"><a role="button" href="#authorN10028" class="ibm-popup-link" onclick="ibmweb.overlay.show('authorN10028',this);return false;">申 毅</a>, 软件工程师, 				IBM</p>
+<div id="authorN10028" class="ibm-common-overlay"><div class="ibm-head"><p><a href="#close" class="ibm-common-overlay-close">关闭 [x]</a></p></div><div class="ibm-body"><div class="ibm-main"><div class="ibm-title"><!--this is where the h2 usually goes--></div><div class="ibm-container ibm-alternate"><div class="ibm-container-body">
+<p><!--.-->
+申毅，IBM中国软件开发中心 WebSphere Portal 部门软件工程师。目前从事于 WebSphere Portal z/OS 升级包的开发工作。同时较为关注 Linux/Mac 平台上的相关技术。</p><br><br></div></div></div></div><div class="ibm-footer"><!----></div></div>
+<p class="dw-summary-author"><a role="button" href="#authorN10038" class="ibm-popup-link" onclick="ibmweb.overlay.show('authorN10038',this);return false;">邵 华</a>, 软件工程师, IBM</p>
+<div id="authorN10038" class="ibm-common-overlay"><div class="ibm-head"><p><a href="#close" class="ibm-common-overlay-close">关闭 [x]</a></p></div><div class="ibm-body"><div class="ibm-main"><div class="ibm-title"><!--this is where the h2 usually goes--></div><div class="ibm-container ibm-alternate"><div class="ibm-container-body">
+<p><!--.-->
+邵华，IBM中国软件开发中心 WebSphere Portal 部门软件工程师。目前从事于 WebSphere Portal FVT 的相关工作，对 Linux 及 Web 相关技术较为关注。</p><br><br></div></div></div></div><div class="ibm-footer"><!----></div></div>
+			<p class="dw-summary-date">2009 年 10 月 31 日</p>
+			
+
+
+			<div aria-hidden="true" class="ibm-container" id="dw-toc"><div class="ibm-container-body"><ul class="ibm-twisty"><li><a href="#toggle" class="ibm-twisty-trigger ibm-twisty-trigger-closed"><img src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/c.gif" alt="expand"></a><span class="ibm-twisty-head">内容</span><div style="display: none;" class="ibm-twisty-body"><ul style="font-size:0.8em" class="ibm-link-list">
+<li><a class="ibm-anchor-down-em-link" href="#1.%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86+%E6%A6%82%E8%BF%B0">第一部分 概述</a></li>
+<li><a class="ibm-anchor-down-em-link" href="#2.%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86+%E6%9C%AC%E5%9C%B0%E8%BD%AC%E5%8F%91%E4%B8%8E%E8%BF%9C%E7%A8%8B%E8%BD%AC%E5%8F%91">第二部分 本地转发与远程转发</a></li>
+<li><a class="ibm-anchor-down-em-link" href="#3.%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86+%E5%85%B6%E4%BB%96%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%BD%AC%E5%8F%91">第三部分 其他类型的转发</a></li>
+<li><a class="ibm-anchor-down-em-link" href="#4.%E7%AC%AC%E5%9B%9B%E9%83%A8%E5%88%86+%E6%80%BB%E7%BB%93">第四部分 总结</a></li>
+<li><a class="ibm-anchor-down-em-link" href="#resources">参考资料 </a></li>
+<li><a class="ibm-anchor-down-em-link" href="#icomments">评论</a></li></ul></div></li></ul></div></div>
+		</div>
+	</div>
+	<!-- SUMMARY_END -->
+</div><div id="ibm-pcon">
+
+<!-- BEGIN_IBM-CONTENT -->
+<div id="ibm-content">
+
+<!-- BEGIN_IBM-CONTENT-BODY -->
+<div id="ibm-content-body">
+
+<!-- BEGIN_IBM-CONTENT-MAIN -->
+<div id="ibm-content-main">
+
+<!-- 1_1_COLUMN_BEGIN -->
+<div class="ibm-columns">
+<div class="ibm-col-1-1"><div class="dw-article-sidebar dw-bluemix" id="dwc-exp-a"><img src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/bluemix-graphic.png" alt="" width="64" height="64"><p>在 IBM Bluemix 云平台上开发并部署您的下一个应用。</p><p class="ibm-button-link-alternate dw-button-green"><a id="tutc-sbar-bmix-home-btn-ABa" href="https://developer.ibm.com/sso/bmregistration?lang=zh_CN&amp;ca=dwchina-_-bluemix-_-l-cn-sshforward-_-sidebar" class="dw-button-large">开始您的试用</a></p></div>
+
+<h2 id="1.第一部分 概述">第一部分 概述</h2><p>当你在咖啡馆享受免费 WiFi 的时候，有没有想到可能有人正在窃取你的密码及隐私信息？当你发现实验室的防火墙阻止了你的网络应用端口，是不是有苦难言？来看看 SSH 的端口转发功能能给我们带来什么好处吧！</p><h3 id="N10062">端口转发概述</h3><p>让
+我们先来了解一下端口转发的概念吧。我们知道，SSH 会自动加密和解密所有 SSH 客户端与服务端之间的网络数据。但是，SSH 
+还同时提供了一个非常有用的功能，这就是端口转发。它能够将其他 TCP 端口的网络数据通过 SSH 
+链接来转发，并且自动提供了相应的加密及解密服务。这一过程有时也被叫做“隧道”（tunneling），这是因为 SSH 为其他 TCP 
+链接提供了一个安全的通道来进行传输而得名。例如，Telnet，SMTP，LDAP 这些 TCP 
+应用均能够从中得益，避免了用户名，密码以及隐私信息的明文传输。而与此同时，如果您工作环境中的防火墙限制了一些网络端口的使用，但是允许 SSH 
+的连接，那么也是能够通过将 TCP 端口转发来使用 SSH 进行通讯。总的来说 SSH 端口转发能够提供两大功能：</p><ol type="1"><li>加密 SSH Client 端至 SSH Server 端之间的通讯数据。</li><li>突破防火墙的限制完成一些之前无法建立的 TCP 连接。</li></ol><h5 id="N10070">图 1. SSH 端口转发</h5><img alt="SSH 端口转发" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/image001.jpg" width="459"><p>如上图所示，使用了端口转发之后，TCP 端口 A 与 B 之间现在并不直接通讯，而是转发到了 SSH 客户端及服务端来通讯，从而自动实现了数据加密并同时绕过了防火墙的限制。</p><div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="2.第二部分 本地转发与远程转发">第二部分 本地转发与远程转发</h2><h3 id="N10081">本地转发实例分析</h3><p>我
+们先来看第一个例子，在实验室里有一台 LDAP 服务器（LdapServerHost），但是限制了只有本机上部署的应用才能直接连接此 LDAP 
+服务器。如果我们由于调试或者测试的需要想临时从远程机器（LdapClientHost）直接连接到这个 LDAP 服务器 , 
+有什么方法能够实现呢？</p><p>答案无疑是本地端口转发了，它的命令格式是：</p><div class="codesection"><pre class="displaycode">ssh -L &lt;local port&gt;:&lt;remote host&gt;:&lt;remote port&gt; &lt;SSH hostname&gt;</pre></div><p>在 LdapClientHost 上执行如下命令即可建立一个 SSH 的本地端口转发，例如：</p><div class="codesection"><pre class="displaycode">$ ssh -L 7001:localhost:389 LdapServerHost</pre></div><h5 id="N10095">图 2. 本地端口转发</h5><img alt="本地端口转发" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/image002.jpg" width="465"><p>这里需要注意的是本例中我们选择了 7001 端口作为本地的监听端口，在选择端口号时要注意非管理员帐号是无权绑定 1-1023 端口的，所以一般是选用一个 1024-65535 之间的并且尚未使用的端口号即可。</p><p>然后我们可以将远程机器（LdapClientHost）上的应用直接配置到本机的 7001 端口上（而不是 LDAP 服务器的 389 端口上）。之后的数据流将会是下面这个样子：</p><ul class="ibm-bullet-list"><li>我们在 LdapClientHost 上的应用将数据发送到本机的 7001 端口上，</li><li>而本机的 SSH Client 会将 7001 端口收到的数据加密并转发到 LdapServertHost 的 SSH Server 上。</li><li>SSH Server 会解密收到的数据并将之转发到监听的 LDAP 389 端口上，</li><li>最后再将从 LDAP 返回的数据原路返回以完成整个流程。</li></ul><p>我们可以看到，这整个流程应用并没有直接连接 LDAP 服务器，而是连接到了本地的一个监听端口，但是 SSH 端口转发完成了剩下的所有事情，加密，转发，解密，通讯。</p><p>这里有几个地方需要注意：</p><ol type="1"><li>SSH 端口转发是通过 SSH 连接建立起来的，我们必须保持这个 SSH 连接以使端口转发保持生效。一旦关闭了此连接，相应的端口转发也会随之关闭。</li><li>我们只能在建立 SSH 连接的同时创建端口转发，而不能给一个已经存在的 SSH 连接增加端口转发。</li><li>你
+可能会疑惑上面命令中的 &lt;remote host&gt; 为什么用 localhost，它指向的是哪台机器呢？在本例中，它指向 
+LdapServertHost 。我们为什么用 localhost 而不是 IP 地址或者主机名呢？其实这个取决于我们之前是如何限制 LDAP 
+只有本机才能访问。如果只允许 lookback 接口访问的话，那么自然就只有 localhost 或者 IP 为 127.0.0.1 
+才能访问了，而不能用真实 IP 或者主机名。</li><li>命令中的 &lt;remote host&gt; 和 &lt;SSH hostname&gt; 必须是同一台机器么？其实是不一定的，它们可以是两台不同的机器。我们在后面的例子里会详细阐述这点。</li><li>好
+了，我们已经在 LdapClientHost 建立了端口转发，那么这个端口转发可以被其他机器使用么？比如能否新增加一台 
+LdapClientHost2 来直接连接 LdapClientHost 的 7001 端口？答案是不行的，在主流 SSH 
+实现中，本地端口转发绑定的是 lookback 接口，这意味着只有 localhost 或者 127.0.0.1 才能使用本机的端口转发 , 
+其他机器发起的连接只会得到“ connection refused. ”。好在 SSH 同时提供了 GatewayPorts 
+关键字，我们可以通过指定它与其他机器共享这个本地端口转发。<br><code>ssh -g -L &lt;local port&gt;:&lt;remote host&gt;:&lt;remote port&gt; &lt;SSH hostname&gt;</code></li></ol><h3 id="N100C0">远程转发实例分析</h3><p>我们来看第二个例子，这次假设由于网络或防火墙的原因我们不能用 SSH 直接从 LdapClientHost 连接到 LDAP 服务器（LdapServertHost），但是反向连接却是被允许的。那此时我们的选择自然就是远程端口转发了。</p><p>它的命令格式是：</p><div class="codesection"><pre class="displaycode">ssh -R &lt;local port&gt;:&lt;remote host&gt;:&lt;remote port&gt; &lt;SSH hostname&gt;</pre></div><p>例如在 LDAP 服务器（LdapServertHost）端执行如下命令：</p><div class="codesection"><pre class="displaycode">$ ssh -R 7001:localhost:389 LdapClientHost</pre></div><h5 id="N100D4">图 3. 远程端口转发</h5><img alt="远程端口转发" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/image003.jpg" width="467"><p>和
+本地端口转发相比，这次的图里，SSH Server 和 SSH Client 的位置对调了一下，但是数据流依然是一样的。我们在 
+LdapClientHost 上的应用将数据发送到本机的 7001 端口上，而本机的 SSH Server 会将 7001 
+端口收到的数据加密并转发到 LdapServertHost 的 SSH Client 上。 SSH Client 
+会解密收到的数据并将之转发到监听的 LDAP 389 端口上，最后再将从 LDAP 返回的数据原路返回以完成整个流程。</p><p>看到这里，你是不是会有点糊涂了么？为什么叫本地转发，而有时又叫远程转发？这两者有什么区别？</p><h3 id="N100E2">本地转发与远程转发的对比与分析</h3><p>不
+错，SSH Server，SSH 
+Client，LdapServertHost，LdapClientHost，本地转发，远程转发，这么多的名词的确容易让人糊涂。让我们来分析一下其
+中的结构吧。首先，SSH 端口转发自然需要 SSH 连接，而 SSH 连接是有方向的，从 SSH Client 到 SSH Server 
+。而我们的应用也是有方向的，比如需要连接 LDAP Server 时，LDAP Server 自然就是 Server 
+端，我们应用连接的方向也是从应用的 Client 端连接到应用的 Server 
+端。如果这两个连接的方向一致，那我们就说它是本地转发。而如果两个方向不一致，我们就说它是远程转发。</p><p>我们可以回忆上面的两个例子来做个对照。</p><p>本地转发时：</p><p>LdapClientHost 同时是应用的客户端，也是 SSH Client，这两个连接都从它指向 LdapServertHost（既是 LDAP 服务端，也是 SSH Server）。</p><p>远程转发时：</p><p>LdapClientHost 是应用的客户端，但却是 SSH Server ；而 LdapServertHost 是 LDAP 的服务端，但却是 SSH Client 。这样两个连接的方向刚好相反。</p><p>另
+一个方便记忆的方法是，Server 端的端口都是预定义的固定端口（SSH Server 的端口 22，LDAP 的端口 389），而 
+Client 端的端口都是动态可供我们选择的端口（如上述例子中选用的 7001 端口）。如果 Server 
+端的两个端口都在同一台机器，Client 端的两个端口都在另一台机器上，那么这就是本地连接；如果这四个端口交叉分布在两个机器上，每台机器各有一个
+ Server 端端口，一个 Client 端端口，那就是远程连接。</p><p>弄清楚了两者的区别之后，再来看看两者的相同之处。如果你所在的环
+境下，既允许 LdapClientHost 发起 SSH 连接到 LdapServerHost，也允许 LdapServerHost 发起 
+SSH 连接到 LdapClientHost 。那么这时我们选择本地转发或远程转发都是可以的，能完成一样的功能。</p><p>接着让我们来看个进阶版的端口转发。我们之前涉及到的各种连接 / 转发都只涉及到了两台机器，还记得我们在本地转发中提到的一个问题么？本地转发命令中的 &lt;remote host&gt; 和 &lt;SSH hostname&gt; 可以是不同的机器么？</p><div class="codesection"><pre class="displaycode">ssh -L &lt;local port&gt;:&lt;remote host&gt;:&lt;remote port&gt; &lt;SSH hostname&gt;</pre></div><p>答案是可以的！让我们来看一个涉及到四台机器 (A,B,C,D) 的例子。</p><h5 id="N10100">图 4. 多主机转发应用</h5><img alt="多主机转发应用" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/image004.jpg" width="468"><p>在 SSH Client(C) 执行下列命令来建立 SSH 连接以及端口转发：</p><div class="codesection"><pre class="displaycode">$ ssh -g -L 7001:&lt;B&gt;:389 &lt;D&gt;</pre></div><p>然
+后在我们的应用客户端（A）上配置连接机器（C ）的 7001 端口即可。注意我们在命令中指定了“ -g 
+”参数以保证机器（A）能够使用机器（C）建立的本地端口转发。而另一个值得注意的地方是，在上述连接中，（A）&lt;-&gt; (C) 以及 
+(B)&lt;-&gt;(D) 之间的连接并不是安全连接，它们之间没有经过 SSH 
+的加密及解密。如果他们之间的网络并不是值得信赖的网络连接，我们就需要谨慎使用这种连接方式了。</p><div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="3.第三部分 其他类型的转发">第三部分 其他类型的转发</h2><h3 id="N10117">动态转发实例分析</h3><p>恩，
+动态转发，听上去很酷。当你看到这里时，有没有想过我们已经讨论过了本地转发，远程转发，但是前提都是要求有一个固定的应用服务端的端口号，例如前面例子
+中的 LDAP 服务端的 389 端口。那如果没有这个端口号怎么办？等等，什么样的应用会没有这个端口号呢？嗯，比如说用浏览器进行 Web 
+浏览，比如说 MSN 等等。</p><p>当我们在一个不安全的 WiFi 环境下上网，用 SSH 动态转发来保护我们的网页浏览及 MSN 信息无疑是十分必要的。让我们先来看一下动态转发的命令格式：</p><div class="codesection"><pre class="displaycode">$ ssh -D &lt;local port&gt; &lt;SSH Server&gt;</pre></div><p>例如：</p><div class="codesection"><pre class="displaycode">$ ssh -D 7001 &lt;SSH Server&gt;</pre></div><h5 id="N1012B">图 5. 动态端口转发</h5><img alt="动态端口转发" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/image005.jpg" width="479"><p>似乎很简单，我们依然选择了 7001 作为本地的端口号，其实在这里 SSH 是创建了一个 SOCKS 代理服务。来看看帮助文档中对 -D 参数的描述：</p><div class="codesection"><pre class="displaycode">-D port 
+ This works by allocating a socket to listen to port on the local 
+ side, and whenever a connection is made to this port, the con- 
+ nection is forwarded over the secure channel, and the applica- 
+ tion protocol is then used to determine where to connect to from 
+ the remote machine.  Currently the SOCKS4 and SOCKS5 protocols 
+ are supported, and ssh will act as a SOCKS server.  Only root 
+ can forward privileged ports.  Dynamic port forwardings can also 
+ be specified in the configuration file.</pre></div><p>之后的使用就简单了，我们可以直接使
+用 localhost:7001 来作为正常的 SOCKS 代理来使用，直接在浏览器或 MSN 上设置即可。在 SSH Client 
+端无法访问的网站现在也都可以正常浏览。而这里需要值得注意的是，此时 SSH 所包护的范围只包括从浏览器端（SSH Client 端）到 SSH 
+Server 端的连接，并不包含从 SSH Server 端 
+到目标网站的连接。如果后半截连接的安全不能得到充分的保证的话，这种方式仍不是合适的解决方案。</p><h3 id="N1013D">X 协议转发实例分析</h3><p>好了，让我们来看最后一个例子 - X 协议转发。</p><p>我
+们日常工作当中，可能会经常会远程登录到 Linux/Unix/Solaris/HP 等机器上去做一些开发或者维护，也经常需要以 GUI 
+方式运行一些程序，比如要求图形化界面来安装 DB2/WebSphere 等等。这时候通常有两种选择来实现：VNC 或者 X 
+窗口，让我们来看看后者。</p><p>使用 X 窗口通常需要分别安装：X Client 和 X Server 。在本例中我们的 X Client
+ 就是所访问的远程 Linux/Unix/Solaris/HP，而我们的 X Server 
+则是发起访问的本地机器（例如你面前正在使用的笔记本或台式机）。把 X Client 端的 X 窗口显示在 X Server 端需要先行在 X 
+Client 端指定 X Server 的位置，命令格式如下：</p><div class="codesection"><pre class="displaycode">export DISPLAY=&lt;X Server IP&gt;:&lt;display #&gt;.&lt;virtual #&gt;</pre></div><p>例如：</p><div class="codesection"><pre class="displaycode">export DISPLAY=myDesktop:1.0</pre></div><p>然后直接运行 X 应用即可，X 窗口就会自动在我们的本地端打开。</p><p>一
+切运行正常，但是，这时候 IT 部门突然在远程 Linux/Unix/Solaris/HP 前面加了一道防火墙。非常不幸的是，X 
+协议并不在允许通过的列表之内。怎么办？只能使用 VNC 了么？不，其实只要使用了 SSH 端口转发即可通过，同时也对 X 
+通讯数据做了加密，真是一举两得。（当然，使用此方法前最好先咨询相关 IT 部门是否符合相应的安全条例，以免造成违规操作。）</p><p>建立命令也很简单，直接从本地机器（X Server 端）发起一个如下的 SSH 连接即可：</p><div class="codesection"><pre class="displaycode">$ ssh -X &lt;SSH Server&gt;</pre></div><h5 id="N1015D">图 5. X 转发</h5><img alt="X 转发" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/image006.jpg" width="474"><p>建立连接之后就可以直接运行远程的 X 应用。注意建立 X 转发之后会自动设置 DISPLAY 环境变量，通常会被设置成<code>localhost:10.0</code>，我们无需也不应该在连接之后再进行修改此环境变量。</p><p>一个比较常见的场景是，我们的本地机器是 Windows 操作系统，这时可以选择开源的 XMing 来作为我们的 XServer，而 SSH Client 则可以任意选择了，例如 PuTTY，Cygwin 均可以配置 访问 SSH 的同时建立 X 转发。</p><div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="4.第四部分 总结">第四部分 总结</h2><p>至
+此，我们已经完成了本地端口转发，远程端口转发，动态端口转发以及 X 转发的介绍。回顾起来，总的思路是通过将 TCP 连接转发到 SSH 
+通道上以解决数据加密以及突破防火墙的种种限制。对一些已知端口号的应用，例如 
+Telnet/LDAP/SMTP，我们可以使用本地端口转发或者远程端口转发来达到目的。动态端口转发则可以实现 SOCKS 
+代理从而加密以及突破防火墙对 Web 浏览的限制。对于 X 应用，无疑是 X 
+转发最为适用了。虽然每一部分我们都只是简单的介绍了一下，但如果能灵活应用这些技巧，相信对我们的日常生活 / 工作也是会有所帮助的。</p><!--CMA ID: 442463--><!--Site ID: 10--><!--XSLT stylesheet used to transform this file: dw-document-html-7.0.xsl-->
+
+
+</div>
+</div>
+<!-- 1_1_COLUMN_END -->
+
+<!-- SPLIT_COLUMNS_BEGIN -->
+<div class="ibm-columns">
+
+<!-- 6_4_COLUMN_BEGIN -->
+<div class="ibm-col-6-4">
+
+<h2 id="resources" class="ibm-rule">参考资料 </h2><ul class="ibm-bullet-list"><li><a href="http://oreilly.com.cn/book.php?bn=7-5083-1085-3">《 SSH 权威指南》</a>（O'Reilly 图书）详细介绍了 SSH 相关的更多技术内幕及相关技巧。</li><li><a href="http://www.ibm.com/developerworks/cn/linux/">在</a><a href="http://www.ibm.com/developerworks/cn/linux/">developerWorks</a><a href="http://www.ibm.com/developerworks/cn/linux/">中国网站</a><a href="http://www.ibm.com/developerworks/cn/linux/">Linux</a><a href="http://www.ibm.com/developerworks/cn/linux/">专区</a>中学习更多 Linux 方面的知识。</li></ul>
+
+<!-- INLINE_COMMENTS_BEGIN -->
+<h2 id="icomments" class="ibm-alternate-rule ibm-no-print">条评论</h2>
+    
+<div class="ibm-no-print" id="dw-icomments-container">	
+	<div id="threadShow"><img style="display: none;" id="imgPlHdr" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/animated-progress-38x38c.gif" alt=""><div id="cmtTog" style=""><div class="ibm-container ibm-alternate-two dw-commentbox dw-noborder"><div class="ibm-container-body dw-commentbox dw-noborder"><p id="signInSect">请 <a onclick="var e=arguments[0] || window.event; dwsi.siInst &amp;&amp; dwsi.siInst.showSignIn(); if (e.stopPropagation){ e.stopPropagation();} else { e.cancelBubble = true; } e.preventDefault &amp;&amp; e.preventDefault(); return false;" href="#">登录</a> 或 <a href="https://www.ibm.com/developerworks/dwwi/jsp/ssoregister.jsp?d=https%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-sshforward%2F%23icomments&amp;lang=cn&amp;a=dwmav">注册</a>  后发表评论。</p><p id="cmtHead"><label for="newCmt"><strong>添加评论:</strong></label></p><p>注意：评论中不支持 HTML 语法</p><div id="infoCmt"></div><form focus="name" enctype="multipart/form-data" method="post" action="" name="form" class="ibm-column-form ibm-styled-form"><p class="6-4-textarea"><textarea rows="5" name="newCmt" id="newCmt" class="dw-inoperable" disabled="disabled"></textarea><br></p><span class="ibm-input-group"><input value="1" name="comment_notification" id="comment_notification" disabled="disabled" type="checkbox"><label id="notifyText" class="ibm-form-note dw-btn-cancel-sec" for="comment_notification">有新评论时提醒我</label></span><span class="ibm-form-note dw-btn-cancel-sec notifySection" id="maxCharsCount">剩余 <span id="charCount">1000</span> 字符</span><p class="ibm-buttons-row"><input value="发布" name="postCmt" id="postCmt" class="ibm-btn-sec ibm-btn-small ibm-disabled" disabled="disabled" type="button"></p></form></div></div><div class="ibm-alternate-rule"><hr></div><div id="topControl" class="ibm-container ibm-alternate-two dw-comment-totals" style=""><div class="ibm-container-body"><form id="selectComments" method="get" action=""><p>&nbsp;<span class="dw-comment-totals-label"><strong>共有评论 (<span id="numCmts">4</span>)</strong></span><span class="dw-how-many-comments-label" style="display:none" id="dropdownCmts"><label for="howManyComments"><strong>显示：</strong></label>&nbsp;<select name="comments" id="howManyComments" class="dw-how-many-comments"><option selected="selected" value="recent">最新评论 </option></select><input class="ibm-btn-go" name="ibm-go" value="Go" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/short-btn.gif" alt="Go" type="image"><br></span></p></form></div></div><div id="cmtSect"><div class="comment"><div class="dw-icomment-container"><div class="dw-icomment-body dw-noborder"><div class="dw-icomment-body dw-noborder"><p>文档介绍的内容很实用，内容很棒，谢谢！</p><p class="ibm-item-note-alternate dw-item-note-alternate-left">由 <strong><a href="https://www.ibm.com/developerworks/community/profiles/user/%E5%8B%87%E6%95%A2%E8%88%AA%E8%A1%8C">勇敢航行</a></strong>  于 2016年12月21日发布 </p><p class="ibm-ind-link ibm-item-note-alternate dw-item-note-alternate-right"><a class="ibm-caution-link dw-report-abuse" href="https://www.ibm.com/developerworks/community/report?lang=zh&amp;referingURL=https://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/&amp;mymessage=%E8%AF%84%E8%AE%BA%EF%BC%9A%20%E6%96%87%E6%A1%A3%E4%BB%8B%E7%BB%8D%E7%9A%84%E5%86%85%E5%AE%B9%E5%BE%88%E5%AE%9E%E7%94%A8%EF%BC%8C%E5%86%85%E5%AE%B9%E5%BE%88%E6%A3%92%EF%BC%8C%E8%B0%A2%E8%B0%A2%EF%BC%81%0D%E7%94%B1%20%E5%8B%87%E6%95%A2%E8%88%AA%E8%A1%8C%20%20%E4%BA%8E%202016%E5%B9%B412%E6%9C%8821%E6%97%A5%E5%8F%91%E5%B8%83%20%0D%0D--%E5%9C%A8%E4%B8%8B%E6%96%B9%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA--" target="_self">报告滥用</a></p><div class="dw-clear-both"></div></div></div></div></div><div class="ibm-rule"><hr></div><div class="comment"><div class="dw-icomment-container"><div class="dw-icomment-body dw-noborder"><div class="dw-icomment-body dw-noborder"><p>説明の非常に詳しい。ありがとうございます。</p><p class="ibm-item-note-alternate dw-item-note-alternate-left">由 <strong><a href="https://www.ibm.com/developerworks/community/profiles/user/ACGame">ACGame</a></strong>  于 2015年11月30日发布 </p><p class="ibm-ind-link ibm-item-note-alternate dw-item-note-alternate-right"><a class="ibm-caution-link dw-report-abuse" href="https://www.ibm.com/developerworks/community/report?lang=zh&amp;referingURL=https://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/&amp;mymessage=%E8%AF%84%E8%AE%BA%EF%BC%9A%20%E8%AA%AC%E6%98%8E%E3%81%AE%E9%9D%9E%E5%B8%B8%E3%81%AB%E8%A9%B3%E3%81%97%E3%81%84%E3%80%82%E3%81%82%E3%82%8A%E3%81%8C%E3%81%A8%E3%81%86%E3%81%94%E3%81%96%E3%81%84%E3%81%BE%E3%81%99%E3%80%82%0D%E7%94%B1%20ACGame%20%20%E4%BA%8E%202015%E5%B9%B411%E6%9C%8830%E6%97%A5%E5%8F%91%E5%B8%83%20%0D%0D--%E5%9C%A8%E4%B8%8B%E6%96%B9%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA--" target="_self">报告滥用</a></p><div class="dw-clear-both"></div></div></div></div></div><div class="ibm-rule"><hr></div><div class="comment"><div class="dw-icomment-container"><div class="dw-icomment-body dw-noborder"><div class="dw-icomment-body dw-noborder"><p>thank you</p><p class="ibm-item-note-alternate dw-item-note-alternate-left">由 <strong><a href="https://www.ibm.com/developerworks/community/profiles/user/pubemail">pubemail</a></strong>  于 2014年10月29日发布 </p><p class="ibm-ind-link ibm-item-note-alternate dw-item-note-alternate-right"><a class="ibm-caution-link dw-report-abuse" href="https://www.ibm.com/developerworks/community/report?lang=zh&amp;referingURL=https://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/&amp;mymessage=%E8%AF%84%E8%AE%BA%EF%BC%9A%20thank%20you%0D%E7%94%B1%20pubemail%20%20%E4%BA%8E%202014%E5%B9%B410%E6%9C%8829%E6%97%A5%E5%8F%91%E5%B8%83%20%0D%0D--%E5%9C%A8%E4%B8%8B%E6%96%B9%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA--" target="_self">报告滥用</a></p><div class="dw-clear-both"></div></div></div></div></div><div class="ibm-rule"><hr></div><div class="comment"><div class="dw-icomment-container"><div class="dw-icomment-body dw-noborder"><div class="dw-icomment-body dw-noborder"><p>写的很清晰很详细，不错！</p><p class="ibm-item-note-alternate dw-item-note-alternate-left">由 <strong><a href="https://www.ibm.com/developerworks/community/profiles/user/azure">azure</a></strong>  于 2012年10月30日发布 </p><p class="ibm-ind-link ibm-item-note-alternate dw-item-note-alternate-right"><a class="ibm-caution-link dw-report-abuse" href="https://www.ibm.com/developerworks/community/report?lang=zh&amp;referingURL=https://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/&amp;mymessage=%E8%AF%84%E8%AE%BA%EF%BC%9A%20%E5%86%99%E7%9A%84%E5%BE%88%E6%B8%85%E6%99%B0%E5%BE%88%E8%AF%A6%E7%BB%86%EF%BC%8C%E4%B8%8D%E9%94%99%EF%BC%81%0D%E7%94%B1%20azure%20%20%E4%BA%8E%202012%E5%B9%B410%E6%9C%8830%E6%97%A5%E5%8F%91%E5%B8%83%20%0D%0D--%E5%9C%A8%E4%B8%8B%E6%96%B9%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA--" target="_self">报告滥用</a></p><div class="dw-clear-both"></div></div></div></div></div></div></div><div id="bottomControl" class="ibm-container ibm-alternate-two dw-comment-totals" style="display:none"><div class="ibm-container-body"><form id="selectComments2" method="get" action=""><p>&nbsp;<span class="dw-comment-totals-label"><strong>共有评论 (<span id="numCmts2">4</span>)</strong></span><span class="dw-how-many-comments-label" style="display:none" id="dropdownCmts2"><label for="howManyComments2"><strong>显示：</strong></label>&nbsp;<select name="comments" id="howManyComments2" class="dw-how-many-comments"><option selected="selected" value="recent">最新评论 </option></select><input class="ibm-btn-go" name="ibm-go" value="Go" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/short-btn.gif" alt="Go" type="image"><br></span></p></form></div></div></div>
+</div>
+<!-- Sign in OVERLAY STARTS HERE -->
+    
+<!-- Sign in OVERLAY STARTS HERE -->
+<div class="ibm-common-overlay" id="signin_overlay">
+<div class="ibm-head">
+<p><a class="ibm-common-overlay-close" href="#" onclick="dwsi.siInst.clearForm();">关闭 [x]</a></p>
+</div>
+<div class="ibm-body">
+<div class="ibm-main">
+
+ <div class="ibm-title">
+<h2>developerWorks: 登录</h2>
+<div id="ibm-overlay-error-signin" class="no-display"></div>
+</div>
+<div class="ibm-container ibm-alternate ibm-buttons-last">
+<div class="ibm-container-body">
+<p class="ibm-overlay-intro">标有星（<span class="ibm-required">*</span>）号的字段是必填字段。</p> 
+<form class="ibm-column-form" id="sFormId" action="" method="post" name="sForm" onsubmit="return false;">
+<p><label for="ibmid">IBM ID:<span class="ibm-required">*</span></label><span>
+    <input aria-required="true" name="ibm-id" id="ibmid" size="25" class="required" onkeypress="dwsi.siInst.handleEP(event,this.form);" type="text">
+    <br><a onclick="window.location='/developerworks/dwwi/DWAuthRouter?m=reg&amp;lang=zh_CN&amp;d='+encodeURIComponent(location.protocol + '//' + location.hostname + location.pathname + '#icomments'); return false;" href="#" class="ibm-forward-link">需要一个 IBM ID？</a> <br>
+    <a class="ibm-forward-link" href="https://www.ibm.com/developerworks/dwwi/jsp/WSHelp.jsp?lang=zh_CN">忘记 IBM ID？</a> 
+</span>
+</p> 
+<p><label for="password">密码：<span class="ibm-required">*</span></label><span>
+    <input name="password" id="password" size="25" value="" class="required" onkeypress="dwsi.siInst.handleEP(event,this.form);" type="password">
+    <br><a class="ibm-forward-link" href="#" onclick="(function ()
+        {window.location='https://www.ibm.com/account/profile?page=forgot&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d='+encodeURIComponent(dwsi.siInst.getAuthUrl())+'%3Fm%3Dloginpage%26lang%3Dzh_CN%26d%3D'+encodeURIComponent(location.href);})();">忘记密码？</a>
+    <br><a class="ibm-forward-link" href="#" onclick="(function () {window.location='https://www.ibm.com/account/profile?page=chpw&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d='+encodeURIComponent(location.href);})();">更改您的密码</a></span></p> 
+<p class="dw-perm-box">
+	<span><input id="perm" name="perm_name" type="checkbox"><label for="perm"> 保持登录。</label></span>
+</p>
+<p>单击提交则表示您同意developerWorks 的条款和条件。 <a href="https://www.ibm.com/developerworks/community/terms?lang=zh">查看条款和条件</a>。</p>
+<div class="ibm-buttons-row">
+   <p><input class="ibm-btn-arrow-pri" name="ibm-submit" value="提交" onclick="dwsi.siInst.signin();return false;" type="submit"><span class="ibm-sep">&nbsp;</span>
+<input value="取消" name="ibm-cancel" class="ibm-btn-cancel-sec" onclick="dwsi.siInst.clearForm();ibmweb.overlay.hide('signin_overlay');return false;" type="button"></p>
+</div>
+</form>
+ <div class="ibm-overlay-rule"><hr></div> 
+
+<p>在您首次登录 developerWorks 时，会为您创建一份个人概要。<strong>您的个人概要中的信息（您的姓名、国家/地区，以及公司名称）是公开显示的，而且会随着您发布的任何内容一起显示，除非您选择隐藏您的公司名称。</strong>您可以随时更新您的 IBM 帐户。</p>
+<div><p class="dw-c-overlay-secure">所有提交的信息确保安全。</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="ibm-footer"></div>
+</div>
+<!-- Display name OVERLAY STARTS HERE -->
+<div class="ibm-common-overlay" id="displayname_overlay">
+<div class="ibm-head">
+<p><a class="ibm-common-overlay-close" href="#" onclick="dwsi.siInst.clearForm();">关闭 [x]</a></p>
+</div>
+<div class="ibm-body">
+<div class="ibm-main">
+<div class="ibm-title">
+<h2>选择您的昵称</h2><br><br>
+<div id="ibm-overlay-error-dname" class="no-display"></div>
+</div>
+<div class="ibm-container ibm-alternate ibm-buttons-last">
+<div class="ibm-container-body">
+<p class="ibm-overlay-intro">当您初次登录到 developerWorks 时，将会为您创建一份概要信息，您需要指定一个昵称。您的昵称将和您在 developerWorks 发布的内容显示在一起。</p><p><strong>昵称长度在 3 至 31 个字符之间</strong>。 
+    您的昵称在 developerWorks 社区中必须是唯一的，并且出于隐私保护的原因，不能是您的电子邮件地址。</p>
+<p class="ibm-overlay-intro">标有星（<span class="ibm-required">*</span>）号的字段是必填字段。</p> 
+<form id="dFormId" method="post" action="" name="dForm" onsubmit="return false;" class="ibm-column-form">
+<p><label for="displayname">昵称：<span class="ibm-required">*</span></label><span>
+    <input aria-required="true" name="displayname" id="displayname" size="25" onkeypress="dwsi.siInst.handleEP(event,this.form);" type="text"></span>
+    <span class="ibm-form-note">(昵称长度在 3 至 31 个字符之间)</span>
+</p>
+<p>单击<strong>提交</strong>则表示您同意developerWorks 的条款和条件。 <a href="https://www.ibm.com/developerworks/community/terms?lang=zh">查看条款和条件</a>.</p>
+<div class="ibm-buttons-row">
+   <p><input class="ibm-btn-arrow-pri" name="ibm-submit" value="提交" onclick="dwsi.siInst.signin();return false;" type="submit"><span class="ibm-sep">&nbsp;</span>
+<input value="取消" name="ibm-cancel" class="ibm-btn-cancel-sec" onclick="dwsi.siInst.clearForm();ibmweb.overlay.hide('displayname_overlay');return false;" type="button"></p>
+</div>
+</form>
+<div class="ibm-overlay-rule"><hr></div>
+<div><p class="dw-c-overlay-secure">所有提交的信息确保安全。</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="ibm-footer"></div>
+</div>
+
+
+<!-- INLINE_COMMENTS_END -->
+
+</div>
+<!-- 6_4_COLUMN_END -->
+
+<!-- 6_2_COLUMN_BEGIN -->
+<div class="ibm-col-6-2">
+
+<!-- Next_Steps -->
+<!-- Dig_Deeper -->
+
+
+<!-- Promotion_Module -->
+    
+<!-- PROMOTION_MODULE_START -->
+<div class="ibm-alternate-rule"><hr></div>
+<ul class="ibm-portrait-module-list">
+<li><a role="presentation" tabindex="-1" class="" href="http://www.ibm.com/developerworks/cn/cloud/bluemix/"><img src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/sm-f-bluemixrobot60.png" alt="IBM Bluemix 资源中心" width="60" height="60"></a>
+<h3><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/cloud/bluemix/">IBM Bluemix 资源中心</a></h3>
+<p>文章、教程、演示，帮助您构建、部署和管理云应用。</p></li>
+<li><a role="presentation" tabindex="-1" class="" href="http://www.ibm.com/developerworks/cn/community/"><img src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/sm-f-comcommunity60.png" alt="developerWorks 中文社区" width="60" height="60"></a>
+<h3><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/community/">developerWorks 中文社区</a></h3>
+<p>立即加入来自 IBM 的专业 IT 社交网络。</p></li>
+<li><a role="presentation" tabindex="-1" class="" href="http://www.ibm.com/developerworks/cn/downloads/"><img src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/sm-f-evaluationsoftware60.png" alt="" width="60" height="60"></a>
+<h3><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/downloads/">IBM 软件资源中心</a></h3>
+<p>免费下载、试用软件产品，构建应用并提升技能。</p></li>
+</ul>
+<!-- PROMOTION_MODULE_END -->
+</div>
+<!-- 6_2_COLUMN_END -->
+
+</div>
+<!-- SPLIT_COLUMNS_END -->
+
+<!-- BOTTOM_BACK_TO_TOP -->
+<div class="ibm-columns">
+<div class="ibm-col-1-1">
+	<div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p>
+</div>
+</div>
+
+<!-- Rating_Meta_BEGIN -->
+<!--Rating_Meta_BEGIN--><div class="metavalue">static.content.url=http://www.ibm.com/developerworks/js/artrating/</div><div class="metavalue">SITE_ID=10</div><div class="metavalue">Zone=Linux</div><div class="metavalue">ArticleID=442463</div><div class="metavalue">ArticleTitle=实战 SSH 端口转发</div><div class="metavalue">publish-date=10312009</div><script language="javascript" type="text/javascript">document.write('<div class="metavalue">url='+location.href.replace(/</g,  '%3C')+'</div>');</script><div class="metavalue">url=https://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/</div><!--Rating_Meta_END-->
+<!-- Rating_Meta_END -->
+
+</div>
+<!-- END_IBM_CONTENT_MAIN -->
+
+</div>
+<!-- END_IBM_CONTENT_BODY -->
+
+</div>
+<!-- END_IBM_CONTENT -->
+
+</div></div>
+<!-- LEADSPACE_END -->
+
+
+<!-- END_IBM_PCON -->
+<!-- FOOTER_BEGIN -->
+<div aria-label="页脚" id="ibm-footer"><!-- IBM footer container; disabled --></div>
+
+<div id="ibm-footer-module-dwwrapper" role="contentinfo" aria-label="developerWorks Footer">
+
+<div id="ibm-footer-module-dw">
+	<div class="dw-footer-columns">
+		<div class="dw-footer-col-6-1 dw-footer-col-6-1-cn">
+			<ul>
+				<li><a href="https://www.ibm.com/developerworks/secure/feedback.jsp?domain=dwchina" tabindex="0">帮助</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/author/" tabindex="0">联系编辑</a></li>
+				<li><a href="https://www.ibm.com/developerworks/secure/myideas2.jsp?domain=dwchina" tabindex="0">提交内容</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/rss/" tabindex="0">订阅源</a></li>
+			</ul>
+        </div>
+		<div class="dw-footer-col-6-2">
+			<ul>
+				<li><a class="dwcn-sina-link" href="http://weibo.com/ibmdw/" target="_blank" tabindex="0">新浪微博</a></li>
+				<li><a href="https://www.ibm.com/developerworks/community/report?lang=zh" tabindex="0">报告滥用</a></li>
+				<li><a href="https://www.ibm.com/developerworks/community/terms?lang=zh" tabindex="0">使用条款</a></li>
+				<li><a href="https://www.ibm.com/developerworks/cn/community/terms/thirdparty/" tabindex="0">第三方提示</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-3">
+			<ul>
+				<li><a href="http://www.ibm.com/privacy/cn/zh/" tabindex="0">隐私条约</a></li>
+				<li><a href="http://www.ibm.com/ibm/accessibility/cn/" tabindex="0">浏览辅助</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/academic/" tabindex="0">IBM 教育学院教育培养计划</a></li><li><a href="http://www.ibm.com/developerworks/cn/gep/">IBM 创业企业全球扶持计划</a></li><li><a href="http://www.ibm.com/partnerworld/isv/">ISV 资源 (英语)</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-4"> 
+			<ul>
+				<li><a href="https://www.ibm.com/developerworks/cn/newsletter/" tabindex="0">dW 中国每周时事通讯</a></li>
+			</ul>
+			
+		</div>
+		<div class="dw-footer-col-6-5">
+			<ul>
+				<li class="dw-footer-lang-head">选择语言：</li>
+				<li><a href="http://www.ibm.com/developerworks/" tabindex="0">English</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/" tabindex="0" lang="zh">中文</a></li>
+				<li><a href="http://www.ibm.com/developerworks/jp/" tabindex="0" lang="ja">日本語</a></li>
+				<li><a href="http://www.ibm.com/developerworks/ru/" tabindex="0" lang="ru">Русский</a></li>
+				<li><a href="http://www.ibm.com/developerworks/br/" tabindex="0" lang="pt">Português (Brasil)</a></li>
+				<li><a href="http://www.ibm.com/developerworks/ssa/" tabindex="0" lang="es">Español</a></li>
+				<li><a href="https://developer.ibm.com/kr/" tabindex="0" lang="kr">한글</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-6">
+			<img alt="IBM®" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/dwn-ibm-logo-v17.png" width="223" height="46">
+			<img class="dw-preload" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/ibm_sprite_social_blue_ON.png" alt="" width="1" height="1">
+		</div>
+	</div>
+</div>
+
+</div><!-- FOOTER_END -->
+
+<!-- END_IBM-TOP -->
+</div>
+
+<!-- SCRIPTS_INCLUDE_BEGIN -->
+<script type="text/javascript" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/dw-comments.js">//</script>
+<script type="text/javascript" language="JavaScript">
+	dojo.ready(function(){
+		rBHash = typeof rBHash == "undefined" ? {} : rBHash;
+		rBHash['viperLang'] = 'zh';
+		rBHash['urlLang'] = 'cn';
+		rBHash['dwwi2Lang'] = 'zh_CN';
+		rBHash['appCode'] = 'dwmav';
+		rBHash['signoutUrl'] = (location.host.toLowerCase() === "www.ibm.com" || location.host.toLowerCase() === "developer.ibm.com") ? 'http://www.ibm.com/developerworks/cn/' : ''; 
+		dwsi.siInst = new dwweb.dynnav.dwsi();
+		dwsi.siInst.initSI();		
+
+		// construct the comment widget
+dwc.cmts = '条评论';
+dwc.signInPreText = '请';
+dwc.signIn = '登录';
+dwc.or = '或';
+dwc.register = '注册';
+dwc.signInPostText = '';
+dwc.leaveCmt = '后发表评论。';
+dwc.view = '查看';
+dwc.totalCmts = '共有评论';
+dwc.postYourCmt = '添加您的评论';
+dwc.show = '显示：';
+dwc.recentCmts = '最新评论';
+dwc.allCmts = '所有评论';
+dwc.tooLongCmt = '您的评论超过了 1000 字符限制';
+dwc.numCharsLeft = '剩余 <span id="charCount">{1}</span> 字符';
+dwc.reportAbuse = '报告滥用';
+dwc.notifyMsg = '有新评论时提醒我';
+dwc.htmlWarning = '注意：评论中不支持 HTML 语法'; 
+dwc.cmt = '评论：';
+dwc.addCmts = '添加评论';
+dwc.addCmt = '添加评论';
+dwc.doNotErase = '--在下方添加评论--'; 
+dwc.viewOrAddCmts = '查看或添加评论';
+dwc.reportInapprCont = '举报不良信息';
+dwc.reportInapprContLink = 'http://www.ibm.com/developerworks/forums/forum.jspa?forumID=1834';
+dwc.postingCmt = '正在发布评论……';
+dwc.noCmt = '快来添加第一条评论';
+dwc.netwkErr = '在检索评论时出错，请稍后刷新。';
+dwc.addACmt = '添加评论';
+dwc.instructCmt = '标有星号（<span class="ibm-required">*</span>）的是必填项目。';
+dwc.btnPost = '发布';
+dwc.btnPostAnon = '匿名发布';
+dwc.btnClrCmt = '清除评论';
+dwc.btnCancel = '取消';
+dwc.showRecent = '显示最新的 {1} 条评论'; // {1} is the count to be substituted
+dwc.showNext = '显示后 {1} 条评论'; // {1} is the count to be substituted
+dwc.showAllCmts = '显示所有评论';
+dwc.enterCmt = '请输入评论内容。';
+dwc.loginErr = '暂时无法验证您的登录状态，请稍后再试。';
+dwc.postErr = '暂时无法发布您的评论，请稍后再试。';
+dwc.postBy = '由 <strong>{1}</strong>  于 {2} '; // {1} is the author to be substituted; {2} is the date
+dwc.siteId = 10;
+dwc.lang = 'zh_CN';
+dwc.viperLang = 'zh';
+//dwc.abuseHref =  null;
+dwc.maxChars = 1000;
+dwc.cmtTxt =  '评论';
+dwc.cmtsTxt =  '评论';  
+		dwc && new dwc.comments('threadShow','95%',5,'nCmts','icomments');
+		});
+</script>
+
+
+
+<!-- Piwik -->
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["setDomains", ["*.www.ibm.com/developerworks","*.www.ibm.com/developerworks"]]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+    var u="//developer.ibm.com/piwik/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 7]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    })();
+</script>
+<noscript><p><img src="//developer.ibm.com/piwik/piwik.php?idsite=7" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code --><!-- SCRIPTS_INCLUDE_END -->
+
+<div id="ibm-metrics">
+<script src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/stats.js" type="text/javascript">//</script>
+</div>
+
+
+
+<div style="display:none" id="ttdUniversalPixelTag14a49df88763436db0795df4fc90e6a7"><iframe src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/up.html" style="visibility:hidden;" allowtransparency="true" id="universal_pixel" width="0" height="0"></iframe></div><div style="display:none" id="ttdUniversalPixelTagaf477d928c164ae0b8f3e1717b910617"><iframe src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/up_002.html" style="visibility:hidden;" allowtransparency="true" id="universal_pixel" width="0" height="0"></iframe></div><script async="" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/Serving.html" type="text/javascript"></script><script id="mm_pp_background" src="%E5%AE%9E%E6%88%98%20SSH%20%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91_files/js"></script></body></html>

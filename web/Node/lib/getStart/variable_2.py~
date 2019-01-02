@@ -1,0 +1,31 @@
+// ES5
+{
+
+    let a = 1;
+    let b = 2;
+    let c = 3;
+
+}
+
+//ES6 
+{
+
+    let arr = [1, 2, 3]
+        
+    //a = 1, b = 2, c = 3
+    let [a, b, c] = arr
+    console.log(a,b,c)
+
+    //m = 3
+    let [ , , m] = arr
+    console.log(m)
+
+    //head = 1, tail = [2 , 3, 4]
+    let [head, ...tail] = [1,2,3,4]
+    console.log(head,tail)
+
+    let [x, y, ...z] = ['a']
+    console.log(x, y , z)
+
+}
+

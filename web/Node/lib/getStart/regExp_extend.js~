@@ -1,0 +1,67 @@
+//RegExp构造函数
+{
+
+    //ES5中, RegExp构造函数的参数有两种情况
+    //method one
+    var regex = new RegExp('xyz', 'ig');
+
+    console.log("XYZxyz123".match(regex));
+
+    //==
+
+    //method two， 但是ES5不允许此时使用第二个参数添加修饰符，ES6改进了这点
+    var regex = new RegExp(/xyz/ig);
+    console.log("XYZxyz123".match(regex));
+
+    // ==
+    
+    var regex = /xyz/ig;
+    console.log("XYZxyz123".match(regex));
+
+
+    //ES6支持第二个参数添加修饰符，覆盖第一个参数修饰符
+    var regex = new RegExp(/xyz/i, 'ig');
+    console.log("XYZxyz123".match(regex));
+
+    console.log(/xyz/i.test("XYZxyz123"))
+
+
+    //  u  修饰符处理大于\uFFFF的Unicode字符， 也就是说会正确处理四个字节的UTF-16 编码
+    
+    /* 
+     * u 修饰符修改下列正则行为:
+     *
+     * 1) 点字符，含义是除了换行符以外的任意单个字符。对于码点大于0xFFFF的Unicode字符，点字符不能识别必须加上u修饰符.
+     * 2) Unicode字符表示法，ES6新增了使用大括号表示Unicode字符
+     * 3) 所有量词都会正确识别码点大于0xFFFF的Unicode字符
+     * 4) 预定义模式
+     * 5) i 修饰符号
+     *
+     */
+
+    //1)
+    var s = '吉';
+    console.log(/^.$/.test(s)); //false
+    console.log(/^.$/u.test(s)); //true
+
+    //2)
+    console.log(/\u{61}/.test('a'));  //false
+    console.log(/\u{61}/u.test('a')); //true
+    console.log(/\u{5668}/u.test('器')); //true, node对码点支持不太好, false了
+
+    //RegExp.prototype.unicode
+    const r1 = /hello/;
+    const r2 = /hello/u;
+
+    console.log(r1.unicode)
+
+
+}
+
+{
+
+    //y 修饰符，即 粘连 修饰符
+
+
+
+}

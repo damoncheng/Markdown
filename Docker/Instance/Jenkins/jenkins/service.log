@@ -1,0 +1,34 @@
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    | groupadd: GID '0' already exists
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    | groupadd: GID '0' already exists
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    | 2018/02/08 10:33:56 [1] rsyncd version 3.1.1 starting, listening on port 873
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    | groupadd: invalid option -- 'u'
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    | Usage: groupadd [options] GROUP
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    | 
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    | Options:
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    |   -f, --force                   exit successfully if the group already exists,
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    |                                 and cancel -g if the GID is already used
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    |   -g, --gid GID                 use GID for the new group
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    |   -h, --help                    display this help message and exit
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    |   -K, --key KEY=VALUE           override /etc/login.defs defaults
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    |   -o, --non-unique              allow to create groups with duplicate
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    |                                 (non-unique) GID
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    |   -p, --password PASSWORD       use this encrypted password for the new group
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    |   -r, --system                  create a system account
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    |   -R, --root CHROOT_DIR         directory to chroot into
+jenkins_master_rsync.0.z0pulyk6jv1e@myvm2    | 
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    | 2018/02/08 10:36:56 [1] rsyncd version 3.1.1 starting, listening on port 873
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    | groupadd: invalid option -- 'u'
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    | Usage: groupadd [options] GROUP
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    | 
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    | Options:
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    |   -f, --force                   exit successfully if the group already exists,
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    |                                 and cancel -g if the GID is already used
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    |   -g, --gid GID                 use GID for the new group
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    |   -h, --help                    display this help message and exit
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    |   -K, --key KEY=VALUE           override /etc/login.defs defaults
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    |   -o, --non-unique              allow to create groups with duplicate
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    |                                 (non-unique) GID
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    |   -p, --password PASSWORD       use this encrypted password for the new group
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    |   -r, --system                  create a system account
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    |   -R, --root CHROOT_DIR         directory to chroot into
+jenkins_master_rsync.0.n5fojyftd09s@myvm1    | 

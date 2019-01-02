@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>浮点数在计算机中的存储方式 - wuyuan2011woaini - 博客园</title>
+<link type="text/css" rel="stylesheet" href="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-SimpleBlue.css">
+<link id="mobile-style" media="only screen and (max-width: 768px)" type="text/css" rel="stylesheet" href="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-SimpleBlue-mobile.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/wuyuan2011woaini/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/wuyuan2011woaini/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/wuyuan2011woaini/wlwmanifest.xml">
+<script src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/analytics.js" async=""></script><script src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/encoder.js" type="text/javascript"></script><script src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/jquery.js" type="text/javascript"></script>  
+<script type="text/javascript">var currentBlogApp = 'wuyuan2011woaini', cb_enable_mathjax=true;var isLogined=false;</script>
+<script src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.js" type="text/javascript"></script>
+<script type="text/x-mathjax-config;executed=true">MathJax.Hub.Config({
+  tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] },
+  TeX: { equationNumbers: { autoNumber: ['AMS'], useLabelIds: true }, extensions: ['extpfeil.js'] },
+  'HTML-CSS': { linebreaks: { automatic: true } },
+  SVG: { linebreaks: { automatic: true } }});</script><script src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/MathJax.js" type="text/javascript"></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+<body><div style="display: none;" id="MathJax_Message"></div>
+<a name="top"></a>
+
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+		
+<!--done-->
+<div class="title"><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/wuyuan2011woaini/">wuyuan2011woaini</a></div>
+<div class="subtitle"></div>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li id="nav_sitehome"></li>
+<li id="nav_myhome"></li>
+<li id="nav_newpost"></li>
+<li id="nav_contact"></li>
+<li id="nav_rss">
+<!----></li>
+<li id="nav_admin"><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+
+		<div class="blogStats">
+			
+			
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="http://www.cnblogs.com/wuyuan2011woaini/p/4105765.html">浮点数在计算机中的存储方式</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body"><p><font color="#ff0000">文章参考地址：<a href="http://www.cnblogs.com/xugang/archive/2010/05/04/1727431.html" target="_blank">http://www.cnblogs.com/xugang/archive/2010/05/04/1727431.html</a></font></p>  <p>C语言和 C#语言中，对于浮点型的数据采用<font color="#ff0000">单精度类型</font>(float)和<font color="#ff0000">双精度类型</font>(double)来存储：</p>  <p>float 数据占用 32bit；</p>  <p>double 数据占用 64bit；</p>  <p>我们在声明一个变量 float f = 2.25f 的时候，是如何分配内存的呢？</p>  <p><font color="#ff0000">其实不论是 float 类型还是 double 类型，在存储方式上都是遵从IEEE的规范：</font></p>  <p>float 遵从的是 IEEE R32.24；</p>  <p>double 遵从的是 IEEE R64.53；</p>  <p>&nbsp;</p>  <p><strong><font color="#ff0000">单精度</font>或<font color="#ff0000">双精度</font>在存储中，都分为三个部分：</strong></p>  <p><strong>符号位 </strong>(Sign)：0代表正数，1代表为负数；</p>  <p><strong>指数位 </strong>(Exponent)：用于存储科学计数法中的指数数据；</p>  <p><strong>尾数部分 </strong>(Mantissa)：采用移位存储尾数部分；</p>  <p>&nbsp;</p>  <p><strong>单精度 float 的存储方式如下：</strong></p>  <p><img alt="" src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/float_1.gif" width="473" height="146"></p>  <p><strong>双精度 double 的存储方式如下：</strong></p>  <p><img alt="" src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/float_2.gif" width="596" height="146"></p>  <p>R32.24 和 R64.53 的存储方式都是用<font color="#ff0000">科学计数法来存储数据</font>的，比如：</p>  <p>8.25&nbsp; 用十进制表示为：8.25 * 10<sup>0</sup></p>  <p>120.5 用十进制表示为：1.205 * 10<sup>2</sup></p>  <p><sup></sup></p>  <p>而计算机根本不认识十进制的数据，他只认识0和1。所以在计算机存储中，首先要将上面的数更改为<font color="#ff0000">二进制的科学计数法</font>表示：</p>  <p>8.25&nbsp;&nbsp; 用二进制表示为：1000.01</p>  <p>118.5 用二进制表示为：1110110.1</p>  <p>&nbsp;</p>  <p>而用二进制的科学计数法表示 1000.1，可以表示为1.0001 * 2<sup>3</sup></p>  <p>而用二进制的科学计数法表示 1110110.1，可以表示为1.1101101 * 2<sup>6</sup></p>  <p><sup></sup></p>  <p><strong>任何一个数的科学计数法表示都为1. xxx * 2<sup>n </sup>，尾数部分就可以表示为xxxx，<font color="#ff0000">由于第一位都是</font></strong><font color="#ff0000"><strong>1</strong><strong>嘛，干嘛还要表示呀？所以将小数点前面的1</strong><strong>省略。</strong></font></p>  <p><strong>由此，23bit的尾数部分，可以表示的精度却变成了24bit，道理就是在这里。（<font color="#ff0000">float有效位数相应的也会发生变化,而double则不会，因达不到</font>）</strong></p>  <p>&nbsp;</p>  <p><strong></strong></p>  <p>那 24bit 能精确到小数点后几位呢？我们知道9的二进制表示为1001，所以 4bit 能精确十进制中的1位小数点，24bit就能使 float 精确到小数点后6位；</p>  <p>而对于指数部分，因为指数可正可负(占1位)，所以8位的指数位能表示的指数范围就只能用7位，范围是:-127至128。所以指数部分的存储采用移位存储，存储的数据为元数据 +127。</p>  <p><strong><font color="#ff0000">注意：</font></strong></p>  <p><font color="#ff0000">元数据+127</font>：大概是指“指数”从00000000开始（表示-127）至11111111（表示+128）</p>  <p>所以，10000000表示指数1 (127 + 1 = 128 --&gt; 10000000 ) ；</p>  <p>指数为 3，则为 127 + 3 = 130，表示为 01111111 + 11 = 10000010 ；</p>  <p>&nbsp;</p>  <p><strong>下面就看看 </strong><strong>8.25 和 118.5 在内存中真正的存储方式:</strong></p>  <p>8.25 用二进制表示为：1000.01</p>  <p><strong>8.25 </strong><strong>用二进制的科学计数法表示为: 1.0001* 2<sup>3 </sup></strong><strong>，按照上面的存储方式：</strong></p>  <p>&nbsp;&nbsp;&nbsp; 符号位为：0，表示为正；</p>  <p>&nbsp;&nbsp;&nbsp; 指数位为：3+127=130，即 10000011；</p>  <p>&nbsp;&nbsp;&nbsp; 尾数部分为：0001；</p>  <p>故8.25的存储方式如下图所示：</p>  <p><img alt="" src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/float_3.gif" width="511" height="248"></p>  <p>&nbsp;</p>  <p>而单精度浮点数118.5的存储方式如下图所示：</p>  <p><img alt="" src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/float_4.jpg" width="511" height="248"></p>  <p>那么如果给出内存中一段数据，并且告诉你是单精度存储的话，你将如何知道该数据的十进制数值呢？</p>  <p>其实就是对上面运算的反推过程，比如给出如下内存数据：01000010111011010000000000000000，</p>  <p>首先我们现将该数据分段：0&nbsp; 10000101&nbsp; 11011010000000000000000，在内存中的存储就为下图所示：</p>  <p><img alt="" src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/float_5.gif" width="420" height="42"></p>  <p>根据我们的计算方式，可以计算出这样一组数据表示为：</p>  <p>1.1101101*2<sup>(133-127=6) </sup>=<sup> </sup>1.1101101 * 2<sup>6 </sup>= 1110110.1=118.5</p>  <p>&nbsp;</p>  <p>而双精度浮点数的存储和单精度的存储大同小异，不同的是指数部分和尾数部分的位数。所以这里不再详细的介绍双精度的存储方式了，只将118.5的最后存储方式图给出：</p>  <p><img alt="" src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/float_6.gif" width="587" height="42"></p>  <p>下面就这个知识点来解决一个疑惑，请看下面一段程序，注意观察输出结果：</p>  <div class="cnblogs_code" style="border-top: #cccccc 1px solid; border-right: #cccccc 1px solid; border-bottom: #cccccc 1px solid; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; border-left: #cccccc 1px solid; padding-right: 5px; background-color: #f5f5f5"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>   <pre><span style="color: #0000ff">class</span><span style="color: #000000"> 浮点数
+    {
+        </span><span style="color: #0000ff">static</span> void Main(<span style="color: #0000ff">string</span><span style="color: #000000">[] args)
+        {
+            float f </span>= <span style="color: #800080">2</span><span style="color: #000000">.2f;
+            </span><span style="color: #0000ff">double</span> d = (<span style="color: #0000ff">double</span><span style="color: #000000">)f;
+            Console.WriteLine(d.ToString(</span><span style="color: #800000">"</span><span style="color: #800000">0.0000000000000</span><span style="color: #800000">"</span><span style="color: #000000">));
+            </span>//结果：<span style="color: #800000">"</span><span style="color: #800000">2.2000000476837</span><span style="color: #800000">"</span><span style="color: #000000">
+
+            f </span>= <span style="color: #800080">2</span><span style="color: #000000">.25f;
+            d </span>= (<span style="color: #0000ff">double</span><span style="color: #000000">)f;
+            Console.WriteLine(d.ToString(</span><span style="color: #800000">"</span><span style="color: #800000">0.0000000000000</span><span style="color: #800000">"</span><span style="color: #000000">));
+            </span>//结果：<span style="color: #800000">"</span><span style="color: #800000">2.2500000000000</span><span style="color: #800000">"</span>
+
+            //<span style="color: #800080">2.25</span> - <span style="color: #800080">2.2</span> = <span style="color: #800080">0.05</span> ( 但实际结果不是0.<span style="color: #800080">05</span><span style="color: #000000"> )
+            float f2 </span>= <span style="color: #800080">2</span>.25f - <span style="color: #800080">2</span><span style="color: #000000">.2f;
+            Console.WriteLine(f2.ToString(</span><span style="color: #800000">"</span><span style="color: #800000">0.0000000000000</span><span style="color: #800000">"</span><span style="color: #000000">));
+            </span>//结果：<span style="color: #800000">"</span><span style="color: #800000">0.0499999500000</span><span style="color: #800000">"</span><span style="color: #000000">
+        }
+    }</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+
+<p><strong>输出的结果可能让大家疑惑不解：</strong></p>
+
+<p><font color="#ff0000">单精度的 2.2 转换为双精度后，精确到小数点后13位之后变为了2.2000000476837</font></p>
+
+<p><font color="#ff0000">而单精度的 2.25 转换为双精度后，变为了2.2500000000000</font></p>
+
+<p><font color="#ff0000"></font></p>
+
+<p><strong>为何 </strong><strong>2.2</strong><strong> 在转换后的数值更改了，而 2.25 </strong><strong>却没有更改呢？</strong></p>
+
+<p>其实通过上面关于两种存储结果的介绍，我们大概就能找到答案。</p>
+
+<p><strong>2.25</strong><strong> 的单精度存储方式表示为：</strong>0 10000001 00100000000000000000000</p>
+
+<p><strong>2.25</strong><strong> 的双精度存储方式表示为：</strong>0 10000000 0010010000000000000000000000000000000000000000000000000</p>
+
+<p><font color="#ff0000">这样 2.25 在进行强制转换的时候，数值是不会变的。</font></p>
+
+<p><font color="#ff0000"></font></p>
+
+<p><font color="#ff0000"></font></p>
+
+<p><strong>而我们再看看</strong><strong> 2.2</strong><strong>，</strong><strong>用科学计数法表示应该为：</strong></p>
+
+<p><strong>将十进制的小数转换为二进制的小数的方法是：</strong><font color="#ff0000"><strong>将小数*2</strong><strong>，取整数部分。</strong></font></p>
+
+<p>0.2×2=0.4，所以二进制小数第一位为0.4的整数部分0；</p>
+
+<p>0.4×2=0.8，第二位为0.8的整数部分0；</p>
+
+<p>0.8×2=1.6，第三位为1；</p>
+
+<p>0.6×2=1.2，第四位为1；</p>
+
+<p>0.2×2=0.4，第五位为0；</p>
+
+<p>...... 这样永远也不可能乘到=1.0，得到的二进制是一个无限循环的排列 00110011001100110011...</p>
+
+<p>&nbsp;</p>
+
+<p>对于单精度数据来说，尾数只能表示 24bit 的精度，所以2.2的 float 存储为:</p>
+
+<p><img alt="" src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/float_7.gif" width="414" height="42"></p>
+
+<p>但是这种存储方式，换算成十进制的值，却不会是2.2。</p>
+
+<p>&nbsp;</p>
+
+<p><font color="#ff0000">因为在十进制转换为二进制的时候可能会不准确（如：2.2），这样就导致了误差问题！</font></p>
+
+<p><font color="#ff0000">并且 double 类型的数据也存在同样的问题！</font></p>
+
+<p><strong><font color="#ff0000">所以在浮点数表示中，都可能会不可避免的产生些许误差！</font></strong></p>
+
+<p><font color="#ff0000">在单精度转换为双精度的时候，也会存在同样的误差问题。</font></p>
+
+<p>&nbsp;</p>
+
+<p>而对于有些数据（如2.25），在将十进制转换为二进制表示的时候恰好能够计算完毕，所以这个误差就不会存在，也就出现了上面比较奇怪的输出结果。</p>
+
+<p><strong></strong>来源: <a href="http://www.cnblogs.com/jillzhang/archive/2007/06/24/793901.html">http://www.cnblogs.com/jillzhang/archive/2007/06/24/793901.html</a></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 本人对其中的一些细节和错误进行了精心的调整。</p></div><div style="display: block;" id="MySignature">天道酬勤 循序渐进 技压群雄</div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag">标签: <a href="http://www.cnblogs.com/wuyuan2011woaini/tag/%E6%B5%AE%E7%82%B9%E6%95%B0/">浮点数</a></div>
+<div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(4105765,cb_blogId,1);green_channel_success(this,'谢谢推荐！');">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow('174b0c5d-2a1d-e211-aa8f-842b2b196315');" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/wuyuan2011woaini/" target="_blank"><img src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/20141105130310.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/wuyuan2011woaini/">wuyuan2011woaini</a><br>
+            <a href="http://home.cnblogs.com/u/wuyuan2011woaini/followees">关注 - 0</a><br>
+            <a href="http://home.cnblogs.com/u/wuyuan2011woaini/followers">粉丝 - 4</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow('174b0c5d-2a1d-e211-aa8f-842b2b196315');return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(4105765,'Digg')">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(4105765,'Bury')">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/wuyuan2011woaini/p/4105373.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/wuyuan2011woaini/p/4105373.html" title="发布于2014-11-18 11:56">VB托盘图标不响应WM_MOUSEMOVE的原因及解决方法</a><br><a href="http://www.cnblogs.com/wuyuan2011woaini/p/4106190.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/wuyuan2011woaini/p/4106190.html" title="发布于2014-11-18 16:51">不同进制之间的转换</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2014-11-18 14:50</span> <a href="http://www.cnblogs.com/wuyuan2011woaini/">wuyuan2011woaini</a> 阅读(<span id="post_view_count">2076</span>) 评论(<span id="post_comment_count">0</span>)  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=4105765" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(4105765);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=203800,cb_entryId=4105765,cb_blogApp=currentBlogApp,cb_blogUserGuid='174b0c5d-2a1d-e211-aa8f-842b2b196315',cb_entryCreatedDate='2014/11/18 14:50:00';loadViewCount(cb_entryId);</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login('commentform');">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank">【推荐】50万行VC++源码: 大型组态工控、电力仿真CAD与GIS源码库</a><br><a href="http://www.gcpowertools.com.cn/products/activereports/excel.htm?utm_source=cnblogs&amp;utm_medium=blogpage&amp;utm_term=bottom&amp;utm_content=AR&amp;utm_campaign=community" target="_blank">【报表】Excel 报表开发18 招式，人人都能做报表</a><br><a href="http://click.aliyun.com/m/15483" target="_blank">【活动】阿里云海外云服务全面降价助力企业全球布局</a><br><a href="https://group.cnblogs.com/topic/76829.html" target="_blank">【实用】40+篇云服务器操作及运维基础知识！</a><br></div>
+<div id="opt_under_post"></div>
+<div id="cnblogs_c1" class="c_ad_block"><a href="https://cn.udacity.com/course/deep-learning-nanodegree-foundation--nd101/?utm_source=cnblogs&amp;utm_medium=referral&amp;utm_campaign=DLND03" target="_blank"><img src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/24442-20170517165836135-1248276195.jpg" alt="深度学习0519" width="300" height="250"></a></div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="http://news.cnblogs.com/n/569912/" target="_blank">福特开除Mark Fields，自动驾驶业务主管将接任CEO职位</a><br> ·  <a href="http://news.cnblogs.com/n/569911/" target="_blank">乐视易主 上市近7年贾跃亭家族套现了多少钱？</a><br> ·  <a href="http://news.cnblogs.com/n/569910/" target="_blank">Android暗藏彩蛋：翻版《Flappy Bird》与《猫咪收集》小游戏</a><br> ·  <a href="http://news.cnblogs.com/n/569909/" target="_blank">明天发布！微软自曝四色键盘套：Surface Pro新一代杀到</a><br> ·  <a href="http://news.cnblogs.com/n/569908/" target="_blank">“最强棋手”柯洁明天对战AlphaGo：奖金高达1000多万</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="cnblogs_c2" class="c_ad_block"><a href="http://click.aliyun.com/m/17215/" target="_blank"><img src="%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%20-%20wuyuan2011woaini%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/24442-20170417123605337-535991337.jpg" alt="阿里云E4" width="468" height="60"></a></div>
+<div id="under_post_kb"><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/569056/" target="_blank">软件开发为什么很难</a><br> ·  <a href="http://kb.cnblogs.com/page/565901/" target="_blank">唱吧DevOps的落地，微服务CI/CD的范本技术解读</a><br> ·  <a href="http://kb.cnblogs.com/page/566523/" target="_blank">程序员，如何从平庸走向理想？</a><br> ·  <a href="http://kb.cnblogs.com/page/566318/" target="_blank">我为什么鼓励工程师写blog</a><br> ·  <a href="http://kb.cnblogs.com/page/566528/" target="_blank">怎么轻松学习JavaScript</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"><font color="red">
+作者：wuyuan2011woaini 
+<br>
+邮箱：wuyuan2011woaini@qq.com
+</font><div id="profile_block">昵称：<a href="http://home.cnblogs.com/u/wuyuan2011woaini/">wuyuan2011woaini</a><br>园龄：<a href="http://home.cnblogs.com/u/wuyuan2011woaini/" title="入园时间：2012-10-23">4年6个月</a><br>粉丝：<a href="http://home.cnblogs.com/u/wuyuan2011woaini/followers/">4</a><br>关注：<a href="http://home.cnblogs.com/u/wuyuan2011woaini/followees/">0</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow('174b0c5d-2a1d-e211-aa8f-842b2b196315')">+加关注</a></div></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="calendar"><div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script></div>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block"></div><div id="sidebar_categories">
+</div><div id="sidebar_scorerank" class="sidebar-block">
+<div class="catListBlogRank">
+<h3 class="catListTitle">积分与排名</h3>
+<ul>
+	<li class="liScore">
+		积分 -	21221
+	</li>
+	<li class="liRank">
+		排名 -	13299
+	</li>
+</ul>
+</div>
+
+
+</div></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2017 wuyuan2011woaini
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+</body></html>

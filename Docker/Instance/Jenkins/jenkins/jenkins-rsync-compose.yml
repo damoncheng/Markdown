@@ -1,0 +1,51 @@
+version: "3"
+services:
+
+  web:
+    # replace username/repo:tag with your name and image details
+    user: root
+    image: damoncheng/public:jenkins
+    deploy:
+      mode : global
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "8000:8000"
+      - "50000:50000"
+    volumes:
+      - "/var/jenkins_home:/var/jenkins_home"
+    networks:
+      - webnet
+
+  rsync:
+    image: thomfab/docker-rsyncd
+    deploy:
+      restart_policy:
+           condition: on-failure
+    ports:
+      - "873:873"
+    volumes:
+      - "/var/test:/data"
+    networks:
+      - webnet
+    environment:
+        VOLUME: "data"
+        OWNER: 1000
+        GROUP: 50
+
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - webnet
+
+networks:
+  webnet:
+
+

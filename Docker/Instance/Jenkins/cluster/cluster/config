@@ -1,0 +1,30 @@
+#!/bin/bash
+
+DIR1="`dirname $BASH_SOURCE`"
+cluster_dir=`readlink -f "$DIR1"`
+
+user=root
+
+#保存日志文件目录
+logdir=$cluster_dir/log
+
+#进程启动标志和保存进程ID文件
+lockfile=$cluster_dir/lock
+pidfile=$cluster_dir/pid
+
+#集群rsync同步列表
+ipfile=$cluster_dir/conf/ip.list
+
+#exclude同步文件或者目录
+excludefile=$cluster_dir/conf/exclude.list
+
+#集群同步核心文件
+corefile=$cluster_dir/core/core.sh
+syncfile=$cluster_dir/core/sync.sh
+
+#日志保存脚本
+log_file=$cluster_dir/core/log.sh
+
+#日志清除脚本
+clear_log_file=$cluster_dir/core/log_clear.sh
+clear_day=1 #清除每个IP记录规定天前的数据

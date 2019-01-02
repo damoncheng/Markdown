@@ -1,0 +1,52 @@
+## Get code from source  ##
+
+- step one : get source by apt-get
+
+    $apt-get source package
+    
+- step two : get code from source
+
+    $dpkg-source -x package_0.7-1.dsc
+   
+when step two, maybe error that cann't find public key is thrown:
+
+         solution : apt-get install debian-keyring ( GnuPG keys of Debian Developers and Maintainers)
+         
+
+## Buring iso to DVD ##
+
+- step one : `apt-get install dvd+rw-tools`      
+
+- step two : `cat /proc/sys/dev/cdrom/info`  that check drive speed
+
+- step three : growisofs -dvd-compat -Z /dev/dvd=CourtneyDVD.iso -speed=24
+
+    the link of buring CD or DVD
+    
+        http://www.yolinux.com/TUTORIALS/LinuxTutorialCDBurn.html
+        
+
+## Squid auth ##
+
+### squid.conf ###
+
+    http_port 8080
+
+    auth_param basic program /usr/lib64/squid/ncsa_auth /etc/squid/squid_passwd
+
+    acl ncsa_users proxy_auth REQUIRED
+
+    forwarded_for transparent
+
+    #acl client src 10.19.65.54
+
+    http_access allow ncsa_users
+
+    #http_access allow client
+
+    http_access deny all
+
+### add user ###
+
+    htpasswd  -c /etc/squid/passwd user1
+         
