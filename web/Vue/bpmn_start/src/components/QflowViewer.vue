@@ -76,7 +76,7 @@ export default {
     viewer = new BpmnJS({
 
         container: canvas,
-                
+
     });
 
     var xhr = new XMLHttpRequest();
@@ -98,8 +98,13 @@ export default {
 
             //register element click event
             var eventBus = viewer.get('eventBus');
+
             eventBus.on('element.click', function (e) {
                 console.log('element.click', 'on', e.element.id)
+            });
+
+            eventBus.on('element.hover', function (e) {
+                console.log(e.element.constructor.name)
             });
 
           }
@@ -154,6 +159,10 @@ export default {
 
   a.bjs-powered-by{
     visibility: hidden;
+  }
+
+  g.djs-shape:hover {
+      cursor: pointer;
   }
 
 </style>

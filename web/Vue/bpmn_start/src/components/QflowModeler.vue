@@ -12,8 +12,15 @@
 import Vue from 'vue'
 import BpmnJS from 'bpmn-js'
 import Modeler from 'bpmn-js/lib/Modeler';
+import coreModule from 'bpmn-js/lib/core';
+import bpmnPaletteModule from 'bpmn-js/lib/features/palette';
+import modelingModule from 'bpmn-js/lib/features/modeling';
 import OriginModule from 'diagram-js-origin';
 import minimapModule from 'diagram-js-minimap';
+import bpmnModule from 'bpmn-js/lib/features/rules';
+import customModule from './custom-rules';
+
+
 
 var modeler = null;
 
@@ -40,11 +47,21 @@ export default {
         container: canvas,
       
         additionalModules: [
+
           OriginModule,
-          minimapModule
-          //require('./custom-rules'),
+          minimapModule,
+          
+          
           //require('./custom-context-pad')
-        ]
+        
+        ],
+        modules: [].concat(
+
+          [customModule],
+          Modeler.prototype._modules
+          
+        )
+        
       }  
     );
 
@@ -64,6 +81,7 @@ export default {
             // we did well!
             console.log("success")
 
+          
             modeler.on('commandStack.changed', function() {
                 // user modeled something or
                 // performed an undo/redo operation

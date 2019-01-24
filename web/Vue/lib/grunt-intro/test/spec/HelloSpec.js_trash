@@ -1,0 +1,7 @@
+describe('hello world', function() {
+  it('spec one', function() {
+	console.log("spec one")
+	document.write("hello world")
+    expect("test").toBe("test")
+  })
+})

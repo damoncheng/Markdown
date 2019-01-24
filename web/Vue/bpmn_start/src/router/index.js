@@ -14,7 +14,7 @@ export default new Router({
       component: HelloWorld
     },
     {
-      path: '/bpmn',
+      path: '/viewer',
       name: 'Bpmn',
       component: Bpmn
     },
