@@ -51,7 +51,6 @@ export default {
           OriginModule,
           minimapModule,
           
-          
           //require('./custom-context-pad')
         
         ],

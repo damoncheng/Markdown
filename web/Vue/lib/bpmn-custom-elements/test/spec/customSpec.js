@@ -18,74 +18,74 @@ import 'diagram-js-minimap/assets/diagram-js-minimap.css';
 
 describe('custom modeler', function(){
 
-	var xml = require('./diagram.bpmn');
+    var xml = require('./diagram.bpmn');
 
-	var container;
+    var container;
 
-	beforeEach(function(){
+    beforeEach(function(){
 
-		container = TestContainer.get(this);
+        container = TestContainer.get(this);
 
-	});
+    });
 
-	describe('start custom modeler', function(){
-	
-		var modeler;
+    describe('start custom modeler', function(){
+    
+        var modeler;
 
-		beforeEach(function(done) {
+        beforeEach(function(done) {
 
-		
-			modeler = new CustomModeler(
-				{ 
-					container : container,
-					additionalModules: [
+        
+            modeler = new CustomModeler(
+                { 
+                    container : container,
+                    additionalModules: [
 
-					  OriginModule,
-					  minimapModule,
-					  
-					]
-				}
-			);
+                      OriginModule,
+                      minimapModule,
+                      
+                    ]
+                }
+            );
 
-			modeler.importXML(xml, function(err) {
-			
-				if(!err) {
-					done();
-				}
+            modeler.importXML(xml, function(err) {
+            
+                if(!err) {
+                    done();
+                }
 
-			});
-		
-		});
+            });
+        
+        });
 
-		it("create custom modeler", function(){
-			expect(true).to.be.true;
-		});
+        it("create custom modeler", function(){
+            expect(true).to.be.true;
+        });
 
         it("create custom modeler element", function(){
 
-			  // given
-			  var elementRegistry = modeler.get('elementRegistry'),
-				  customElements = modeler.getCustomElements();
+              // given
+              var elementRegistry = modeler.get('elementRegistry'),
+                  customElements = modeler.getCustomElements();
 
-			  // when
-			  var customElement = {
-				type: 'custom:triangle',
-				id: 'CustomTriangle_1',
-				x: 300,
-				y: 200
-			  };
+              // when
+              var customElement = {
+                type: 'custom:triangle',
+                id: 'CustomTriangle_1',
+                x: 300,
+                y: 200
+              };
 
-			  modeler.addCustomElements([ customElement ]);
-			  var customTriangle = elementRegistry.get('CustomTriangle_1');
+              modeler.addCustomElements([ customElement ]);
+              var customTriangle = elementRegistry.get('CustomTriangle_1');
 
-			  // then
-			  expect(is(customTriangle, 'custom:triangle')).to.be.true;
+              // then
+              expect(is(customTriangle, 'custom:triangle')).to.be.true;
 
-			  //expect(customTriangle).to.exist;
-			  //expect(customElements).to.contain(customElement);
+              //expect(customTriangle).to.exist;
+              //expect(customElements).to.contain(customElement);
 
-		});
+        });
 
-	});
+    });
 
 });

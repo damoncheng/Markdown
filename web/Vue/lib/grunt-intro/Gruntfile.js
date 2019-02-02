@@ -1,3 +1,5 @@
+var path = require('path');
+
 const webpackConfig = require('./webpack.config.js');
 		path.join(__dirname, 'test', 'spec', 'trash')
 
@@ -6,7 +8,6 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
 
-  var path = require('path');
 
   /**
    * Resolve external project resource as file path

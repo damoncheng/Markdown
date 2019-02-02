@@ -1,0 +1,38 @@
+.PHONY: all install clean
+
+all:
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/LuaJIT-2.1-20171103 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/opt/openresty/luajit
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/luajit-root/opt/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/opt/openresty/lualib LUA_MODULE_DIR=/opt/openresty/lualib CJSON_CFLAGS="-g -fpic" CJSON_LDFLAGS='-bundle -undefined dynamic_lookup' CC=cc
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-redis-parser-0.13 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/luajit-root/opt/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/opt/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=cc
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/luajit-root/opt/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/opt/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=cc
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/nginx-1.13.6 && $(MAKE)
+
+install: all
+	mkdir -p $(DESTDIR)/opt/openresty/
+	-cp /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/COPYRIGHT $(DESTDIR)/opt/openresty/
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/LuaJIT-2.1-20171103 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/opt/openresty/luajit DESTDIR=$(DESTDIR)
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/luajit-root/opt/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/opt/openresty/lualib LUA_MODULE_DIR=/opt/openresty/lualib CJSON_CFLAGS="-g -fpic" CJSON_LDFLAGS='-bundle -undefined dynamic_lookup' CC=cc
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-redis-parser-0.13 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/luajit-root/opt/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/opt/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=cc
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/luajit-root/opt/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/opt/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=cc
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-resty-dns-0.20 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/openresty/lualib INSTALL=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/install
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/openresty/lualib INSTALL=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/install
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/openresty/lualib INSTALL=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/install
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-resty-mysql-0.20 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/openresty/lualib INSTALL=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/install
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-resty-string-0.10 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/openresty/lualib INSTALL=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/install
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-resty-upload-0.10 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/openresty/lualib INSTALL=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/install
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-resty-websocket-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/openresty/lualib INSTALL=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/install
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-resty-lock-0.07 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/openresty/lualib INSTALL=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/install
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-resty-lrucache-0.07 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/openresty/lualib INSTALL=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/install
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-resty-core-0.1.13 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/openresty/lualib INSTALL=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/install
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-resty-upstream-healthcheck-0.05 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/openresty/lualib INSTALL=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/install
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/lua-resty-limit-traffic-0.05 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/openresty/lualib INSTALL=/Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/install
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/opm-0.0.4 && /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/install bin/* $(DESTDIR)/opt/openresty/bin/
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/resty-cli-0.20 && /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/install bin/* $(DESTDIR)/opt/openresty/bin/
+	cp /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/resty.index $(DESTDIR)/opt/openresty/
+	cp -r /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/pod $(DESTDIR)/opt/openresty/
+	cd /Users/jenkins/Git/Markdown/Proxy/nginx/openResty/complie/openresty-1.13.6.1/build/nginx-1.13.6 && $(MAKE) install DESTDIR=$(DESTDIR)
+	mkdir -p $(DESTDIR)/opt/openresty/site/lualib $(DESTDIR)/opt/openresty/site/pod $(DESTDIR)/opt/openresty/site/manifest
+	ln -sf /opt/openresty/nginx/sbin/nginx $(DESTDIR)/opt/openresty/bin/openresty
+
+clean:
+	rm -rf build

@@ -1,0 +1,5 @@
+docker run -d -p 9000:9000 \
+           -v $(pwd)/conf.d:/etc/nginx/conf.d \
+           -v $(pwd)/html:/usr/share/nginx/html \
+           -v $(pwd)/logs:/var/log/nginx \
+           nginx

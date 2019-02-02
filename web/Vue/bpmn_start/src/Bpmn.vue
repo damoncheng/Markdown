@@ -12,7 +12,7 @@
 import QflowViewer from '@/components/QflowViewer'
 
 var data = {
-    qflow_viewer_bpmn: 'http://127.0.0.1:8000/html/test.bpmn'
+    qflow_viewer_bpmn: 'http://127.0.0.1:9000/html/test.bpmn'
 }
 
 export default {
