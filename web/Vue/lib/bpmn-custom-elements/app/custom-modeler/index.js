@@ -1,4 +1,6 @@
 import Modeler from 'bpmn-js/lib/Modeler';
+import OriginModule from 'diagram-js-origin';
+import minimapModule from 'diagram-js-minimap';
 
 import {
 
@@ -24,6 +26,8 @@ inherits(CustomModeler, Modeler);
 CustomModeler.prototype._modules = [].concat(
   CustomModeler.prototype._modules,
   [
+    OriginModule,
+    minimapModule,
     CustomModule
   ]
 );
@@ -94,6 +98,8 @@ CustomModeler.prototype.addCustomElements = function(customElements) {
 	shapes.forEach(this._addCustomShape, this);
 
 	connections.forEach(this._addCustomConnection, this);
+
+    console.log("add custom elements end");
 
 
 };

@@ -3357,3 +3357,4 @@ stack traceback:
 coroutine 0:
 	[C]: in function 'match'
 	access_by_lua(nginx.conf:211):25: in function <access_by_lua(nginx.conf:211):1>, client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8080"
+2019/02/11 00:33:31 [info] 4083#3202127: *147227 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8080

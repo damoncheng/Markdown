@@ -50,6 +50,8 @@ export default function CustomRenderer(eventBus, styles) {
   };
 
   this.getTrianglePath = function(element) {
+
+
     var x = element.x,
         y = element.y,
         width = element.width,
@@ -66,6 +68,9 @@ export default function CustomRenderer(eventBus, styles) {
   };
 
   this.drawCircle = function(p, width, height) {
+
+
+
     var cx = width / 2,
         cy = height / 2;
 
@@ -144,6 +149,9 @@ CustomRenderer.prototype.canRender = function(element) {
 };
 
 CustomRenderer.prototype.drawShape = function(p, element) {
+
+  console.log("custom drawing...");
+
   var type = element.type;
 
   if (type === 'custom:triangle') {
@@ -153,6 +161,7 @@ CustomRenderer.prototype.drawShape = function(p, element) {
   if (type === 'custom:circle') {
     return this.drawCircle(p, element.width, element.height);
   }
+
 };
 
 CustomRenderer.prototype.getShapePath = function(shape) {
