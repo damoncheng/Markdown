@@ -79,7 +79,7 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
     'hand-tool': {
       group: 'tools',
       className: 'bpmn-icon-hand-tool',
-      title: translate('Activate the hand tool'),
+      title: translate('激活hand tool'),
       action: {
         click: function(event) {
           handTool.activateHand(event);
@@ -89,7 +89,7 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
     'lasso-tool': {
       group: 'tools',
       className: 'bpmn-icon-lasso-tool',
-      title: translate('Activate the lasso tool'),
+      title: translate('激活lasso tool'),
       action: {
         click: function(event) {
           lassoTool.activateSelection(event);
@@ -99,7 +99,7 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
     'global-connect-tool': {
       group: 'tools',
       className: 'bpmn-icon-connection-multi',
-      title: translate('Activate the global connect tool'),
+      title: translate('创建连接'),
       action: {
         click: function(event) {
           globalConnect.toggle(event);
@@ -111,21 +111,23 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
       separator: true
     },
     'create.start-event': createAction(
-      'bpmn:StartEvent', 'event', 'bpmn-icon-start-event-none'
+      'bpmn:StartEvent', 'event', 'bpmn-icon-start-event-none', '创建开始事件'
     ),
     'create.end-event': createAction(
-      'bpmn:EndEvent', 'event', 'bpmn-icon-end-event-none'
+      'bpmn:EndEvent', 'event', 'bpmn-icon-end-event-none', '创建结束事件'
     ),
     'create.task-user': createAction(
-      'bpmn:UserTask', 'activity', 'bpmn-icon-user'
+      'bpmn:UserTask', 'activity', 'bpmn-icon-user', '创建步骤'
     ),
+    /*
     'create.parallel-gateway': createAction(
-      'bpmn:ParallelGateway', 'gateway', 'bpmn-icon-gateway-parallel'
+      'bpmn:ParallelGateway', 'gateway', 'bpmn-icon-gateway-parallel', '创建分支步骤',
     ),
     'create.subprocess-collapsed': createAction(
-      'bpmn:SubProcess', 'activity', 'bpmn-icon-subprocess-collapsed', 'Create SubProcess',
+      'bpmn:SubProcess', 'activity', 'bpmn-icon-subprocess-collapsed', '创建子流程步骤',
       { isExpanded: false }
     ),
+    */
   });
 
   return actions;

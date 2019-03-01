@@ -1,7 +1,7 @@
 <template>
   <div id="Modeler">
     <QflowModeler
-        v-bind:qflow_modeler_bpmn="qflow_modeler_bpmn"
+        v-bind:qflow_bpmn_url="qflow_bpmn_url"
     >
     </QflowModeler>
   </div>
@@ -12,7 +12,7 @@
 import QflowModeler from '@/components/QflowModeler'
 
 var data = {
-    qflow_modeler_bpmn: 'http://127.0.0.1:9000/html/test.bpmn'
+    qflow_bpmn_url: 'http://127.0.0.1:9000/html/test.bpmn'
 }
 
 export default {

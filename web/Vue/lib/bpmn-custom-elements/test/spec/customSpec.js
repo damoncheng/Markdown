@@ -63,26 +63,26 @@ describe('custom modeler', function(){
 
         it("create custom modeler element", function(){
 
-              // given
-              var elementRegistry = modeler.get('elementRegistry'),
-                  customElements = modeler.getCustomElements();
+          // given
+          var elementRegistry = modeler.get('elementRegistry'),
+              customElements = modeler.getCustomElements();
 
-              // when
-              var customElement = {
-                type: 'custom:triangle',
-                id: 'CustomTriangle_1',
-                x: 300,
-                y: 200
-              };
+          // when
+          var customElement = {
+            type: 'custom:triangle',
+            id: 'CustomTriangle_1',
+            x: 300,
+            y: 200
+          };
 
-              modeler.addCustomElements([ customElement ]);
-              var customTriangle = elementRegistry.get('CustomTriangle_1');
+          modeler.addCustomElements([ customElement ]);
+          var customTriangle = elementRegistry.get('CustomTriangle_1');
 
-              // then
-              expect(is(customTriangle, 'custom:triangle')).to.be.true;
+          // then
+          expect(is(customTriangle, 'custom:triangle')).to.be.true;
 
-              //expect(customTriangle).to.exist;
-              //expect(customElements).to.contain(customElement);
+          //expect(customTriangle).to.exist;
+          //expect(customElements).to.contain(customElement);
 
         });
 

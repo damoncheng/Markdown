@@ -137,7 +137,7 @@ export default function CustomContextPadProvider(injector, connect, translate) {
       };
     }
 
-
+    /*
     if (isAny(businessObject, [ 'bpmn:Lane', 'bpmn:Participant' ]) && isExpanded(businessObject)) {
 
       var childLanes = getChildLanes(element);
@@ -198,10 +198,11 @@ export default function CustomContextPadProvider(injector, connect, translate) {
       });
 
     }
+    */
 
     if (is(businessObject, 'bpmn:FlowNode')) {
-
       
+      /*
       if (is(businessObject, 'bpmn:EventBasedGateway')) {
 
         assign(actions, {
@@ -250,6 +251,7 @@ export default function CustomContextPadProvider(injector, connect, translate) {
               )
         });
       } else
+      */
 
       if (!is(businessObject, 'bpmn:EndEvent') &&
           !businessObject.isForCompensation &&
@@ -262,16 +264,15 @@ export default function CustomContextPadProvider(injector, connect, translate) {
             'bpmn:EndEvent',
             'bpmn-icon-end-event-none'
           ),
-          */
-
           'append.gateway': appendAction(
             'bpmn:ExclusiveGateway',
             'bpmn-icon-gateway-none',
             translate('Append Gateway')
           ),
-          'append.append-task': appendAction(
-            'bpmn:Task',
-            'bpmn-icon-task'
+          */
+          'append.append-user-task': appendAction(
+            'bpmn:UserTask',
+            'bpmn-icon-user'
           ),
           /*
           'append.intermediate-event': appendAction(
@@ -283,7 +284,6 @@ export default function CustomContextPadProvider(injector, connect, translate) {
         });
       }
       
-
     }
     
     if (!isAny(businessObject, [
@@ -314,7 +314,7 @@ export default function CustomContextPadProvider(injector, connect, translate) {
       }
     }
 
-    if (isAny(businessObject, [
+    if (!is(businessObject, 'bpmn:EndEvent') && isAny(businessObject, [
       'bpmn:FlowNode',
       'bpmn:InteractionNode',
       'bpmn:DataObjectReference',

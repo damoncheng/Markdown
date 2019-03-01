@@ -7,9 +7,10 @@ import {
 import path from 'path';
 import inherits from 'inherits';
 
+
+console.log("assign : ", assign( {} , {"hello" : {1 : 1}}, {"hello" : {2 : 2} , "world" : {3 : 3}}));
 console.log(path.join("123", "456", "789"));
 //console.log(assign(omit(["123", "456"], ["111", "789","456"]),{"123":"123", "456":"456"}, {"456":"456", "789":"789"}));
-
 var start_list = [1,2];
 console.log("begin start_list : ", start_list);
 console.log(omit(["123", "456"], ["456", "789"]));

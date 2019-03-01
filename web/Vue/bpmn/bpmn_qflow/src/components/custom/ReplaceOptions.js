@@ -1,4 +1,5 @@
 export var START_EVENT = [
+
    /*
   {
     label: 'Start Event',
@@ -274,8 +275,9 @@ export var END_EVENT = [
   */
 ];
 
-export var GATEWAY = [
 /*
+export var GATEWAY = [
+
   {
     label: 'Exclusive Gateway',
     actionName: 'replace-with-exclusive-gateway',
@@ -341,8 +343,9 @@ export var GATEWAY = [
   //     businessObject: { instantiate: true, eventGatewayType: 'Parallel' }
   //   }
   // }
-  */
+  
 ];
+*/
 
 export var SUBPROCESS_EXPANDED = [
   /*
@@ -425,44 +428,16 @@ export var EVENT_SUB_PROCESS = [
 ];
 
 export var TASK = [
- /*
   {
-    label: 'Task',
-    actionName: 'replace-with-task',
-    className: 'bpmn-icon-task',
-    target: {
-      type: 'bpmn:Task'
-    }
-  },
-  
-  {
-    label: 'Send Task',
-    actionName: 'replace-with-send-task',
-    className: 'bpmn-icon-send',
-    target: {
-      type: 'bpmn:SendTask'
-    }
-  },
-  {
-    label: 'Receive Task',
-    actionName: 'replace-with-receive-task',
-    className: 'bpmn-icon-receive',
-    target: {
-      type: 'bpmn:ReceiveTask'
-    }
-  },
-  */
-  {
-    label: 'User Task',
+    label: '普通步骤(User Task)',
     actionName: 'replace-with-user-task',
     className: 'bpmn-icon-user',
     target: {
       type: 'bpmn:UserTask'
     }
   },
-  
   {
-    label: 'Manual Task',
+    label: '审批步骤(Manual Task)',
     actionName: 'replace-with-manual-task',
     className: 'bpmn-icon-manual',
     target: {
@@ -470,41 +445,15 @@ export var TASK = [
     }
   },
   {
-    label: 'Service Task',
+    label: '工具步骤(Service Task)',
     actionName: 'replace-with-service-task',
     className: 'bpmn-icon-service',
     target: {
       type: 'bpmn:ServiceTask'
     }
   },
-  /*
   {
-    label: 'Business Rule Task',
-    actionName: 'replace-with-rule-task',
-    className: 'bpmn-icon-business-rule',
-    target: {
-      type: 'bpmn:BusinessRuleTask'
-    }
-  },
-  {
-    label: 'Script Task',
-    actionName: 'replace-with-script-task',
-    className: 'bpmn-icon-script',
-    target: {
-      type: 'bpmn:ScriptTask'
-    }
-  },
-  {
-    label: 'Call Activity',
-    actionName: 'replace-with-call-activity',
-    className: 'bpmn-icon-call-activity',
-    target: {
-      type: 'bpmn:CallActivity'
-    }
-  },
-  */
-  {
-    label: 'Sub Process',
+    label: '子流程步骤(Sub Process)',
     actionName: 'replace-with-collapsed-subprocess',
     className: 'bpmn-icon-subprocess-collapsed',
     target: {
@@ -512,18 +461,118 @@ export var TASK = [
       isExpanded: false
     }
   },
-  /*
   {
-    label: 'Sub Process (expanded)',
-    actionName: 'replace-with-expanded-subprocess',
-    className: 'bpmn-icon-subprocess-expanded',
+    label: '分支步骤(Parallel Gateway)',
+    actionName: 'replace-with-parallel-gateway',
+    className: 'bpmn-icon-gateway-parallel',
     target: {
-      type: 'bpmn:SubProcess',
-      isExpanded: true
+      type: 'bpmn:ParallelGateway'
     }
   }
-  */
+
 ];
+
+
+export var GATEWAY = TASK;
+
+
+/*
+export var TASK = [
+   {
+     label: 'Task',
+     actionName: 'replace-with-task',
+     className: 'bpmn-icon-task',
+     target: {
+       type: 'bpmn:Task'
+     }
+   },
+   
+   {
+     label: 'Send Task',
+     actionName: 'replace-with-send-task',
+     className: 'bpmn-icon-send',
+     target: {
+       type: 'bpmn:SendTask'
+     }
+   },
+   {
+     label: 'Receive Task',
+     actionName: 'replace-with-receive-task',
+     className: 'bpmn-icon-receive',
+     target: {
+       type: 'bpmn:ReceiveTask'
+     }
+   },
+   {
+     label: 'User Task',
+     actionName: 'replace-with-user-task',
+     className: 'bpmn-icon-user',
+     target: {
+       type: 'bpmn:UserTask'
+     }
+   },
+   
+   {
+     label: 'Manual Task',
+     actionName: 'replace-with-manual-task',
+     className: 'bpmn-icon-manual',
+     target: {
+       type: 'bpmn:ManualTask'
+     }
+   },
+   {
+     label: 'Service Task',
+     actionName: 'replace-with-service-task',
+     className: 'bpmn-icon-service',
+     target: {
+       type: 'bpmn:ServiceTask'
+     }
+   },
+   {
+     label: 'Business Rule Task',
+     actionName: 'replace-with-rule-task',
+     className: 'bpmn-icon-business-rule',
+     target: {
+       type: 'bpmn:BusinessRuleTask'
+     }
+   },
+   {
+     label: 'Script Task',
+     actionName: 'replace-with-script-task',
+     className: 'bpmn-icon-script',
+     target: {
+       type: 'bpmn:ScriptTask'
+     }
+   },
+   {
+     label: 'Call Activity',
+     actionName: 'replace-with-call-activity',
+     className: 'bpmn-icon-call-activity',
+     target: {
+       type: 'bpmn:CallActivity'
+     }
+   },
+   {
+     label: 'Sub Process',
+     actionName: 'replace-with-collapsed-subprocess',
+     className: 'bpmn-icon-subprocess-collapsed',
+     target: {
+       type: 'bpmn:SubProcess',
+       isExpanded: false
+     }
+   },
+   {
+     label: 'Sub Process (expanded)',
+     actionName: 'replace-with-expanded-subprocess',
+     className: 'bpmn-icon-subprocess-expanded',
+     target: {
+       type: 'bpmn:SubProcess',
+       isExpanded: true
+     }
+   }
+   
+ ];
+ */
 
 export var BOUNDARY_EVENT = [
 /*

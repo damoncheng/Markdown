@@ -3358,3 +3358,202 @@ coroutine 0:
 	[C]: in function 'match'
 	access_by_lua(nginx.conf:211):25: in function <access_by_lua(nginx.conf:211):1>, client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8080"
 2019/02/11 00:33:31 [info] 4083#3202127: *147227 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8080
+2019/02/22 23:44:31 [info] 4083#3202127: *402357 client sent invalid request while reading client request line, client: 127.0.0.1, server: , request: "POST http://damoncheng:damoncheng@10.85.0.85/status HTTP/1.1"
+2019/02/22 23:45:16 [notice] 4083#3202127: *402388 [lua] access_by_lua(nginx.conf:82):2: location /status : /status, client: 127.0.0.1, server: , request: "POST http://127.0.0.1:8080/status HTTP/1.1", host: "127.0.0.1:8080"
+2019/02/22 23:45:16 [error] 4083#3202127: *402388 attempt to set status 404 via ngx.exit after sending out the response status 200, client: 127.0.0.1, server: , request: "POST http://127.0.0.1:8080/status HTTP/1.1", host: "127.0.0.1:8080"
+2019/02/22 23:45:16 [info] 4083#3202127: *402388 kevent() reported that client 127.0.0.1 closed keepalive connection
+2019/02/22 23:46:01 [notice] 4083#3202127: *402421 [lua] access_by_lua(nginx.conf:82):2: location /status : /status, client: 127.0.0.1, server: , request: "POST http://127.0.0.1:8080/status HTTP/1.1", host: "127.0.0.1:8080"
+2019/02/22 23:46:01 [error] 4083#3202127: *402421 attempt to set status 404 via ngx.exit after sending out the response status 200, client: 127.0.0.1, server: , request: "POST http://127.0.0.1:8080/status HTTP/1.1", host: "127.0.0.1:8080"
+2019/02/22 23:46:01 [info] 4083#3202127: *402421 kevent() reported that client 127.0.0.1 closed keepalive connection
+2019/02/22 23:49:12 [notice] 41707#522717: signal 1 (SIGHUP) received from 20987, reconfiguring
+2019/02/22 23:49:12 [notice] 41707#522717: reconfiguring
+2019/02/22 23:49:12 [notice] 41707#522717: [lua] init_by_lua:3: start init by lua block.....
+
+
+2019/02/22 23:49:12 [notice] 41707#522717: using the "kqueue" event method
+2019/02/22 23:49:12 [warn] 41707#522717: 1024 worker_connections exceed open file resource limit: 256
+2019/02/22 23:49:12 [notice] 41707#522717: start worker processes
+2019/02/22 23:49:12 [notice] 41707#522717: start worker process 20988
+2019/02/22 23:49:12 [notice] 41707#522717: start worker process 20989
+2019/02/22 23:49:12 [notice] 20989#10506353: *402549 [lua] init_worker_by_lua:3: start init worker by lua block.....
+
+, context: init_worker_by_lua*
+2019/02/22 23:49:12 [notice] 20988#10506352: *402548 [lua] init_worker_by_lua:3: start init worker by lua block.....
+
+, context: init_worker_by_lua*
+2019/02/22 23:49:13 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:49:13 [notice] 4083#3202127: gracefully shutting down
+2019/02/22 23:49:13 [notice] 4082#3202126: gracefully shutting down
+2019/02/22 23:49:13 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:49:13 [notice] 4083#3202127: exiting
+2019/02/22 23:49:13 [notice] 4082#3202126: exiting
+2019/02/22 23:49:13 [notice] 4083#3202127: exit
+2019/02/22 23:49:13 [notice] 4082#3202126: exit
+2019/02/22 23:49:13 [notice] 41707#522717: signal 20 (SIGCHLD) received from 4083
+2019/02/22 23:49:13 [notice] 41707#522717: worker process 4083 exited with code 0
+2019/02/22 23:49:13 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:49:13 [notice] 41707#522717: signal 20 (SIGCHLD) received from 4082
+2019/02/22 23:49:13 [notice] 41707#522717: worker process 4082 exited with code 0
+2019/02/22 23:49:13 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:49:13 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:49:13 [notice] 41707#522717: signal 23 (SIGIO) received from 20989
+2019/02/22 23:49:13 [notice] 41707#522717: signal 23 (SIGIO) received from 20989
+2019/02/22 23:50:05 [notice] 41707#522717: signal 1 (SIGHUP) received from 21013, reconfiguring
+2019/02/22 23:50:05 [notice] 41707#522717: reconfiguring
+2019/02/22 23:50:05 [notice] 41707#522717: [lua] init_by_lua:3: start init by lua block.....
+
+
+2019/02/22 23:50:05 [notice] 41707#522717: using the "kqueue" event method
+2019/02/22 23:50:05 [warn] 41707#522717: 1024 worker_connections exceed open file resource limit: 256
+2019/02/22 23:50:05 [notice] 41707#522717: start worker processes
+2019/02/22 23:50:05 [notice] 41707#522717: start worker process 21014
+2019/02/22 23:50:05 [notice] 41707#522717: start worker process 21015
+2019/02/22 23:50:05 [notice] 21015#10507116: *402587 [lua] init_worker_by_lua:3: start init worker by lua block.....
+
+, context: init_worker_by_lua*
+2019/02/22 23:50:05 [notice] 21014#10507115: *402588 [lua] init_worker_by_lua:3: start init worker by lua block.....
+
+, context: init_worker_by_lua*
+2019/02/22 23:50:05 [notice] 20988#10506352: gracefully shutting down
+2019/02/22 23:50:05 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:50:05 [notice] 20989#10506353: gracefully shutting down
+2019/02/22 23:50:05 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:50:05 [notice] 20988#10506352: exiting
+2019/02/22 23:50:05 [notice] 20989#10506353: exiting
+2019/02/22 23:50:05 [notice] 20988#10506352: exit
+2019/02/22 23:50:05 [notice] 20989#10506353: exit
+2019/02/22 23:50:05 [notice] 41707#522717: signal 20 (SIGCHLD) received from 20988
+2019/02/22 23:50:05 [notice] 41707#522717: worker process 20989 exited with code 0
+2019/02/22 23:50:05 [notice] 41707#522717: worker process 20988 exited with code 0
+2019/02/22 23:50:05 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:50:05 [notice] 41707#522717: signal 20 (SIGCHLD) received
+2019/02/22 23:50:05 [notice] 41707#522717: signal 23 (SIGIO) received from 21014
+2019/02/22 23:50:05 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:54:02 [notice] 41707#522717: signal 1 (SIGHUP) received from 21225, reconfiguring
+2019/02/22 23:54:02 [notice] 41707#522717: reconfiguring
+2019/02/22 23:54:02 [notice] 41707#522717: [lua] init_by_lua:3: start init by lua block.....
+
+
+2019/02/22 23:54:02 [notice] 41707#522717: using the "kqueue" event method
+2019/02/22 23:54:02 [warn] 41707#522717: 1024 worker_connections exceed open file resource limit: 256
+2019/02/22 23:54:02 [notice] 41707#522717: start worker processes
+2019/02/22 23:54:02 [notice] 41707#522717: start worker process 21226
+2019/02/22 23:54:02 [notice] 41707#522717: start worker process 21227
+2019/02/22 23:54:02 [notice] 21226#10510818: *402748 [lua] init_worker_by_lua:3: start init worker by lua block.....
+
+, context: init_worker_by_lua*
+2019/02/22 23:54:02 [notice] 21227#10510819: *402749 [lua] init_worker_by_lua:3: start init worker by lua block.....
+
+, context: init_worker_by_lua*
+2019/02/22 23:54:02 [notice] 21014#10507115: gracefully shutting down
+2019/02/22 23:54:02 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:54:02 [notice] 21015#10507116: gracefully shutting down
+2019/02/22 23:54:02 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:54:02 [notice] 21014#10507115: exiting
+2019/02/22 23:54:02 [notice] 21015#10507116: exiting
+2019/02/22 23:54:02 [notice] 21014#10507115: exit
+2019/02/22 23:54:02 [notice] 21015#10507116: exit
+2019/02/22 23:54:02 [notice] 41707#522717: signal 20 (SIGCHLD) received from 21014
+2019/02/22 23:54:02 [notice] 41707#522717: worker process 21015 exited with code 0
+2019/02/22 23:54:02 [notice] 41707#522717: worker process 21014 exited with code 0
+2019/02/22 23:54:02 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:54:02 [notice] 41707#522717: signal 20 (SIGCHLD) received from 21015
+2019/02/22 23:54:02 [notice] 41707#522717: signal 23 (SIGIO) received from 21227
+2019/02/22 23:55:25 [notice] 41707#522717: signal 1 (SIGHUP) received from 21356, reconfiguring
+2019/02/22 23:55:25 [notice] 41707#522717: reconfiguring
+2019/02/22 23:55:25 [notice] 41707#522717: [lua] init_by_lua:3: start init by lua block.....
+
+
+2019/02/22 23:55:25 [notice] 41707#522717: using the "kqueue" event method
+2019/02/22 23:55:25 [warn] 41707#522717: 1024 worker_connections exceed open file resource limit: 256
+2019/02/22 23:55:25 [notice] 41707#522717: start worker processes
+2019/02/22 23:55:25 [notice] 41707#522717: start worker process 21357
+2019/02/22 23:55:25 [notice] 41707#522717: start worker process 21358
+2019/02/22 23:55:25 [notice] 21357#10512292: *402807 [lua] init_worker_by_lua:3: start init worker by lua block.....
+
+, context: init_worker_by_lua*
+2019/02/22 23:55:25 [notice] 21358#10512293: *402808 [lua] init_worker_by_lua:3: start init worker by lua block.....
+
+, context: init_worker_by_lua*
+2019/02/22 23:55:25 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:55:25 [notice] 21227#10510819: gracefully shutting down
+2019/02/22 23:55:25 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:55:25 [notice] 21226#10510818: gracefully shutting down
+2019/02/22 23:55:25 [notice] 21227#10510819: exiting
+2019/02/22 23:55:25 [notice] 21226#10510818: exiting
+2019/02/22 23:55:25 [notice] 21227#10510819: exit
+2019/02/22 23:55:25 [notice] 21226#10510818: exit
+2019/02/22 23:55:25 [notice] 41707#522717: signal 20 (SIGCHLD) received from 21226
+2019/02/22 23:55:25 [notice] 41707#522717: worker process 21227 exited with code 0
+2019/02/22 23:55:25 [notice] 41707#522717: worker process 21226 exited with code 0
+2019/02/22 23:55:25 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:55:25 [notice] 41707#522717: signal 20 (SIGCHLD) received from 21227
+2019/02/22 23:55:25 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:55:25 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:56:25 [info] 21357#10512292: *402851 kevent() reported that client 127.0.0.1 closed keepalive connection
+2019/02/22 23:57:17 [notice] 41707#522717: signal 1 (SIGHUP) received from 21436, reconfiguring
+2019/02/22 23:57:17 [notice] 41707#522717: reconfiguring
+2019/02/22 23:57:17 [notice] 41707#522717: [lua] init_by_lua:3: start init by lua block.....
+
+
+2019/02/22 23:57:17 [notice] 41707#522717: using the "kqueue" event method
+2019/02/22 23:57:17 [warn] 41707#522717: 1024 worker_connections exceed open file resource limit: 256
+2019/02/22 23:57:17 [notice] 41707#522717: start worker processes
+2019/02/22 23:57:17 [notice] 41707#522717: start worker process 21437
+2019/02/22 23:57:17 [notice] 41707#522717: start worker process 21438
+2019/02/22 23:57:17 [notice] 21437#10513866: *402888 [lua] init_worker_by_lua:3: start init worker by lua block.....
+
+, context: init_worker_by_lua*
+2019/02/22 23:57:17 [notice] 21438#10513867: *402889 [lua] init_worker_by_lua:3: start init worker by lua block.....
+
+, context: init_worker_by_lua*
+2019/02/22 23:57:17 [notice] 21357#10512292: gracefully shutting down
+2019/02/22 23:57:17 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:57:17 [notice] 21358#10512293: gracefully shutting down
+2019/02/22 23:57:17 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:57:17 [notice] 21357#10512292: exiting
+2019/02/22 23:57:17 [notice] 21358#10512293: exiting
+2019/02/22 23:57:17 [notice] 21358#10512293: exit
+2019/02/22 23:57:17 [notice] 21357#10512292: exit
+2019/02/22 23:57:17 [notice] 41707#522717: signal 20 (SIGCHLD) received from 21357
+2019/02/22 23:57:17 [notice] 41707#522717: worker process 21358 exited with code 0
+2019/02/22 23:57:17 [notice] 41707#522717: worker process 21357 exited with code 0
+2019/02/22 23:57:17 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:57:17 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:57:17 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:57:17 [notice] 41707#522717: signal 20 (SIGCHLD) received from 21358
+2019/02/22 23:57:18 [info] 21438#10513867: *402892 kevent() reported that client 127.0.0.1 closed keepalive connection
+2019/02/22 23:57:49 [notice] 41707#522717: signal 1 (SIGHUP) received from 21459, reconfiguring
+2019/02/22 23:57:49 [notice] 41707#522717: reconfiguring
+2019/02/22 23:57:49 [notice] 41707#522717: [lua] init_by_lua:3: start init by lua block.....
+
+
+2019/02/22 23:57:49 [notice] 41707#522717: using the "kqueue" event method
+2019/02/22 23:57:49 [warn] 41707#522717: 1024 worker_connections exceed open file resource limit: 256
+2019/02/22 23:57:49 [notice] 41707#522717: start worker processes
+2019/02/22 23:57:49 [notice] 41707#522717: start worker process 21460
+2019/02/22 23:57:49 [notice] 41707#522717: start worker process 21461
+2019/02/22 23:57:49 [notice] 21460#10514350: *402913 [lua] init_worker_by_lua:3: start init worker by lua block.....
+
+, context: init_worker_by_lua*
+2019/02/22 23:57:49 [notice] 21461#10514351: *402914 [lua] init_worker_by_lua:3: start init worker by lua block.....
+
+, context: init_worker_by_lua*
+2019/02/22 23:57:49 [notice] 21438#10513867: gracefully shutting down
+2019/02/22 23:57:49 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:57:49 [notice] 21437#10513866: gracefully shutting down
+2019/02/22 23:57:49 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:57:49 [notice] 21438#10513867: exiting
+2019/02/22 23:57:49 [notice] 21437#10513866: exiting
+2019/02/22 23:57:49 [notice] 21438#10513867: exit
+2019/02/22 23:57:49 [notice] 21437#10513866: exit
+2019/02/22 23:57:49 [notice] 41707#522717: signal 20 (SIGCHLD) received from 21437
+2019/02/22 23:57:49 [notice] 41707#522717: worker process 21438 exited with code 0
+2019/02/22 23:57:49 [notice] 41707#522717: worker process 21437 exited with code 0
+2019/02/22 23:57:49 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/02/22 23:57:49 [notice] 41707#522717: signal 23 (SIGIO) received from 21461
+2019/02/22 23:57:50 [info] 21461#10514351: *402917 kevent() reported that client 127.0.0.1 closed keepalive connection
+2019/02/22 23:58:03 [notice] 21460#10514350: *402926 [lua] access_by_lua(nginx.conf:84):2: location /status : /status, client: 127.0.0.1, server: , request: "POST http://127.0.0.1:8080/status HTTP/1.1", host: "127.0.0.1:8080"
+2019/02/22 23:58:03 [debug] 21460#10514350: *402926 [lua] access_by_lua(nginx.conf:84):3: return 501
+2019/02/22 23:58:03 [error] 21460#10514350: *402926 attempt to set status 404 via ngx.exit after sending out the response status 200, client: 127.0.0.1, server: , request: "POST http://127.0.0.1:8080/status HTTP/1.1", host: "127.0.0.1:8080"
+2019/02/22 23:58:03 [info] 21460#10514350: *402926 kevent() reported that client 127.0.0.1 closed keepalive connection
