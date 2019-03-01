@@ -110,6 +110,7 @@ module.exports = function(group, element, bpmnFactory, translate) {
   }
 
   //更新表单ID
+  /*
   group.entries.push(entryFactory.textField({
     id : 'form-key',
     label : translate('表单ID'),
@@ -129,6 +130,7 @@ module.exports = function(group, element, bpmnFactory, translate) {
       return cmdHelper.updateBusinessObject(element, bo, { 'qflow:formKey': formKey });
     }
   }));
+  */
 
   //呈现表单所有字段
   var formFieldsEntry = extensionElements(element, bpmnFactory, {

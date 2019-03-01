@@ -9,11 +9,11 @@ import eventProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/EventPr
 //import linkProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/LinkProps';
 import documentationProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/DocumentationProps';
 import idProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/IdProps';
-//import nameProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/NameProps';
+import nameProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/NameProps';
 
 
 // Require your custom property entries.
-import nameProps from './parts/nameProps';
+//import nameProps from './parts/nameProps';
 import descriptionProps from './parts/descriptionProps';
 import linkProps from './parts/linkProps';
 import groupNameProps from './parts/groupNameProps';
