@@ -110,12 +110,15 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
       group: 'tools',
       separator: true
     },
+    
     'create.start-event': createAction(
       'bpmn:StartEvent', 'event', 'bpmn-icon-start-event-none', '创建开始事件'
     ),
+    /*
     'create.end-event': createAction(
       'bpmn:EndEvent', 'event', 'bpmn-icon-end-event-none', '创建结束事件'
     ),
+    */
     'create.task-user': createAction(
       'bpmn:UserTask', 'activity', 'bpmn-icon-user', '创建步骤'
     ),

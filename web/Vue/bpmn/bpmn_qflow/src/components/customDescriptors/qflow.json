@@ -8,10 +8,6 @@
     },
     "types": [
         {
-          "name": "Field",
-          "superClass": [ "Base" ]
-        },
-        {
             "name": "InputOutputParameterDefinition",
             "isAbstract": true
         },
@@ -44,6 +40,12 @@
                 "name": "id",
                 "type": "String",
                 "isAttr": true
+              },
+              {
+                "name": "name",
+                "type": "String",
+                "isAttr": true,
+                "default": "未命名" 
               },
               { 
                 "name": "link", 

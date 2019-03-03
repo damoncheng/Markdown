@@ -136,7 +136,7 @@ module.exports = function(group, element, bpmnFactory, translate) {
   var formFieldsEntry = extensionElements(element, bpmnFactory, {
     id: 'form-fields',
     label: translate('表单字段'),
-    modelProperty: 'id',
+    modelProperty: 'name',
     prefix: 'FormField',
     createExtensionElement: function(element, extensionElements, value) {
       var bo = getBusinessObject(element), commands = [];
@@ -205,11 +205,10 @@ module.exports = function(group, element, bpmnFactory, translate) {
     }
   }));
 
-  //表单字段ID = 表单name, 且做为空检测
+  // [FormData] form field id text input field
   group.entries.push(entryFactory.validationAwareTextField({
-    
     id: 'form-field-id',
-    label: translate('字段名'),
+    label: translate('ID'),
     modelProperty: 'id',
 
     getProperty: function(element, node) {
@@ -237,10 +236,9 @@ module.exports = function(group, element, bpmnFactory, translate) {
         var idValue = values.id;
 
         if (!idValue || idValue.trim() === '') {
-          return { id: '字段名不能为空' };
+          return { id: '表单id必须不为空' };
         }
 
-        /*
         var formFields = formHelper.getFormFields(element);
 
         var existingFormField = find(formFields, function(f) {
@@ -248,9 +246,48 @@ module.exports = function(group, element, bpmnFactory, translate) {
         });
 
         if (existingFormField) {
-          return { id: '表单字段ID已经被占用.' };
+          return { id: '表单id已经存在' };
         }
-        */
+      }
+    }
+  }));
+
+
+  //表单name, 且做为空检测
+  group.entries.push(entryFactory.validationAwareTextField({
+    
+    id: 'form-field-name',
+    label: translate('字段名'),
+    modelProperty: 'name',
+
+    getProperty: function(element, node) {
+      var selectedFormField = getSelectedFormField(element, node) || {};
+
+      return selectedFormField.name;
+    },
+
+    setProperty: function(element, properties, node) {
+      var formField = getSelectedFormField(element, node);
+
+      return cmdHelper.updateBusinessObject(element, formField, properties);
+    },
+
+    hidden: function(element, node) {
+      return !getSelectedFormField(element, node);
+    },
+
+    validate: function(element, values, node) {
+
+      var formField = getSelectedFormField(element, node);
+
+      if (formField) {
+
+        var nameValue = values.name;
+
+        if (!nameValue || nameValue.trim() === '') {
+          return { name: '字段名不能为空' };
+        }
+
       }
     }
   }));

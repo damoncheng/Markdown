@@ -24,7 +24,8 @@ qflow_descriptor = {
 
         "attrs" : [
 
-            {"name" : "name", "replace" : "id"},
+            {"name" : "id"},
+            {"name" : "name", "default" : u"未命名"},
             {"name" : "link", "default" : u""},
             {"name" : "description", "default" : u""},
             {"name" : "field_type", "default" : u"input"},

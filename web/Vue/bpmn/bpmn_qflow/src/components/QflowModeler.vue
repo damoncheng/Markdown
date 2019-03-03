@@ -6,11 +6,11 @@
 
         <div class="message error">
           <div class="note">
-            <p>Ooops, we could not display the BPMN 2.0 diagram.</p>
+            <p>Ooops, 流程编辑页面打开失败，请联系管理员...</p>
 
             <div class="details">
-              <span>cause of the problem</span>
-              <pre></pre>
+              <span>失败详情:</span>
+              <pre v-html="err_message"></pre>
             </div>
           </div>
         </div>
@@ -87,6 +87,8 @@ import propertiesProviderModule from './customPanel';
 import qflowModdleDescriptor from './customDescriptors/qflow';
 import {showPropertiesPanel} from './customPanel/Utils';
 
+import newDiagram from './resources/newDiagram.bpmn'
+
 var is = require('bpmn-js/lib/util/ModelUtil').is;
 
 export default {
@@ -103,6 +105,7 @@ export default {
         'with-error' : false
 
       },
+      err_message : '',
       sync_active : false,
       download_active : false,
       download_xml_href : null,
@@ -222,7 +225,7 @@ export default {
 
         var element = event.current.element;
 
-        console.log("propertiesPanel.changed...", element);
+        //console.log("propertiesPanel.changed...", element);
 
         // the element was changed by the user
         if (showPropertiesPanel(element)) {
@@ -255,54 +258,78 @@ export default {
     loadXML : function(event){
 
       var xhr = new XMLHttpRequest();
-      var modeler = this.modeler;
+      var component = this;
 
       xhr.onreadystatechange = function() {
 
 
         if (xhr.readyState === 4) {
 
-          // import a BPMN 2.0 diagram
-          modeler.importXML(xhr.response, function(err) {
+          //console.log("----xhr.status : ", xhr.status);
 
-            if (err) {
+          let err_message = "";
 
-              // import failed :-(
-              console.log("failed");
-              console.log(err);
+          if(xhr.status == 200 && xhr.response)
+          {
 
-            } else {
+            // import a BPMN 2.0 diagram
+            component.modeler.importXML(xhr.response, function(err) {
 
-              // we did well!
-              console.log("success");
+              if (err) {
 
+                // import failed :-(
+                err_message = "初始化流程编辑页面异常...";
+                console.log(err);
+
+              } else {
+
+                // we did well!
+                console.log("success");
+
+              }
             
-              modeler.on('commandStack.changed', function() {
-                  // user modeled something or
-                  // performed an undo/redo operation
-                  console.log("#-----commandStack");
-
-              });
-
-              modeler.on('element.changed', function(event) {
-
-
-              });
-
-              modeler.on('element.click', function(event) {
-
-                var element = event.element;
-
-                console.log("element.click : ", element);
+            });
               
+          }
+          else if(xhr.status == 200){
 
-              });
+            // import a BPMN 2.0 diagram
+            component.modeler.importXML(newDiagram, function(err) {
 
-            }
-          
-          });
-              
-        }
+              if (err) {
+
+                // import failed :-(
+                err_message = "初始化流程编辑页面异常...";
+                console.log(err);
+
+              } else {
+
+                // we did well!
+                console.log("success");
+
+              }
+            
+            });
+
+          }
+          else {
+
+            err_message = `服务器返回异常, status : ${xhr.status}, statusText : ${xhr.statusText}`
+
+          }
+
+          if(err_message)
+          {
+        
+            //show err_message
+            component.err_message = err_message;
+            component.container_class_object['with-diagram']= false;
+            component.container_class_object['with-error']= true;
+
+          }
+
+        
+        } 
 
       }
 
@@ -310,8 +337,6 @@ export default {
       xhr.send(null);
       
     },
-
-
 
   },
   watch: {
@@ -356,6 +381,7 @@ export default {
 
   #QflowModeler #container > .message {
 
+    width : 100%;
     text-align: center;
     display: table;
 

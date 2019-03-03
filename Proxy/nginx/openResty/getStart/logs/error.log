@@ -3557,3 +3557,16 @@ coroutine 0:
 2019/02/22 23:58:03 [debug] 21460#10514350: *402926 [lua] access_by_lua(nginx.conf:84):3: return 501
 2019/02/22 23:58:03 [error] 21460#10514350: *402926 attempt to set status 404 via ngx.exit after sending out the response status 200, client: 127.0.0.1, server: , request: "POST http://127.0.0.1:8080/status HTTP/1.1", host: "127.0.0.1:8080"
 2019/02/22 23:58:03 [info] 21460#10514350: *402926 kevent() reported that client 127.0.0.1 closed keepalive connection
+2019/03/02 01:23:58 [notice] 41707#522717: signal 15 (SIGTERM) received from 74115, exiting
+2019/03/02 01:23:58 [notice] 21461#10514351: exiting
+2019/03/02 01:23:58 [notice] 21460#10514350: exiting
+2019/03/02 01:23:58 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/03/02 01:23:58 [notice] 21460#10514350: exit
+2019/03/02 01:23:58 [notice] 21461#10514351: exit
+2019/03/02 01:23:58 [notice] 41707#522717: signal 20 (SIGCHLD) received from 21461
+2019/03/02 01:23:58 [notice] 41707#522717: worker process 21461 exited with code 0
+2019/03/02 01:23:58 [notice] 41707#522717: signal 23 (SIGIO) received
+2019/03/02 01:23:58 [notice] 41707#522717: signal 23 (SIGIO) received from 21460
+2019/03/02 01:23:58 [notice] 41707#522717: signal 20 (SIGCHLD) received from 21460
+2019/03/02 01:23:58 [notice] 41707#522717: worker process 21460 exited with code 0
+2019/03/02 01:23:58 [notice] 41707#522717: exit

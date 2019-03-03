@@ -360,7 +360,8 @@ export default function CustomContextPadProvider(injector, connect, translate) {
       deleteAllowed = deleteAllowed[0] === element;
     }
 
-    if (deleteAllowed) {
+    //custom add 'bpmn:StartEvent'
+    if (deleteAllowed && !is(businessObject, 'bpmn:StartEvent')) {
       assign(actions, {
         'delete': {
           group: 'edit',
