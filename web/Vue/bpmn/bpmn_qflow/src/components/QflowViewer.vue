@@ -36,7 +36,11 @@
 <script>
 
 import Vue from 'vue'
-import BpmnJS from 'bpmn-js'
+//import BpmnJS from 'bpmn-js'
+import { Shape , Connection } from  'diagram-js/lib/model';
+import BpmnJS from 'bpmn-js/lib/NavigatedViewer'
+import OriginModule from 'diagram-js-origin';
+
 
 var viewer = null;
 
@@ -77,6 +81,12 @@ export default {
 
         container: canvas,
 
+        additionalModules: [
+
+            OriginModule,
+          
+        ]
+
     });
 
     var xhr = new XMLHttpRequest();
@@ -101,11 +111,37 @@ export default {
 
             eventBus.on('element.click', function (e) {
                 console.log('element.click', 'on', e.element.id)
+
+                var overlays = viewer.get('overlays');
+
+                if (Object.getPrototypeOf(e.element).constructor == Shape) {
+
+                  overlays.show();
+                  // attach an overlay to a node
+                  overlays.add(e.element.id, {
+                    position: {
+                      bottom: 0,
+                      right: 0
+                    },
+                    scale: { min: 1 },
+                    html: '<div>Mixed up the labels?</div>'
+                  });
+
+                }
+                else{
+
+                  overlays.hide();
+
+                }
+
+                
             });
 
             eventBus.on('element.hover', function (e) {
                 console.log(e.element.constructor.name)
             });
+
+            
 
           }
         });

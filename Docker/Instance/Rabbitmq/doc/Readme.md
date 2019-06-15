@@ -8,11 +8,29 @@ Docker Hub上`rabbitmq:management`没有包含tracing插件，需要定制Docker
 
 	[rabbitmq_management, rabbitmq_management_agent, rabbitmq_web_dispatch, rabbitmq_tracing].
 
+### 参数调整
+
+	
+Prior to RabbitMQ 3.7.0, RabbitMQ config file was named **rabbitmq.config** and used an 
+**Erlang term configuration format**. That format is still supported for backwards 
+compatibility. Those running 3.7.0 or later are recommended to consider 
+the **new sysctl format**.
+
+	rabbitmq.conf : This includes configuration for the core server as well as plugins.
+	
+	advanced.conf : Some configuration settings are not possible or are difficult to configure 
+	using the sysctl format. As such, it is possible to use an additional config file in the 
+	Erlang term format (same as rabbitmq.config). That file is commonly named advanced.config. 
+	It will be merged with the configuration provided in rabbitmq.conf.
+
 ### DockerFile
 
 	FROM rabbitmq:management
 
 	COPY enabled_plugins /etc/rabbitmq/enabled_plugins
+	COPY enabled_plugins /etc/rabbitmq/enabled_plugins
+	COPY rabbitmq.conf /etc/rabbitmq/rabbitmq.conf
+	COPY advanced.config /etc/rabbitmq/advanced.config
 	RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
 	    echo "Asia/Shanghai" > /etc/timezone
 
@@ -143,7 +161,7 @@ Docker Hub上`rabbitmq:management`没有包含tracing插件，需要定制Docker
 		# Application user
 		docker exec rabbit rabbitmqctl add_user guest password		docker exec rabbit rabbitmqctl set_permissions -p / guest "" "" ".*"
 		
-- 创建cluster
+- 创建cluster(在mirroed运行即可)
 
 		docker exec rabbit rabbitmqctl stop_app
 		docker exec rabbit rabbitmqctl join_cluster rabbit@(master FQDN)
@@ -154,3 +172,4 @@ Docker Hub上`rabbitmq:management`没有包含tracing插件，需要定制Docker
 		docker exec rabbit rabbitmqctl set_policy ha "." '{"ha-mode":"all"}'
 		
 		其中设定策略名为`ha`, `.`标志所有队列高可用，`{"ha-mode" : "all"}`标志所有节点加入。
+

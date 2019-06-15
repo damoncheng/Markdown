@@ -1,6 +1,6 @@
 var is = require('bpmn-js/lib/util/ModelUtil').is;
 
-export function showPropertiesPanel(element) {
+function showPropertiesPanel(element) {
 
     if (is(element, 'bpmn:FlowNode') &&
         !is(element, 'bpmn:StartEvent') && 
@@ -12,3 +12,5 @@ export function showPropertiesPanel(element) {
     return false;
 
 }
+
+module.exports.showPropertiesPanel = showPropertiesPanel;

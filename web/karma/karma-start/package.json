@@ -1,0 +1,20 @@
+{
+  "name": "karma-start",
+  "version": "1.0.0",
+  "description": "karma get start",
+  "main": "karma.conf.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-mocha": "^1.3.0",
+    "karma-requirejs": "^1.1.0"
+  },
+  "scripts": {
+    "test": "karma start"
+  },
+  "author": "",
+  "license": "ISC"
+}

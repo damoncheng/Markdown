@@ -149,6 +149,46 @@
                 "default" : "N"
             }
           ]
+        },
+        {
+          "name": "ManualTask",
+          "superClass": [ "Element" ],
+          "meta": {
+            "allowedIn": [
+              "bpmn:ManualTask"
+            ]
+          },
+          "properties": [
+            {
+              "name": "success",
+              "type": "String",
+              "isAttr": true,
+              "default" : "通过"
+            },
+            {
+              "name": "fail",
+              "type": "String",
+              "isAttr": true,
+              "default" : "不通过"
+            }
+          ]
+        },
+        {
+          "name": "ServiceTask",
+          "superClass": [ "Element" ],
+          "meta": {
+            "allowedIn": [
+              "bpmn:ServiceTask"
+            ]
+          },
+          "properties": [
+            {
+              "name": "tool_id",
+              "type": "String",
+              "isAttr": true,
+              "default" : ""
+            }
+          ]
         }
     ]
 

@@ -1,30 +1,34 @@
-import inherits from 'inherits';
+'use strict';
 
-import PropertiesActivator from 'bpmn-js-properties-panel/lib/PropertiesActivator';
+var inherits = require('inherits');
+
+var PropertiesActivator = require('bpmn-js-properties-panel/lib/PropertiesActivator');
+var createApprovalTabGroups = require('./tabs/approvalTab');
+var createToolTabGroups = require('./tabs/toolTab');
+var showPropertiesPanel = require('./Utils').showPropertiesPanel;
+
 
 // Require all properties you need from existing providers.
 // In this case all available bpmn relevant properties without camunda extensions.
-import processProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/ProcessProps';
-import eventProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/EventProps';
+//import processProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/ProcessProps';
+//import eventProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/EventProps';
 //import linkProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/LinkProps';
-import documentationProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/DocumentationProps';
-import idProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/IdProps';
-import nameProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/NameProps';
-
+//import documentationProps from 'bpmn-js-properties-panel/lib/provider/bpmn/parts/DocumentationProps';
+//import { is } from 'bpmn-js/lib/util/ModelUtil';
+var idProps = require('bpmn-js-properties-panel/lib/provider/bpmn/parts/IdProps');
+var nameProps = require('bpmn-js-properties-panel/lib/provider/bpmn/parts/NameProps');
 
 // Require your custom property entries.
 //import nameProps from './parts/nameProps';
-import descriptionProps from './parts/descriptionProps';
-import linkProps from './parts/linkProps';
-import groupNameProps from './parts/groupNameProps';
-import ownerProps from './parts/ownerProps';
-import submitVarNameProps from './parts/submitVarNameProps';
-import isTaskOwnerProps from './parts/isTaskOwnerProps';
-import isSkipProps from './parts/isSkipProps';
+var descriptionProps = require('./parts/descriptionProps'),
+    linkProps = require('./parts/linkProps'),
+    groupNameProps = require('./parts/groupNameProps'),
+    ownerProps = require('./parts/ownerProps'),
+    submitVarNameProps = require('./parts/submitVarNameProps'),
+    isTaskOwnerProps = require('./parts/isTaskOwnerProps'),
+    isSkipProps = require('./parts/isSkipProps');
 
-import formProps from './parts/formProps';
-
-import {showPropertiesPanel} from './Utils';
+var formProps = require('./parts/formProps');
 
 
 // The general tab contains all bpmn relevant properties.
@@ -118,9 +122,12 @@ function createFormTabGroups(element, bpmnFactory, elementRegistry, translate) {
 
 }
 
-export default function QflowPropertiesProvider(
+
+function QflowPropertiesProvider(
     eventBus, bpmnFactory, elementRegistry,
-    translate) {
+    translate, qflow_product) {
+
+  console.log("#-----qflow_product", qflow_product);
 
   PropertiesActivator.call(this, eventBus);
 
@@ -139,16 +146,44 @@ export default function QflowPropertiesProvider(
       label: '步骤表单',
       groups: createFormTabGroups(element, bpmnFactory, elementRegistry, translate)
     };
-    
+
+    var properties_tab_list = [
+        generalTab,
+        fieldTab,
+    ];
+
+
+    var approvalGroups = createApprovalTabGroups(element, bpmnFactory, elementRegistry, translate);
+
+    if(approvalGroups) {
+
+        var approvalTab = {
+
+            id : 'approval',
+            label : '步骤审批',
+            groups: approvalGroups
+
+        }
+
+        properties_tab_list.push(approvalTab);
+
+    }
 
     // Show general + "magic" tab
-    return [
-      generalTab,
-      fieldTab,
-    ];
-  };
+    return properties_tab_list;
 
+  };
 
 }
 
+QflowPropertiesProvider.$inject = [
+    'eventBus', 
+    'bpmnFactory', 
+    'elementRegistry',
+    'translate',
+    'qflow_product'
+];
+
 inherits(QflowPropertiesProvider, PropertiesActivator);
+
+module.exports = QflowPropertiesProvider;
