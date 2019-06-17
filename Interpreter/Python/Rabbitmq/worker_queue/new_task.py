@@ -1,8 +1,18 @@
 import sys
 import pika
 
-credentials = pika.PlainCredentials('xxxxx', 'xxxxx')
-connection = pika.BlockingConnection(pika.ConnectionParameters("xxxxx", credentials=credentials))
+host = sys.argv[1]
+user = sys.argv[2]
+password = sys.argv[3]
+queue = sys.argv[4]
+
+print("host : ", host)
+print("user : ", user)
+print("password : ", password)
+print("queue : ", queue)
+
+credentials = pika.PlainCredentials(user, password)
+connection = pika.BlockingConnection(pika.ConnectionParameters(host, credentials=credentials))
 channel = connection.channel()
 
 #no durable
@@ -17,11 +27,14 @@ channel.basic_publish(exchange='',
 
 
 #durable
-channel.queue_declare(queue='task_queue', durable=True, arguments={"x-max-priority" : 10})
+channel.queue_declare(queue=queue, durable=True, arguments={"x-max-priority" : 10})
 #channel.queue_declare(queue='task_queue1', passive=True)
 
-arg_len = len(sys.argv)
 
+message = "Hello World!"
+priority = 0
+
+"""
 if arg_len == 1:
     message = "Hello World!"
     priority = 0
@@ -31,9 +44,10 @@ elif arg_len == 2:
 else:
     message = sys.argv[1]
     priority = int(sys.argv[2])
+"""
 
 channel.basic_publish(exchange='',
-                      routing_key='task_queue',
+                      routing_key=queue,
                       body=message, 
 		      properties=pika.BasicProperties(
                          delivery_mode=2,

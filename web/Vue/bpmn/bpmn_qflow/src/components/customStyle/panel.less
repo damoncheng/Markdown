@@ -134,3 +134,32 @@ a:link {
     min-height:100%;
   }
 }
+
+.bpp-select,
+.bpp-element-list {
+
+  button {
+    &.add,
+    &.clear,
+    &.up {
+      top: -23px;
+      border-bottom: none;
+    }
+
+    &.up::before {
+      content: '\219F'
+    }
+  }
+
+  button.add {
+    right: 0px;
+  }
+
+  button.clear {
+    right: 23px;
+  }
+
+  button.up {
+    right: 46px;
+  }
+}

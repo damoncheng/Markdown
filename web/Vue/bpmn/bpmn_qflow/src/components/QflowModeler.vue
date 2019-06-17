@@ -91,6 +91,7 @@ import newDiagram from './resources/newDiagram.bpmn'
 
 var is = require('bpmn-js/lib/util/ModelUtil').is;
 
+
 export default {
 
   name: 'QflowModeler',
@@ -105,6 +106,7 @@ export default {
         'with-error' : false
 
       },
+      product : 11,
       err_message : '',
       sync_active : false,
       download_active : false,
@@ -203,7 +205,10 @@ export default {
             OriginModule,
             minimapModule,
             propertiesPanelModule,
-            propertiesProviderModule
+            propertiesProviderModule,
+            {
+              qflow_product: [ 'value', component.product ]
+            }
             
             //require('./custom-context-pad')
           
@@ -225,7 +230,19 @@ export default {
 
         var element = event.current.element;
 
-        //console.log("propertiesPanel.changed...", element);
+        /*
+        var overlays = component.modeler.get('overlays');
+        overlays.add(element, {
+          position: {
+            bottom: 0,
+            right: 0
+          },
+          html: '<div>Mixed up the labels?</div>'
+        });
+        */
+
+
+        console.log("propertiesPanel.changed...", element);
 
         // the element was changed by the user
         if (showPropertiesPanel(element)) {
@@ -234,6 +251,12 @@ export default {
         else{
             component.show_panel = false;
         }
+
+       });
+
+       this.modeler.on('element.changed', function(event) {
+
+          console.log('element.changed...', event.element);
 
        });
 
@@ -426,6 +449,26 @@ export default {
 
   a.bjs-powered-by{
     visibility: hidden;
+  }
+
+  #QflowModeler .djs-palette {
+
+    width : 60px
+
+  }
+
+  #QflowModeler .djs-palette.two-column.open {
+
+    width : 120px
+
+  }
+
+  #QflowModeler .djs-palette .entry,.entry-text {
+
+    margin : auto;
+    float : none;
+    text-align : center;
+
   }
 
 </style>

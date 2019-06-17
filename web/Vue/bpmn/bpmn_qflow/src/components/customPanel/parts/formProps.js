@@ -1,9 +1,11 @@
-'use strict';
+
+var extensionElements = require('./implementation/ExtensionElements');
+var forEach = require('lodash/forEach');
 
 var getBusinessObject = require('bpmn-js/lib/util/ModelUtil').getBusinessObject,
     getExtensionElements = require('bpmn-js-properties-panel/lib/helper/ExtensionElementsHelper').getExtensionElements,
     removeEntry = require('bpmn-js-properties-panel/lib/helper/ExtensionElementsHelper').removeEntry,
-    extensionElements = require('bpmn-js-properties-panel/lib/provider/camunda/parts/implementation/ExtensionElements'),
+    //extensionElements = require('bpmn-js-properties-panel/lib/provider/camunda/parts/implementation/ExtensionElements'),
     properties = require('bpmn-js-properties-panel/lib/provider/camunda/parts/implementation/Properties'),
     entryFactory = require('bpmn-js-properties-panel/lib/factory/EntryFactory'),
     elementHelper = require('bpmn-js-properties-panel/lib/helper/ElementHelper'),
@@ -16,20 +18,11 @@ var getBusinessObject = require('bpmn-js/lib/util/ModelUtil').getBusinessObject,
 var formHelper = require('../helper/formHelper');
 var enumValidate = require('../validate/enumValidate');
 
+
 function generateValueId() {
   return utils.nextId('Name_');
 }
 
-/**
- * Generate a form field specific textField using entryFactory.
- *
- * @param  {string} options.id
- * @param  {string} options.label
- * @param  {string} options.modelProperty
- * @param  {function} options.validate
- *
- * @return {Object} an entryFactory.textField object
- */
 function formFieldTextField(options, getSelectedFormField) {
 
   var id = options.id,
@@ -89,16 +82,6 @@ module.exports = function(group, element, bpmnFactory, translate) {
     return;
   }
 
-
-  /**
-   * Return the currently selected form field querying the form field select box
-   * from the DOM.
-   *
-   * @param  {djs.model.Base} element
-   * @param  {DOMElement} node - DOM element of any form field text input
-   *
-   * @return {ModdleElement} the currently selected form field
-   */
   function getSelectedFormField(element, node) {
     var selected = formFieldsEntry.getSelected(element, node.parentNode);
 
@@ -109,28 +92,6 @@ module.exports = function(group, element, bpmnFactory, translate) {
     return formHelper.getFormField(element, selected.idx);
   }
 
-  //更新表单ID
-  /*
-  group.entries.push(entryFactory.textField({
-    id : 'form-key',
-    label : translate('表单ID'),
-    description : '',
-    modelProperty: 'formKey',
-    get: function(element, node) {
-      var bo = getBusinessObject(element);
-
-      return {
-        formKey: bo.get('qflow:formKey')
-      };
-    },
-    set: function(element, values, node) {
-      var bo = getBusinessObject(element),
-          formKey = values.formKey || undefined;
-
-      return cmdHelper.updateBusinessObject(element, bo, { 'qflow:formKey': formKey });
-    }
-  }));
-  */
 
   //呈现表单所有字段
   var formFieldsEntry = extensionElements(element, bpmnFactory, {
@@ -184,6 +145,32 @@ module.exports = function(group, element, bpmnFactory, translate) {
           commands.push(cmdHelper.updateBusinessObject(element, formData, { 'businessKey': undefined }));
         }
       }
+
+      return commands;
+    },
+    upExtensionElement: function(element, extensionElements, value, idx) {
+      
+      var formData = getExtensionElements(getBusinessObject(element), 'qflow:FormData')[0],
+          pre_entry = formData.fields[idx - 1],
+          entry = formData.fields[idx],
+          commands = [];
+
+      var listCopy = [];
+      forEach(formData.fields, function(object, index) {
+          if(index == (idx - 1)){
+            listCopy.push(entry);
+          }
+          else if(index == idx) {
+            listCopy.push(pre_entry);
+          }
+          else{
+            listCopy.push(object);
+          }
+      });
+
+      commands.push(cmdHelper.setList(element, formData, "fields", listCopy));
+
+      console.log("...upExtensionElement......");
 
       return commands;
     },
@@ -261,6 +248,7 @@ module.exports = function(group, element, bpmnFactory, translate) {
     modelProperty: 'name',
 
     getProperty: function(element, node) {
+      console.log("name");
       var selectedFormField = getSelectedFormField(element, node) || {};
 
       return selectedFormField.name;
@@ -323,12 +311,14 @@ module.exports = function(group, element, bpmnFactory, translate) {
     modelProperty : 'description',
 
     getProperty: function(element, node) {
+
         var selectedFormField = getSelectedFormField(element, node) || {};
-  
+
         return selectedFormField.description;
     },
   
     setProperty: function(element, properties, node) {
+
         var formField = getSelectedFormField(element, node);
 
         return cmdHelper.updateBusinessObject(element, formField, properties);

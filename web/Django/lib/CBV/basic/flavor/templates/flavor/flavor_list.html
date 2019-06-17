@@ -1,0 +1,21 @@
+{% block content %}
+    <h2>Flavors List</h2>
+    <ul>
+        {% for one_flavor in flavor_object_list %}
+            <li>
+                id : {{ one_flavor.id }} | 
+                title : {{ one_flavor.title }} | 
+                slug  : {{ one_flavor.slug }} |
+                scoops_remaining  : {{ one_flavor.scoops_remaining }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Flavors Search</h2>
+    <form action="{% url "flavor-list" %}" method="GET">
+       title : <input type="text" name="q" value="{{ request.GET.q }}" />
+       <button type="submit">search</button>
+    </form>
+{% endblock %}
+
+

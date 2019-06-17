@@ -4,8 +4,13 @@ import time
 import pika
 import importlib
 
-credentials = pika.PlainCredentials('xxxx', 'xxxxx')
-connection = pika.BlockingConnection(pika.ConnectionParameters("xxxxx", credentials=credentials))
+host = sys.argv[1]
+user = sys.argv[2]
+password = sys.argv[3]
+queue = sys.argv[4]
+
+credentials = pika.PlainCredentials(user, password)
+connection = pika.BlockingConnection(pika.ConnectionParameters(host, credentials=credentials))
 channel = connection.channel()
 
 #no durable
@@ -19,8 +24,7 @@ def callback(ch, method, properties, body):
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
 #channel.basic_qos(prefetch_count=1)
-channel.basic_consume(callback,
-                      queue='task_queue')
+channel.basic_consume(queue, callback)
 
 channel.start_consuming()
 

@@ -78,3 +78,13 @@ Under the hood, diagram-js implements a simple data model consisting of shapes a
 	
 ElementRegistry负责通过`数据模型`创建`形状`和`连接`. during modeling, element relationships will be updated according to `user operations` by the `Modeling Service`. 
 
+## Auxiliary Services
+
+Aside from the data model and its core services, diagram-js provides a rich toolbox of additional helpers.
+
+- CommandStack - responsible for redo and undo during modeling.
+- ContextPad - provides contextual actions around an element.
+- Overlays - provides APIs for attaching additional information to diagram elements.
+- Modeling - provides APIs for updating elements on the canvas (moving, deleting)
+- Palette
+

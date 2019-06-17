@@ -1,0 +1,18 @@
+<h2>Flavors Detail</h2>
+<div>
+   id : {{ object.id }} |
+   title : {{ object.title }} |
+   slug : {{ object.slug }} |
+   scoops_remaining : {{ object.scoops_remaining }} 
+</div>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li id="message_{{ forloop.counter }}"
+                {% if message.tags %} class="{{ message.tags }}" 
+                    {% endif %}>
+                {{ message }}
+            </li>
+        {% endfor %} 
+    </ul>
+{% endif %}

@@ -86,6 +86,10 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
         }
       }
     },
+    'create.hand-tool-text': {
+      group: 'tools',
+      html: '<span class="entry-text" style="font-size:8px;display:block">拖动工具</span>'
+    },
     'lasso-tool': {
       group: 'tools',
       className: 'bpmn-icon-lasso-tool',
@@ -95,6 +99,10 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
           lassoTool.activateSelection(event);
         }
       }
+    },
+    'create.lasso-tool-text': {
+      group: 'tools',
+      html: '<span class="entry-text" style="font-size:8px;display:block">多选工具</span>'
     },
     'global-connect-tool': {
       group: 'tools',
@@ -112,16 +120,20 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
     },
     
     'create.start-event': createAction(
-      'bpmn:StartEvent', 'event', 'bpmn-icon-start-event-none', '创建开始事件'
+      'bpmn:StartEvent', 
+      'event', 
+      'bpmn-icon-start-event-none', 
+      '创建开始事件'
     ),
-    /*
-    'create.end-event': createAction(
-      'bpmn:EndEvent', 'event', 'bpmn-icon-end-event-none', '创建结束事件'
-    ),
-    */
+   
+ 
     'create.task-user': createAction(
       'bpmn:UserTask', 'activity', 'bpmn-icon-user', '创建步骤'
     ),
+    'create.start-event-text': {
+      group: 'activity',
+      html: '<span class="entry-text" style="font-size:8px;display:block">创建步骤</span>'
+    },
     /*
     'create.parallel-gateway': createAction(
       'bpmn:ParallelGateway', 'gateway', 'bpmn-icon-gateway-parallel', '创建分支步骤',

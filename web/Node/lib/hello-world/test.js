@@ -1,3 +1,4 @@
+/*
 import {
 	isFunction,
 	forEach,
@@ -6,4 +7,12 @@ import {
 
 require('bpmn-js/test/helper');
 
-console.log("123")
+*/
+
+var forEach = require('lodash/forEach');
+
+forEach({1:2, 3:4}, function(value,key){
+
+    console.log("key:",key, ",value:", value);
+
+})

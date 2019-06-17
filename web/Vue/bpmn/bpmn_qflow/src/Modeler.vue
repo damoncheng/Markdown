@@ -11,6 +11,7 @@
 
 import QflowModeler from '@/components/QflowModeler'
 
+
 var data = {
     qflow_bpmn_url: 'http://127.0.0.1:9000/html/test.bpmn'
 }
@@ -21,6 +22,7 @@ export default {
   data () {
       return data
   },
+  
 
   components: {
       QflowModeler
