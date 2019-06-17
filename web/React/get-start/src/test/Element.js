@@ -1,11 +1,12 @@
 import React from 'react';
+import { Button } from 'element-react';
 
-const element = <h1>Hello, world!</h1>;
+//const element = <h1>Hello, world!</h1>;
 
 function Element() {
   return (
     <div className="Element">
-       {element}
+       <Button type="primary">Hello World</Button>
     </div>
   );
 }
