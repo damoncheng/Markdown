@@ -27,6 +27,7 @@ qflow_descriptor = {
             {"name" : "id"},
             {"name" : "name", "default" : u"未命名"},
             {"name" : "link", "default" : u""},
+            {"name" : "submit_var_name", "default" : u""},
             {"name" : "description", "default" : u""},
             {"name" : "field_type", "default" : u"input"},
             {"name" : "default_value", "default" : u""},
