@@ -6,7 +6,7 @@ import { Button } from 'element-react';
 function Element() {
   return (
     <div className="Element">
-       <Button type="primary">Hello World</Button>
+       <Button type="primary">Hello Element UI</Button>
     </div>
   );
 }
