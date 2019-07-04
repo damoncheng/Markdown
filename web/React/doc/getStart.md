@@ -27,3 +27,33 @@ create-react-app 自动创建的项目是基于 Webpack + ES6 。
 	$ npm start
 
 在浏览器中打开 http://localhost:3000/
+
+## visual studio code + react 开发环境搭建
+
+- VS Code 提供 Debugger for Chrome 插件 可以支持使用chrome内核debug。
+
+- 使用Debugger for Chrome 进行debug 需要对项目进行额外的配置(**launch.json**)
+
+		{
+		    // Use IntelliSense to learn about possible attributes.
+		    // Hover to view descriptions of existing attributes.
+		    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+		    "version": "0.2.0",
+		    "configurations": [
+		        {
+		            "type": "chrome",
+		            "request": "launch",
+		            "name": "Launch Chrome against localhost",
+		            "url": "http://localhost:3000",
+		            "webRoot": "${workspaceFolder}"
+		        }
+		    ]
+		}
+
+- 启动项目npm start 然后打开debug工具栏
+
+		选择之前添加的 chrome 节点启动 ，此时会打开一个新的chrome页面
+	
+- 在项目源代码种找到index.js文件打上断点在行号前面点左键即可 之后刷新页面，则可进入端点
+
+
