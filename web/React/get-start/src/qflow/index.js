@@ -1,6 +1,6 @@
 import React from 'react';
 import s from './style.scss';
-import QflowModeler from './component/QflowBpmn/QflowBpmnModeler';
+import QflowModeler from './component/QflowBpmn/';
 
 console.log(s.fontColor);
 

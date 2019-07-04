@@ -7,22 +7,21 @@ import OriginModule from 'diagram-js-origin';
 import propertiesPanelModule from 'bpmn-js-properties-panel';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/bpmn';
 
-import diagram from './assets/diagram.bpmn';
-
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
 import 'bpmn-js-properties-panel/styles/properties.less';
 
-
-import './bpmn.less';
-import s from './style.scss';
+import diagram from '../assets/diagram.bpmn';
+import '../style/bpmn.less';
 
 function onError(err) {
     console.error('failed to render diagram', err);
 }
+
 function onLoading() {
     console.log('loading diagram');
 }
+
 function onShown() {
     console.log('diagram shown');
 }
@@ -96,6 +95,7 @@ class QflowBpmnModeler extends React.Component {
       if (state.diagramXML !== prevState.diagramXML) {
         return this.modeler.importXML(state.diagramXML);
       }
+
     }
   
     fetchDiagram(url) {
@@ -109,6 +109,7 @@ class QflowBpmnModeler extends React.Component {
         .catch(err => this.handleError(err));
       */
 
+      //调试使用diagram文件
       this.setState({diagramXML : diagram});
       
     }
@@ -142,6 +143,17 @@ class QflowBpmnModeler extends React.Component {
         <div id="QflowModeler" className="with-diagram">
             <div ref={ this.canvasRef } className="canvas"></div>
             <div ref={ this.panelRef }  className="properties-panel-parent"></div>
+            <div id="operate">
+              <ul class="buttons">
+                <li>
+                  <a id="js-download-svg"  
+                    title="下载svg图片"
+                  >
+                    下载模型svg
+                  </a>
+                </li>
+              </ul>
+            </div>
         </div>
       );
     }
