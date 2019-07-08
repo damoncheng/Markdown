@@ -45,6 +45,14 @@
         UPDATE mysql.user SET authentication_string=null WHERE User='root';
         FLUSH PRIVILEGES;
         exit;
+        
+     and then, in terminal:
+
+        mysql -u root
+        
+     in mysql:
+     
+        ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'yourpasswd';
 
 - not in skip-grant-tables mode just in mysql:
 
