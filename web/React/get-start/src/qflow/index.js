@@ -1,17 +1,33 @@
 import React from 'react';
 import s from './style.scss';
-import QflowModeler from './component/QflowBpmn/';
+import QflowBpmnModeler from './component/QflowBpmn/';
 
-console.log(s.fontColor);
+function onError(err) {
+  console.error('failed to render diagram', err);
+}
+
+function onLoading() {
+  console.log('loading diagram');
+}
+
+function onShown() {
+  console.log('diagram shown');
+}
 
 function QflowBpmn() {
 
     return (
       <div className={s.QflowBpmn}>
          {/*<span className={s.fontColor}>Hello Qflow 123</span>*/}
-         <QflowModeler />
+         <QflowBpmnModeler 
+            url="/api/user/1/project/1/qflow/flows/2"
+            //onLoading={ onLoading }
+            //onShown={ onShown }
+            //onError={ onError }
+         />
       </div>
     );
 }
   
 export default QflowBpmn;
+

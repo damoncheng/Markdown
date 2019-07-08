@@ -16,6 +16,13 @@ devconfig = merge(baseConfig, {
         inline: true,// 设置为true，当源文件改变时会自动刷新页面
         hot: true,// 模块热更新，取决于HotModuleReplacementPlugin
         port: 3000,
+        proxy: {
+            '/api': {
+              target: 'http://localhost:9001',
+              //pathRewrite: {'^/api' : ''},
+              changeOrigin: true
+            }
+          }
     },
     optimization: {
         nodeEnv: 'development',
