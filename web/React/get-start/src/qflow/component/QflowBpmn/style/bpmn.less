@@ -8,7 +8,7 @@
     max-height: 100%;
     padding: 0;
     margin: 0;
-    
+
     * {
         box-sizing: border-box;
     }
@@ -77,18 +77,28 @@
         top: 0;
         bottom: 0;
         right: 0;
-        width: 260px;
+        width: 30%;
         background-color: #f8f8f8;
         z-index: 10;
         border-left: 1px solid #ccc;
         overflow: auto;
         &:empty {
-            display: none;
+          display: none;
         }
         > .djs-properties-panel {
-            padding-bottom: 70px;
-            min-height:100%;
+          padding-bottom: 70px;
+          min-height:100%;
+
+          select {
+            overflow-x : hidden;
+            overflow-y : scroll;
+          }
+
         }
+    }
+
+    .properties-panel-parent:not(.active)  {
+        display: none;
     }
 
     .bpp-select,
@@ -121,6 +131,13 @@
 
     }
 
+    div.bpp-checkbox {
+
+        float : left;
+        margin-left : 5px;
+      
+    }
+
     #operate {
 
         .buttons {
@@ -133,27 +150,58 @@
             list-style: none;
         
             > li {
-            display: inline-block;
-            margin-right: 10px;
-        
-            > a {
-                background: #DDD;
-                border: solid 1px #666;
+
                 display: inline-block;
-                padding: 5px;
-            }
+                margin-right: 10px;
+            
+                > a {
+                    background: #DDD;
+                    border: solid 1px #666;
+                    display: inline-block;
+                    padding: 5px;
+                    cursor : pointer;
+                    color : #409eff;
+                    text-decoration: none;
+                }
+
+                > a:not(.active) {
+                    pointer-events: none;
+                }
             }
         
             a {
-            opacity: 0.3;
+                opacity: 0.3;
             }
         
             a.active {
-            opacity: 1.0;
+                opacity: 1.0;
             }
         }
 
     }
+
+    .djs-palette {
+
+        width : 80px;
+  
+        .entry,.entry-text {
+  
+          margin : auto;
+          float : none;
+          text-align : center;
+  
+        }
+  
+        .entry-text {
+  
+          font-size:8px;
+          display:block;
+  
+        }
+  
+    }
+
+    
 
     a.bjs-powered-by{
         visibility: hidden;

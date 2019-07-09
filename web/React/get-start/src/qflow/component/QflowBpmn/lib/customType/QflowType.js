@@ -95,17 +95,17 @@ class QflowType {
 
         [QFLOW_FIELD_INPUT] : "单行文本",
         [QFLOW_FIELD_TEXTAREA] : "多行文本",
-        [QFLOW_FIELD_INFO] : "仅确认文本",
-        [QFLOW_FIELD_RTX]  : "人员输入框",
+        //[QFLOW_FIELD_INFO] : "仅确认文本",
+        //[QFLOW_FIELD_RTX]  : "人员输入框",
         [QFLOW_FIELD_SELECT] : "下拉框",
         [QFLOW_FIELD_CHECKBOX] : "复选框",
         [QFLOW_FIELD_RADIO] : "单选框",
-        [QFLOW_FIELD_DATE] : "日期",
-        [QFLOW_FIELD_TIME] : "时间",
-        [QFLOW_FIELD_FILE] : "文件",
+        //[QFLOW_FIELD_DATE] : "日期",
+        //[QFLOW_FIELD_TIME] : "时间",
+        //[QFLOW_FIELD_FILE] : "文件",
         [QFLOW_FIELD_APPROVE] : "审批",
         [QFLOW_FIELD_BRANCH] : "分支",
-        [QFLOW_FIELD_SUB_FLOW] : "子流程"
+        //[QFLOW_FIELD_SUB_FLOW] : "子流程"
 
     }
 
@@ -113,14 +113,14 @@ class QflowType {
 
         QFLOW_FIELD_INPUT,
         QFLOW_FIELD_TEXTAREA,
-        QFLOW_FIELD_INFO,
-        QFLOW_FIELD_RTX,
+        //QFLOW_FIELD_INFO,
+        //QFLOW_FIELD_RTX,
         QFLOW_FIELD_SELECT,
         QFLOW_FIELD_CHECKBOX,
         QFLOW_FIELD_RADIO,
-        QFLOW_FIELD_DATE,
-        QFLOW_FIELD_TIME,
-        QFLOW_FIELD_FILE
+        //QFLOW_FIELD_DATE,
+        //QFLOW_FIELD_TIME,
+        //QFLOW_FIELD_FILE
 
     ]
 
