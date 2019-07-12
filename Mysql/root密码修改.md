@@ -33,3 +33,28 @@
         mysql> UPDATE user SET password=PASSWORD("new password") WHERE user='root';
 
         mysql> FLUSH PRIVILEGES;
+        
+注意：
+
+1. 一定要先kill掉mysql server进程
+
+2. This function was removed in MySQL 8.0.11
+
+- if you in skip-grant-tables mode in mysqld_safe:
+
+        UPDATE mysql.user SET authentication_string=null WHERE User='root';
+        FLUSH PRIVILEGES;
+        exit;
+        
+     and then, in terminal:
+
+        mysql -u root
+        
+     in mysql:
+     
+        ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'yourpasswd';
+
+- not in skip-grant-tables mode just in mysql:
+
+        ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'yourpasswd';
+
