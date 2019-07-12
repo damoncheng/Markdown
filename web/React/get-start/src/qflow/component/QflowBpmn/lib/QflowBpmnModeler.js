@@ -29,7 +29,11 @@ import qflowType from './customType/QflowType'
 
 import QflowOperate from './customOperate/qflowOperate';
 
+import { Loading, Message, Button, Dialog, Form, Input } from 'element-react';
+
 const showPropertiesPanel = require('./customPanel/Utils').showPropertiesPanel;
+
+const loading = true;
 
 class QflowBpmnModeler extends React.Component {
 
@@ -50,7 +54,14 @@ class QflowBpmnModeler extends React.Component {
           download_svg_href : null,
           download_svg_name : 'diagram.bpmn',
         },
-        show_pane : false
+        operate_dialog_object : {
+          dialog_visible: false,
+        },
+        operate_dialog_object_form : {
+          details : ""
+        },
+        show_pane : false,
+        loading : true,
         
       };
 
@@ -66,23 +77,6 @@ class QflowBpmnModeler extends React.Component {
         //小工具
         tools : {},
 
-        //字段值初始化工具
-        //init_value_tools : {},
-
-        //选项初始化工具 
-        //init_option_tools : {},
-
-        //产品相关角色配置
-        //product_roles : {},
-
-        //流程相关子流程
-        //sub_flows : {},
-
-        //流程推送模版
-        //push_templates : {},
-
-        //user信息
-        //users : []
 
       };
 
@@ -123,6 +117,53 @@ class QflowBpmnModeler extends React.Component {
             sync_active : false
           }
         });
+
+      }
+
+    }
+
+    getOverlayHtml(text, overlay_css){
+
+      return `<div style="${overlay_css}">${text}</div>`
+
+    }
+
+    updateModelering(init=false) {
+
+      let sync_active = false;
+   
+      if(!init)
+        sync_active = true;
+
+      this.modeler.saveSVG((err, svg) => {
+        this.setEncoded({href : "download_svg_href", name : "download_svg_name", sync_active : sync_active}, 
+        'diagram.svg', err ? null : svg);
+      });
+
+      //add overlays after import newDiagram
+      let qflow_arith = this.modeler.get("qflow_arith");
+      let start_shape = qflow_arith.check_start_shape_overlay();
+
+      if(start_shape && !this.qflow_basic.start_overlay_id){
+
+          let overlays = this.modeler.get("overlays");
+
+          this.qflow_basic.start_overlay_id = overlays.add(start_shape, {
+              position: {
+                bottom: 0,
+                right: 0
+              },
+              html: this.getOverlayHtml('点击我, 选择<span class="bpmn-icon-user"></span>, 开始创建一个步骤吧...', "min-width:100px;color:#FF7F50;")
+            });
+
+      }
+      else if(this.qflow_basic.start_overlay_id && !start_shape){
+
+         let overlays = this.modeler.get("overlays");
+
+         overlays.remove(this.qflow_basic.start_overlay_id);
+
+         this.qflow_basic.start_overlay_id = undefined;
 
       }
 
@@ -200,17 +241,13 @@ class QflowBpmnModeler extends React.Component {
           return this.handleError(error);
         }
   
-        return this.handleShown(warnings);
+        return this.handleShown(true);
 
       });
 
       this.modeler.on('commandStack.changed', debounce(() => {
 
-          this.modeler.saveSVG((err, svg) => {
-              this.setEncoded({href : "download_svg_href", name : "download_svg_name", sync_active : true}, 
-              'diagram.svg', err ? null : svg);
-          });
-          //component.updateOverlay();
+          this.updateModelering();
 
         }, 500)
 
@@ -277,7 +314,7 @@ class QflowBpmnModeler extends React.Component {
 
     }
   
-    fetchDiagram(url) {
+    fetchDiagram(url, init=true) {
   
       this.handleLoading();
   
@@ -292,7 +329,7 @@ class QflowBpmnModeler extends React.Component {
       })
       .then(response_dict => {
         console.log("response_dict : ", response_dict);
-        this.handleResponse(response_dict);
+        this.handleResponse(response_dict, init);
       })
       .catch(err => {
         console.log("response_err : ", err);
@@ -319,7 +356,7 @@ class QflowBpmnModeler extends React.Component {
       )
       .then(response_dict => {
         console.log("response_dict : ", response_dict);
-        this.handleResponse(response_dict, false);
+        this.handleResponse(response_dict, false, 'PUT');
       })
       .catch(err => {
         console.log("response_err : ", err);
@@ -331,6 +368,7 @@ class QflowBpmnModeler extends React.Component {
     syncModeler(deployment=false){
 
       console.log("syncModeler......")
+      console.log(this.state)
 
       this.modeler.saveXML({ format: true }, (err, xml) => {
 
@@ -341,14 +379,14 @@ class QflowBpmnModeler extends React.Component {
         let data = {
 
           "xml" : xml,
-          "deployment" : deployment
+          "deployment" : deployment,
+          "details" : this.state.operate_dialog_object_form.details
 
         };
 
         this.putDiagram(this.props.url, data)
      
       });
-
 
     }
 
@@ -359,6 +397,10 @@ class QflowBpmnModeler extends React.Component {
           ...this.state.modeler_active_object,
           sync_active : false,
           sync_time : this.getDatetime()
+        },
+        operate_dialog_object : {
+          ...this.operate_dialog_object,
+          dialog_visible: false 
         }
       });
 
@@ -366,7 +408,7 @@ class QflowBpmnModeler extends React.Component {
 
     }
 
-    handleResponse(response_dict, init=true) {
+    handleResponse(response_dict, init=true, method='GET') {
 
       console.log("handleResponse......")
       console.log("response_dict : ", response_dict);
@@ -385,7 +427,13 @@ class QflowBpmnModeler extends React.Component {
             this.setState({ diagramXML: newDiagram });
 
         }
-        else{
+
+        if(method == 'GET' && !init){
+
+          this.handleSuccess("更新模型环境成功")
+
+        }
+        else if(method == 'PUT'){
 
           this.afterSyncModeler();
 
@@ -398,24 +446,20 @@ class QflowBpmnModeler extends React.Component {
       }
       else{
 
-        err_message = "Unknown Error";
+        err_message = "操作失败";
 
       }
 
       if(err_message){
    
-        handleError(err_message, init);
+        this.handleError(err_message, init);
       
       }
 
     }
 
     handleLoading() {
-      const { onLoading } = this.props;
-  
-      if (onLoading) {
-        onLoading();
-      }
+       this.setState({loading : true});
     }
 
     handleSuccess(msg){
@@ -423,6 +467,8 @@ class QflowBpmnModeler extends React.Component {
       const { onSuccess } = this.props;
 
       onSuccess(msg);
+
+      this.handleShown()
 
     }
   
@@ -442,11 +488,38 @@ class QflowBpmnModeler extends React.Component {
         onError(err);
       }
 
+      this.handleShown()
+
     }
   
-    handleShown(warnings) {
-      const { onShown } = this.props;
-      onShown(warnings);
+    handleShown(init=false) {
+
+      this.setState({loading : false});
+
+      if(init && this.state.modeler_class_object.with_diagram)
+          this.updateModelering(init);
+    
+    }
+
+    openDialog() {
+
+      console.log(this.state)
+
+      this.setState({
+        operate_dialog_object : {
+          ...this.state.operate_dialog_object,
+          dialog_visible : true
+        }
+      });
+    }
+
+    onSubmit(e) {
+      e.preventDefault();
+    }
+    
+    onChange(key, value) {
+      this.state.operate_dialog_object_form[key] = value;
+      this.forceUpdate();
     }
   
     render() {
@@ -461,6 +534,13 @@ class QflowBpmnModeler extends React.Component {
 
       return (
         <div id="QflowModeler" className={modeler_classes}>
+
+          <Loading 
+            className="loading"
+            loading={this.state.loading}
+            position="static"
+            text="加载中..."
+          >
 
             <div className="message error">
               <div className="note">
@@ -484,8 +564,57 @@ class QflowBpmnModeler extends React.Component {
             </div>
             <QflowOperate 
               modeler_active_object={this.state.modeler_active_object} 
+              openDialog={() => this.openDialog()}
+              updateModelerEnv={() => this.fetchDiagram(this.props.url, false)}
               syncModeler = {(deployment) => this.syncModeler(deployment)}
             />
+
+            <Dialog
+              title="版本描述"
+              size="tiny"
+              visible={ this.state.operate_dialog_object.dialog_visible }
+              onCancel={ () => this.setState({ operate_dialog_object : {
+                  ...this.operate_dialog_object,
+                  dialog_visible : false
+              }}) }
+              lockScroll={ false }
+            >
+
+              <Dialog.Body>
+                  <Form model={this.state.operate_dialog_object_form} labelWidth="80" onSubmit={this.onSubmit.bind(this)}>
+                    <Form.Item label="描述信息">
+                      <Input value={this.state.operate_dialog_object_form.details} onChange={this.onChange.bind(this, 'details')}></Input>
+                    </Form.Item>
+                  </Form>
+              </Dialog.Body>
+
+              <Dialog.Footer className="dialog-footer">
+                <Button onClick={ () => this.setState({ 
+                    operate_dialog_object : {
+                      ...this.operate_dialog_object,
+                      dialog_visible: false 
+                    }
+                  }) 
+                }>
+                  取消
+                </Button>
+                <Button type="primary" 
+                  onClick={ 
+                    () => 
+                    {
+                      this.syncModeler(true)
+                      
+                    }
+                  }
+                >
+                  确定
+                </Button>
+              </Dialog.Footer>
+
+            </Dialog>
+              
+          </Loading>
+
         </div>    
       );
     }
@@ -497,19 +626,16 @@ QflowBpmnModeler.defaultProps = {
     DEBUG : true,
 
     onSuccess : function onSuccess(msg){
-        console.log("success", msg);
+        //console.log("success", msg);
+        Message({
+          message: msg,
+          type: 'success'
+        });
     },
     onError : function onError(err) {
-        console.error('failed to render diagram', err);
+        //console.error('failed to render diagram', err);
+        Message.error(err);
     },
-
-    onLoading : function onLoading() {
-        console.log('loading diagram');
-    },
-
-    onShown : function onShown() {
-        console.log('diagram shown');
-    }
 
 }
 

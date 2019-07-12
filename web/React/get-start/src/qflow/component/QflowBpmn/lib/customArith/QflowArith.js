@@ -81,12 +81,10 @@ QflowArith.prototype.check_start_shape_overlay = function(){
 
 }
 
-//获取步骤依赖关系
 QflowArith.prototype.get_vertex_relation_dict = function(relations_list){
 
     var vertex_relations_dict = {};
 
-    //初始化vertex_relations_dict
     for(let index in relations_list)
     {
         if(!(relations_list[index][0] in vertex_relations_dict))
@@ -95,7 +93,6 @@ QflowArith.prototype.get_vertex_relation_dict = function(relations_list){
         if(!(relations_list[index][1] in vertex_relations_dict))
             vertex_relations_dict[relations_list[index][1]] = []
 
-        //这儿和后端引擎用了相反的方式 : to : from_list
         if(vertex_relations_dict[relations_list[index][1]].indexOf(relations_list[index][0]) == -1)
             vertex_relations_dict[relations_list[index][1]].push(relations_list[index][0])
     }

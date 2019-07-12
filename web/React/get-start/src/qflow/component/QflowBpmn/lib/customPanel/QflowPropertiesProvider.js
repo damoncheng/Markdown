@@ -49,26 +49,22 @@ function createGeneralTabGroups(element, bpmnFactory, elementRegistry, translate
         nameProps(generalGroup, element, bpmnFactory, null, translate);
 
         //descriptionProps(generalGroup, element, translate, elementRegistry);
-        //linkProps(generalGroup,  element, translate, elementRegistry);
+        linkProps(generalGroup,  element, translate, elementRegistry);
         //groupNameProps(generalGroup, element, translate, elementRegistry);
-        //submitVarNameProps(generalGroup, element, translate, elementRegistry);
+        submitVarNameProps(generalGroup, element, translate, elementRegistry);
         isSkipProps(generalGroup, element, translate, elementRegistry);
 
-        /*
         var operateGroup = {
             id: 'operate',
             label: '操作属性',
             entries: []
         };
-        */
         
-        //ownerProps(operateGroup, element, translate, elementRegistry, qflow_modeler);
-        //isTaskOwnerProps(operateGroup, element, translate, elementRegistry, qflow_modeler, qflow_arith);
-
+        ownerProps(operateGroup, element, translate, elementRegistry, qflow_modeler);
 
         return[
             generalGroup,
-            //operateGroup,
+            operateGroup,
         ];
     }
 
@@ -123,27 +119,14 @@ function QflowPropertiesProvider(eventBus, bpmnFactory, elementRegistry,
       fieldTab,
     ];
 
-    var manualTaskGroups = createManualTaskGroups(element, bpmnFactory, elementRegistry, translate);
+    //var manualTaskGroups = createManualTaskGroups(element, bpmnFactory, elementRegistry, translate);
     var serviceTaskGroups = createServiceTaskGroups(element, bpmnFactory, elementRegistry, translate, qflow_modeler, qflow_arith);
-    var subProcessGroups = createSubProcessGroups(element, bpmnFactory, elementRegistry, translate, qflow_modeler, qflow_arith, qflow_render);
-    var parallelGatewayGroups = createParallelGatewayGroups(element, bpmnFactory, elementRegistry, translate, qflow_modeler, qflow_arith);
-    var pushTaskGroups = createPushTaskGroups(element, bpmnFactory, elementRegistry, translate, qflow_modeler, qflow_arith);
+    //var parallelGatewayGroups = createParallelGatewayGroups(element, bpmnFactory, elementRegistry, translate, qflow_modeler, qflow_arith);
 
     //console.log("manualTaskGroups : ", manualTaskGroups);
     //console.log("serviceTaskGroups : ", serviceTaskGroups);
 
-    if(manualTaskGroups.length > 0){
-
-        var specialTab = {
-          id : "special",
-          label : "步骤审批",
-          groups: manualTaskGroups
-        }
-
-        property_tab_list.push(specialTab);
-
-    }
-    else if(serviceTaskGroups.length > 0)
+    if(serviceTaskGroups.length > 0)
     {
 
         var specialTab = {
@@ -154,41 +137,8 @@ function QflowPropertiesProvider(eventBus, bpmnFactory, elementRegistry,
 
         property_tab_list.push(specialTab);
     }
-    else if(subProcessGroups.length > 0)
-    {
 
-        var specialTab = {
-          id : "special",
-          label : "步骤子流程",
-          groups: subProcessGroups
-        }
-
-        property_tab_list.push(specialTab);
-    }
-    else if(parallelGatewayGroups.length > 0)
-    {
-
-        var specialTab = {
-          id : "special",
-          label : "步骤分支",
-          groups: parallelGatewayGroups
-        }
-
-        property_tab_list.push(specialTab);
-    }
-    else if(pushTaskGroups.length > 0)
-    {
-
-        var specialTab = {
-          id : "special",
-          label : "步骤推送",
-          groups: pushTaskGroups
-        }
-
-        property_tab_list.push(specialTab);
-    }
-
-    console.log("property_tab_list : ", property_tab_list)
+    //console.log("property_tab_list : ", property_tab_list)
 
     return property_tab_list;
 

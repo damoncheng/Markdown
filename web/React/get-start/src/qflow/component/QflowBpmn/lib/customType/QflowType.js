@@ -136,60 +136,6 @@ class QflowType {
     ]
 
 
-    static get_default_sub_process_field() { 
-        
-        return {
-
-            field : { 
-                field_type : QFLOW_FIELD_SUB_FLOW,
-                values : []
-            },
-
-            name : "子流程",
-            field_type : "子流程",
-            is_on_apply_fill : false,
-            is_required : true
-
-        }
-    }
-
-    static get_default_branch_field() {
-
-        return {
-
-            field : { 
-                field_type : QFLOW_FIELD_BRANCH,
-                values : []
-            },
-    
-            name : "分支",
-            field_type : "分支",
-            is_on_apply_fill : false,
-            is_required : true
-    
-        }
-    } 
-
-
-    static get_default_approve_field(){
-
-        return {
-            field : { 
-                field_type : QFLOW_FIELD_APPROVE,
-                values : [ 
-                    {name : "通过", value : true}, 
-                    {name : "不通过", value : false} 
-                ]
-    
-            },
-    
-            name : "审批",
-            field_type : "审批",
-    
-        }
-    
-    }
-
     //tool相关
     static QFLOW_PRODUCT_TOOL_TYPE = "2"
     static QFLOW_SYSTEM_TOOL_TYPE = "0"

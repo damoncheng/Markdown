@@ -25,7 +25,8 @@ var PLACEHOLDER_REGEX = /\$\{([^}]*)\}/g;
 function showPropertiesPanel(element) {
 
     if (is(element, 'bpmn:FlowNode') &&
-        !is(element, 'bpmn:EndEvent')
+        !is(element, 'bpmn:EndEvent') &&
+        !is(element, 'bpmn:StartEvent')
     ){
         return true;
     }

@@ -7,50 +7,6 @@ const qflowModdleDescriptor = {
         "tagAlias": "lowerCase"
     },
     "types": [
-          {
-            "name": "InitTool",
-            "superClass": [ "Element" ],
-            "meta": {
-              "allowedIn": [
-                "bpmn:StartEvent"
-              ]
-            },
-            "properties": [
-              {
-                "name": "tools",
-                "type": "InitToolField",
-                "isMany": true
-              },
-              {
-                "name": "businessKey",
-                "type": "String",
-                "isAttr": true
-              }
-            ]
-        },
-        {
-          "name": "InitToolField",
-          "superClass": [ "Element" ],
-          "properties": [
-            {
-              "name": "id",
-              "type": "String",
-              "isAttr": true
-            },
-            {
-              "name": "init_tool_type",
-              "type": "String",
-              "isAttr": true,
-              "default": "value"
-            },
-            {
-              "name": "init_tool_id",
-              "type": "String",
-              "isAttr": true,
-              "default": ""
-            }
-          ]
-        },
         {
             "name": "InputOutputParameterDefinition",
             "isAbstract": true
@@ -88,13 +44,9 @@ const qflowModdleDescriptor = {
               {"name": "field_type","type": "String","isAttr": true,"default": "input"},
               {"name": "default_value", "type": "String", "isAttr": true, "default" : ""},
               {"name": "values","type": "Value","isMany": true},
-              { "name": "is_required", "type": "Boolean", "isAttr": true, "default" : true},
-              { "name": "is_on_task_top", "type": "Boolean", "isAttr": true, "default" : false},
-              { "name": "is_on_apply_fill", "type": "Boolean", "isAttr": true, "default" : false},
-              { "name": "is_pushed", "type": "Boolean", "isAttr": true, "default" : false},
-              { "name": "is_inherited", "type":"Boolean", "isAttr": true, "default" : false},
-              { "name": "is_task_name", "type": "Boolean", "isAttr": true, "default" : false},
-              { "name": "is_encrypt", "type": "Boolean", "isAttr": true, "default" : false}
+              {"name": "is_required", "type": "Boolean", "isAttr": true, "default" : true},
+              {"name": "is_on_task_top", "type": "Boolean", "isAttr": true, "default" : false},
+              {"name": "is_on_apply_fill", "type": "Boolean", "isAttr": true, "default" : false},
             ]
         }, 
         {
@@ -134,12 +86,6 @@ const qflowModdleDescriptor = {
                 "default" : ""
             },
             {
-                "name": "group_name",
-                "type": "String", 
-                "isAttr": true, 
-                "default" : ""
-            },
-            {
                 "name": "submit_var_name",
                 "type": "String", 
                 "isAttr": true, 
@@ -150,18 +96,6 @@ const qflowModdleDescriptor = {
                 "type": "String", 
                 "isAttr": true, 
                 "default" : ""
-            },
-            {
-                "name": "is_task_owner",
-                "type": "String", 
-                "isAttr": true, 
-                "default" : "0"
-            },
-            {
-              "name": "is_task_owner_ref",
-              "type": "String", 
-              "isAttr": true, 
-              "default" : ""
             },
             {
                 "name": "is_skip",
@@ -218,27 +152,6 @@ const qflowModdleDescriptor = {
         ]
       },
       {
-        "name": "SubProcess",
-        "superClass": [ "Element" ],
-        "meta": {
-          "allowedIn": [
-            "bpmn:SubProcess"
-          ]
-        },
-        "properties": [
-          {
-            "name": "name",
-            "type": "String",
-            "isAttr": true,
-            "default" : "子流程"
-          },
-          {"name": "link", "type": "String", "isAttr": true,"default" : ""},
-          { "name": "is_on_apply_fill", "type": "Boolean", "isAttr": true, "default" : false },
-          { "name": "is_required", "type": "Boolean", "isAttr": true, "default" : true}
- 
-        ]
-      },
-      {
         "name": "ParallelGateway",
         "superClass": [ "Element" ],
         "meta": {
@@ -256,45 +169,7 @@ const qflowModdleDescriptor = {
           { "name": "is_on_apply_fill", "type": "Boolean", "isAttr": true, "default" : false},
           { "name": "is_required", "type": "Boolean", "isAttr": true, "default" : true}
         ]
-      },
-      {
-        "name": "SendTask",
-        "superClass": [ "Element" ],
-        "meta": {
-          "allowedIn": [
-            "bpmn:SendTask"
-          ]
-        },
-        "properties": [
-          {
-            "name": "templates",
-            "type": "PushTemplate",
-            "isMany": true
-          },
-          {
-            "name": "businessKey",
-            "type": "String",
-            "isAttr": true
-          }
-        ]
-    },
-    {
-      "name": "PushTemplate",
-      "superClass": [ "Element" ],
-      "properties": [
-        {
-          "name": "id",
-          "type": "String",
-          "isAttr": true
-        },
-        {
-          "name": "template_id",
-          "type": "String",
-          "isAttr": true,
-          "default": ""
-        }
-      ]
-    }
+      }
   ]
 
 }

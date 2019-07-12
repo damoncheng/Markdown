@@ -9,7 +9,25 @@ var getBusinessObject = require('bpmn-js/lib/util/ModelUtil').getBusinessObject,
     entryFactory = require('bpmn-js-properties-panel/lib/factory/EntryFactory'),
     usernameEntry = require('./implementation/Username');
 
+module.exports = function(group, element, translate, elementRegistry, qflow_modeler) {
 
+    group.entries.push(entryFactory.textBox({
+        id : 'owner',
+        description : '',
+        label : '默认步骤责任人',
+        modelProperty : 'owner',
+        validate : function(element, values, entryNode){
+
+            var _elementRegistry = elementRegistry;
+
+            return {};
+        }
+    }));
+
+}
+
+
+/*
 module.exports = function(group, element, translate, elementRegistry, qflow_modeler) {
 
     // 二分查找 by top.oa
@@ -159,3 +177,4 @@ module.exports = function(group, element, translate, elementRegistry, qflow_mode
 
 
 };
+*/

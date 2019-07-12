@@ -20,10 +20,9 @@ function QflowBpmn() {
       <div className={s.QflowBpmn}>
          {/*<span className={s.fontColor}>Hello Qflow 123</span>*/}
          <QflowBpmnModeler 
-            url="/api/user/1/project/1/qflow/flows/2"
-            //onLoading={ onLoading }
-            //onShown={ onShown }
+            url="/api/user/1/project/1/qflow/flows/2/modeler"
             //onError={ onError }
+            //onSucess={ onSuccess }
          />
       </div>
     );
