@@ -2,7 +2,7 @@
 
 ![](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)
 
-## Commit message 的格式 : header body footer
+## Commit message 的格式 => header body footer
 
   <type>(<scope>): <subject>  
   // 空一行
