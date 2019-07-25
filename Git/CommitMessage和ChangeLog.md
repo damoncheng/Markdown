@@ -1,14 +1,14 @@
-## 参考连接
+参考连接 ![](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)
 
-![](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)
+## Commit message 的格式 
 
-## Commit message 的格式 => header body footer
+header body footer
 
-  <type>(<scope>): <subject>  
-  // 空一行
-  <body>
-  // 空一行
-  <footer>
+    <type>(<scope>): <subject>  
+    // 空一行
+    <body>
+    // 空一行
+    <footer>
 
 ### header 
 
