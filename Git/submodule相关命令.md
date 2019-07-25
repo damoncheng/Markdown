@@ -1,14 +1,14 @@
-#--添加子模块--#
+## 添加子模块
 
 git submodule add https://github.com/chaconinc/DbConnector [目标目录]
 
-#--查看子模块差异化--#
+## 查看子模块差异化
 
 git diff --submodule
 
 git diff --cached --submodule
 
-#-- clone子模块的项目后，默认不加载子模块，需要init and update 或者 clone时候加上--recursive参数 --#
+## clone子模块的项目后，默认不加载子模块，需要init and update 或者 clone时候加上--recursive参数
 
 - method 1: 
 
@@ -20,7 +20,7 @@ git submodule update
 
 git clone --recursive https://github.com/chaconinc/MainProject
 
-#-- 拉取合并子模块 --#
+## 拉取合并子模块
 
 - method 1:
 
