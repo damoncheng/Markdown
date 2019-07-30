@@ -103,3 +103,36 @@ Footer 部分只用于两种情况
 Body部分的格式是固定的，必须写成This reverts commit &lt;hash>.，其中的hash是被撤销 commit 的 SHA 标识符。
 
 如果当前 commit 与被撤销的 commit，在同一个发布（release）里面，那么它们都不会出现在 Change log 里面。如果两者在不同的发布，那么当前 commit，会出现在 Change log 的Reverts小标题下面。
+
+## Commitizen
+
+Commitizen是一个撰写合格 Commit message 的工具。
+
+安装命令如下。
+
+    $ npm install -g commitizen
+    
+然后，在项目目录里，运行下面的命令，使其支持 Angular 的 Commit message 格式。
+
+    $ commitizen init cz-conventional-changelog --save --save-exact
+
+以后，凡是用到`git commit`命令，一律改为使用`git cz`。这时，就会出现选项，用来生成符合格式的 Commit message。
+
+
+## validate-commit-msg
+
+`validate-commit-msg` 用于检查 **Node** 项目的 **Commit message** 是否符合格式。
+
+详情看参考文献
+
+## 生成 Change log
+
+如果你的所有 Commit 都符合 Angular 格式，那么发布新版本时， Change log 就可以用脚本自动生成（例1，例2，例3）。
+
+生成的文档包括以下三个部分。
+
+详情看参考文献
+
+
+    
+
