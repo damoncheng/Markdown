@@ -17,7 +17,7 @@
     DEALLOCATE PREPARE stmt;
     SET FOREIGN_KEY_CHECKS = 1; 
 
-## Q：how mysqldump only dump database data
+## Q：mysqldump仅仅dump数据
 
     #dump database data only
     mysqldump --no-create-info
