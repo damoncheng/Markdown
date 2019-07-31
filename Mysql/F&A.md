@@ -1,13 +1,9 @@
 
 ## Q：在进行数据库操作时，如何屏蔽依赖检测进行数据删除
 
-A：
-
     set foreign_key_checks=0 #屏蔽依赖检测进行数据库删除操作
 
 ## Q：清除数据库表
-
-A：
 
     SET FOREIGN_KEY_CHECKS = 0; 
     SET @tables = NULL;
@@ -23,7 +19,6 @@ A：
 
 ## Q：how mysqldump only dump database data
 
-A:
     #dump database data only
     mysqldump --no-create-info
 
@@ -31,7 +26,5 @@ A:
     --skip-triggers
 
 ## Q：创建数据库的时候如何指定数据库
-
-A： 
 
     CREATE DATABASE mydatabase CHARACTER SET utf8 COLLATE utf8_general_ci;
