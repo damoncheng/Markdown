@@ -1,0 +1,20 @@
+{
+  "name": "qflow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "phantomjs-prebuilt": "^2.1.13",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+    "nwb": "^0.23.0"
+  },
+  "scripts": {
+    "start": "nwb react run app.js",
+    "build": "nwb react build app.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
