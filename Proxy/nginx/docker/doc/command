@@ -1,4 +1,4 @@
-docker run -d -p 80:80 -p 9000:9000 -p 9008:9008 \
+docker run -d -p 80:80 -p 9007:9007 -p 9008:9008 \
            -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf \
            -v $(pwd)/conf.d:/etc/nginx/conf.d \
            -v $(pwd)/html:/usr/share/nginx/html \
