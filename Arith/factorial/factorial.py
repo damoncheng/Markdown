@@ -24,7 +24,7 @@ def print_percent(total, producted, rounded=4, force=False):
 
         percent = 99.99
 
-    if (percent >= global_percent) and ((global_percent != percent) or force):
+    if (not global_percent or percent >= global_percent) and ((global_percent != percent) or force):
         print("%s %s%% - %s lefted" % (datetime.datetime.now(), percent, left))
         global_percent = percent
         return True
