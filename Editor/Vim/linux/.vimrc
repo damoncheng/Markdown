@@ -83,22 +83,14 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'The-NERD-tree'
+Plugin 'nerdtree-ack'
+Plugin 'mileszs/ack.vim'
 Plugin 'Tagbar'
 Plugin 'ctags.vim'
 Plugin 'ctrlp.vim'
-Plugin 'EasyGrep'
-Plugin 'ack.vim'
-Plugin 'ctrlsf.vim'
-Plugin 'delimitMate.vim'
-Plugin 'Shougo/neocomplete.vim'
-Plugin 'dhruvasagar/vim-table-mode'
-Plugin 'honza/vim-snippets'
-Plugin 'Align'
-Plugin 'YankRing.vim'
-Plugin 'goyo.vim'
-Plugin 'junegunn/limelight.vim'
-Plugin 'vim-colors-pencil'
-Plugin 'Conque-Shell'
+Plugin 'dyng/ctrlsf.vim'
+
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
