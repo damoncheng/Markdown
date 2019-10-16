@@ -3,16 +3,15 @@
 
 set encoding=utf-8
 set termencoding=utf-8
+
+"解决菜单乱码
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
 set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,chinese,cp936
 
 "解决console输出乱码
 language messages zh_CN.utf-8
-
-
-"解决菜单乱码
-source $VIMRUNTIME/delmenu.vim
-source $VIMRUNTIME/menu.vim
 
 
 "执行 Vim 缺省提供的 .vimrc 文件的示例，包含了打开语法加亮显示等最常用的功能 
@@ -83,7 +82,6 @@ Plugin 'YankRing.vim'
 Plugin 'goyo.vim'
 Plugin 'junegunn/limelight.vim'
 Plugin 'vim-colors-pencil'
-Plugin 'Conque-Shell'
 
 
 " The following are examples of different formats supported.
