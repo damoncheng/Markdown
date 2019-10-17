@@ -35,6 +35,11 @@ ls -lah /usr/bin/vim to check it's a link to your new vim
 
 ## Other
 
-### linux install ack for ctrlsf
+### linux install ack for ctrlsf plugin
 
 	apt-get install ack-grep 
+
+
+### linux install ctags for tarbar plugin
+
+	apt-get install ctags
