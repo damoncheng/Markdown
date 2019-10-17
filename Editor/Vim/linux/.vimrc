@@ -24,6 +24,7 @@ set wrapmargin=2
 
 set showmatch
 
+set paste  "cancel auto comment when o command
 
 highlight Normal  ctermfg=grey ctermbg=black
 
@@ -50,6 +51,9 @@ set laststatus=2
 
 " Miscellaneous
 
+
+set backspace=2 "compatible invalid backspace
+
 set nobackup
 
 set noswapfile
@@ -64,11 +68,12 @@ set errorbells
 
 
 "粘贴复制的一些操作
-vmap "+y "选中状态下 Ctrl+c 复制
-nmap "+yy "选中状态下 Ctrl+c 复制
-nmap "+p "正常模式下粘贴
-nmap ggvG "正常模式下全选
-vmap <C-x> dd<Esc> "正常模式下DEL
+vnoremap <C-C> "+y   "选中状态下 Ctrl+c 复制
+map <C-V> "+gP
+"nmap "+yy "选中状态下 Ctrl+c 复制
+"nmap "+p "正常模式下粘贴
+"nmap ggvG "正常模式下全选
+"vmap <C-x> dd<Esc> "正常模式下DEL
 
 
 "Vundle
