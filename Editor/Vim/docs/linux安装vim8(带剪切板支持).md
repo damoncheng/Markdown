@@ -38,8 +38,16 @@ ls -lah /usr/bin/vim to check it's a link to your new vim
 ### linux install ack for ctrlsf plugin
 
 	apt-get install ack-grep 
+	
+	or
+	
+	yum install ack
 
 
 ### linux install ctags for tarbar plugin
 
 	apt-get install ctags
+	
+	or 
+	
+	yum install ctags-etags
