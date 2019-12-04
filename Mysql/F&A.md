@@ -28,3 +28,7 @@
 ## Q：创建数据库的时候如何指定数据库
 
     CREATE DATABASE mydatabase CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+## Q: 授予所有远程主机指定identified连接
+
+    GRANT ALL PRIVILEGES ON database.* TO 'user'@'%' IDENTIFIED BY 'newpassword';
