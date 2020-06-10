@@ -71,3 +71,22 @@ ls -lah /usr/bin/vim to check it's a link to your new vim
 - install ~/.vim/bundle/YouCompleteMe
 
 	/usr/local/python3/bin/python3 ./install.py --clang-completer
+	
+- 解决libc.so.6: version `GLIBC_2.18' not found问题
+
+	运行：strings /lib64/libc.so.6 |grep GLIBC_
+	
+	下载：wget http://mirrors.ustc.edu.cn/gnu/libc/glibc-2.18.tar.gz
+	
+	解压：tar -zxvf glibc-2.18.tar.gz
+	
+	进入解压文件夹，创建文件夹build：
+	
+		mkdir build
+		cd build
+		
+	运行configure配置，make，sudo make install
+	
+		../configure --prefix=/usr
+		make -j4
+		sudo make install
