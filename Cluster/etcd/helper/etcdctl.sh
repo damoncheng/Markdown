@@ -1,0 +1,1 @@
+./source/bin/etcdctl  --endpoints=https://192.168.64.2:2379 --cacert=/Users/hongxi/vboxShare/certs/etcd/ca.crt --cert=/Users/hongxi/vboxShare/certs//etcd/healthcheck-client.crt --key=/Users/hongxi/vboxShare/certs/etcd/healthcheck-client.key get "" --prefix --keys-only
