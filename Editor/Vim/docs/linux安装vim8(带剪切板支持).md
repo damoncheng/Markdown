@@ -4,7 +4,9 @@ sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev   libgtk2.0-de
 
 ## configure
 
-	./configure --with-features=huge --enable-gui=gnome2  --enable-pythoninterp=yes
+	export LDFLAGS="-rdynamic"
+
+	./configure --with-features=huge --enable-python3interp  --with-python3-config-dir=/usr/local/python3/lib/python3.6/config-3.6m-x86_64-linux-gnu --enable-multibyte --enable-cscope
 
 ## make and check
 
@@ -33,7 +35,7 @@ To make newly installed version “/usr/local/bin/vim” the default one, we’l
 ls -lah /usr/bin/vim to check it's a link to your new vim
 
 
-## Other
+## plugins
 
 ### linux install ack for ctrlsf plugin
 
@@ -51,3 +53,40 @@ ls -lah /usr/bin/vim to check it's a link to your new vim
 	or 
 	
 	yum install ctags-etags
+	
+### linux install YouCompleteMe
+
+- complie python3 with --enable-shared
+	
+	./configure --prefix=/usr/local/python3 --enable-optimizations --enable-shared
+
+	make
+
+	make install
+	
+	echo "/usr/local/python3/lib" >> /etc/ld.so.conf
+	
+	ldconfig 
+	
+- install ~/.vim/bundle/YouCompleteMe
+
+	/usr/local/python3/bin/python3 ./install.py --clang-completer
+	
+- 解决libc.so.6: version `GLIBC_2.18' not found问题
+
+	运行：strings /lib64/libc.so.6 |grep GLIBC_
+	
+	下载：wget http://mirrors.ustc.edu.cn/gnu/libc/glibc-2.18.tar.gz
+	
+	解压：tar -zxvf glibc-2.18.tar.gz
+	
+	进入解压文件夹，创建文件夹build：
+	
+		mkdir build
+		cd build
+		
+	运行configure配置，make，sudo make install
+	
+		../configure --prefix=/usr
+		make -j4
+		sudo make install
