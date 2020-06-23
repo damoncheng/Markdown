@@ -1,4 +1,4 @@
-package main
+package etcd
 
 import (
 	//"errors"
@@ -19,7 +19,7 @@ type mmpaytestEtc struct {
 	err error
 }
 
-func (m *mmpaytestEtc) init_complete(err *error) {
+func (m *mmpaytestEtc) initComplete(err *error) {
 	m.err = *err
 	fmt.Println("init complete err : ", m.err)
 }
@@ -35,7 +35,7 @@ func (m *mmpaytestEtc) init() {
 
 	var err error
 
-	defer m.init_complete(&err)
+	defer m.initComplete(&err)
 
 	cert, err := tls.LoadX509KeyPair(etcdCert, etcdCertKey)
 
@@ -103,22 +103,14 @@ func (m mmpaytestEtc) put(key string, value string) map[interface{}]interface{} 
 	return m.get(key)
 }
 
-func main() {
+func (m mmpaytestEtc) watch(key string, msg chan<- map[string]string) {
 
-	h := mmpaytestEtc{nil, nil}
-	h.init()
-
-	if h.err != nil {
-
-		fmt.Println(h.err)
-		return
+	rch := m.cli.Watch(context.Background(), key)
+	for wresp := range rch {
+		for _, ev := range wresp.Events {
+			msg <- map[string]string{"type": string(ev.Type), "key": string(ev.Kv.Key), "value": string(ev.Kv.Value)}
+			//msg <- fmt.Sprintf("%s %q : %q\n", ev.Type, ev.Kv.Key, ev.Kv.Value)
+		}
 	}
-
-	key := "foo"
-	m := h.get(key)
-	log.Println(m[key])
-
-	m = h.put(key, "hello damoncheng 2")
-	log.Println(m[key])
 
 }

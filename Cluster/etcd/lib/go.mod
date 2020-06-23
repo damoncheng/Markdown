@@ -1,4 +1,4 @@
-module etcd_lock
+module etcd
 
 go 1.14
 
