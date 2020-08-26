@@ -53,8 +53,8 @@ lease2 = client.lease_grant(5)
 
 client.put('/foo', 'bar', lease=lease1.ID)
 client.put('/foo1', 'bar', lease=lease1.ID)
+print("value : ", client.range(key='/foo').kvs[0].value)
 print("len(key)", client.range(key='/foo', prefix=True, count_only=True).count)
-client
 
 #client.put('fizz', 'buzz', lease=lease.ID)
 print("before sleep", client.range(key="foo"))
