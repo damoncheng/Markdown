@@ -119,7 +119,7 @@ filetype plugin indent on    " required
 map <c-n> :NERDTreeToggle<CR>
 
 "tarbar
-map <c-g> :TagbarToggle<CR>
+map <c-n> :TagbarToggle<CR>
 
 "Ctrlp
 let g:ctrlp_regexp = 1
@@ -164,7 +164,7 @@ let g:tagbar_type_go = {
         \ 'ctype' : 't',
         \ 'ntype' : 'n'
     \ },
-    \ 'ctagsbin'  : '$HOME/go/bin/gotags',
+    \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
 \ }
 
@@ -172,9 +172,6 @@ let g:tagbar_type_go = {
 let g:ycm_key_list_select_completion = ['', '']
 let g:ycm_key_list_previous_completion = ['']
 let g:ycm_key_invoke_completion = ''
-nnoremap <leader>l :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>f :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 "UltiSnips setting
 let g:UltiSnipsExpandTrigger="<Tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"

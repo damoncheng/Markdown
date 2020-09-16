@@ -1,0 +1,50 @@
+Log file created at: 2020/09/15 01:27:23
+Running on machine: DAMONCHENG-MB0
+Binary: Built with gc go1.15.2 for darwin/amd64
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+W0915 01:27:23.152152   50007 demo.go:20] This is warning message
+W0915 01:27:23.152699   50007 demo.go:21] This is warning message: 12345
+W0915 01:27:23.152702   50007 demo_test.go:11] This is warning message12345
+E0915 01:27:23.152705   50007 demo.go:24] This is error message
+E0915 01:27:23.152925   50007 demo.go:25] This is error message: 12345
+E0915 01:27:23.152933   50007 demo_test.go:11] This is error message12345
+F0915 01:27:23.152937   50007 demo.go:28] This is fatal message
+goroutine 7 [running]:
+github.com/golang/glog.stacks(0xc000010001, 0xc00013c000, 0x4d5, 0x2710)
+	/Users/hongxi/go/pkg/mod/github.com/golang/glog@v0.0.0-20160126235308-23def4e6c14b/glog.go:769 +0xb9
+github.com/golang/glog.(*loggingT).output(0x12427c0, 0xc000000003, 0xc00012a000, 0x1225384, 0x7, 0x1c, 0x0)
+	/Users/hongxi/go/pkg/mod/github.com/golang/glog@v0.0.0-20160126235308-23def4e6c14b/glog.go:723 +0x1ef
+github.com/golang/glog.(*loggingT).printDepth(0x12427c0, 0x3, 0x1, 0xc000133e40, 0x1, 0x1)
+	/Users/hongxi/go/pkg/mod/github.com/golang/glog@v0.0.0-20160126235308-23def4e6c14b/glog.go:646 +0x12d
+github.com/golang/glog.(*loggingT).print(...)
+	/Users/hongxi/go/pkg/mod/github.com/golang/glog@v0.0.0-20160126235308-23def4e6c14b/glog.go:637
+github.com/golang/glog.Fatal(...)
+	/Users/hongxi/go/pkg/mod/github.com/golang/glog@v0.0.0-20160126235308-23def4e6c14b/glog.go:1128
+dlog.glog_type()
+	/Users/jenkins/Git/Markdown/Interpreter/Go/explore/log/demo.go:28 +0x4c5
+dlog.TestLog(0xc000128000)
+	/Users/jenkins/Git/Markdown/Interpreter/Go/explore/log/demo_test.go:11 +0x7e
+testing.tRunner(0xc000128000, 0x115f718)
+	/usr/local/go/src/testing/testing.go:1127 +0xef
+created by testing.(*T).Run
+	/usr/local/go/src/testing/testing.go:1178 +0x386
+
+goroutine 1 [chan receive]:
+testing.(*T).Run(0xc000128000, 0x1155ea9, 0x7, 0x115f718, 0x1082326)
+	/usr/local/go/src/testing/testing.go:1179 +0x3ad
+testing.runTests.func1(0xc000001e00)
+	/usr/local/go/src/testing/testing.go:1449 +0x78
+testing.tRunner(0xc000001e00, 0xc000055de0)
+	/usr/local/go/src/testing/testing.go:1127 +0xef
+testing.runTests(0xc00000e080, 0x123a9d0, 0x1, 0x1, 0xbfd00874c90ad1c0, 0x8bb2cfd13e, 0x12426a0, 0x100eb70)
+	/usr/local/go/src/testing/testing.go:1447 +0x2e8
+testing.(*M).Run(0xc000124000, 0x0)
+	/usr/local/go/src/testing/testing.go:1357 +0x245
+main.main()
+	_testmain.go:43 +0x138
+
+goroutine 6 [chan receive]:
+github.com/golang/glog.(*loggingT).flushDaemon(0x12427c0)
+	/Users/hongxi/go/pkg/mod/github.com/golang/glog@v0.0.0-20160126235308-23def4e6c14b/glog.go:882 +0x8b
+created by github.com/golang/glog.init.0
+	/Users/hongxi/go/pkg/mod/github.com/golang/glog@v0.0.0-20160126235308-23def4e6c14b/glog.go:410 +0x274
