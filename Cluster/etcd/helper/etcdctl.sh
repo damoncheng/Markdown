@@ -3,7 +3,7 @@
 operator=$1
 
 BASE_DIR=/mnt/vda1/var/lib/minikube/certs/etcd/
-ENDPOINTS=https://192.168.64.2:2379
+ENDPOINTS=https://192.168.64.7:2379
 
 case "${operator}" in
     list)
