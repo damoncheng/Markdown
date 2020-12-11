@@ -7,9 +7,7 @@ metadata:
   labels:
     kubernetes.io/bootstrapping: rbac-defaults
   name: system:kube-scheduler
-  resourceVersion: "68"
   selfLink: /apis/rbac.authorization.k8s.io/v1/clusterroles/system%3Akube-scheduler
-  uid: c37dd1ed-cd9e-4e61-bdbb-e4bfdb12bd67
 rules:
 - apiGroups:
   - ""
@@ -54,6 +52,21 @@ rules:
   - ""
   resourceNames:
   - kube-scheduler
+  resources:
+  - endpoints
+  verbs:
+  - get
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - endpoints
+  verbs:
+  - create
+- apiGroups:
+  - ""
+  resourceNames:
+  - kube-developer-scheduler
   resources:
   - endpoints
   verbs:
