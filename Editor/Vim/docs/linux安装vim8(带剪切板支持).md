@@ -70,7 +70,7 @@ ls -lah /usr/bin/vim to check it's a link to your new vim
 	
 - install ~/.vim/bundle/YouCompleteMe
 
-	/usr/local/python3/bin/python3 ./install.py --clang-completer
+	https://github.com/ycm-core/YouCompleteMe
 	
 - 解决libc.so.6: version `GLIBC_2.18' not found问题
 
