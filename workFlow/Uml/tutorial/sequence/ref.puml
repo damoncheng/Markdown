@@ -1,0 +1,13 @@
+@startuml ref
+participant Alice
+actor Bob
+
+ref over Alice, Bob : init
+Alice -> Bob : hello
+
+ref over Bob
+    This can be on
+    serveral lines
+end ref
+
+@enduml

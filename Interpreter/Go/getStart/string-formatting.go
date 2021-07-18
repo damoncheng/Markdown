@@ -12,6 +12,11 @@ type point struct {
 func main() {
 
 	p := point{1, 2}
+	m := make(map[string]*point)
+	m["test"] = &p
+
+	fmt.Printf("m %v\n", m)
+
 	fmt.Printf("v %v\n", p)
 
 	fmt.Printf("+v %+v\n", p)

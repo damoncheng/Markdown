@@ -1,0 +1,108 @@
+class Solution(object):
+
+    def __init__(self, flowerbed):
+
+        self.flowerbed = flowerbed
+
+    def getInterval(self):
+
+        interval_tuple_list = []
+
+        interval_start = None
+        interval_end = None
+
+        for one_index,one_flowerbed in enumerate(self.flowerbed):
+
+            if not interval_start:
+
+                if one_flowerbed == 1:
+
+                    continue
+
+                interval_start = one_index
+
+                continue
+
+            else:
+
+
+                if one_flowerbed == 0:
+
+                    continue
+
+                else:
+
+                    interval_end = one_index - 1
+
+                    interval_tuple_list.append((interval_start, interval_end))
+
+                    interval_start = None
+                    interval_end = None
+
+        if interval_start and not interval_end:
+
+            interval_end = len(self.flowerbed) - 1
+
+            interval_tuple_list.append((interval_start, interval_end))
+
+        return  interval_tuple_list
+
+
+    def maxFlowers(self):
+
+        flowerbed_num = 0
+
+        interval_tuple_list = self.getInterval()
+
+        for one_tuple in interval_tuple_list:
+
+            last_index = None
+
+            for one_num in range(one_tuple[0], one_tuple[1]):
+
+                if (not last_index):
+
+                    if one_num == 0:
+
+                        last_index = one_num
+                        flowerbed_num += 1
+
+                        continue
+
+                    if one_num > one_tuple[0]:
+
+                        last_index = one_num
+                        flowerbed_num += 1
+
+                        continue
+
+                else:
+
+                    if (one_num - last_index) > 1:
+
+                        if one_num == one_tuple[1] && (one_num == len(self.flowerbed - 1)):
+
+                            continue
+
+                        else:
+
+                            last_index = one_num
+                            flowerbed_num += 1
+
+                            continue
+
+        return flowerbed_num
+
+
+    def canPlaceFlowers(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+
+        return False
+
+solution = Solution([0,0,0,0,1,0,1,0,1])
+print(solution.getInterval())
+print(solution.maxFlowers())
+#print(solution.canPlaceFlowers(2))

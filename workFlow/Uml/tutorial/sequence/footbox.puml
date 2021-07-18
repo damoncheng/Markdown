@@ -1,0 +1,10 @@
+@startuml footbox
+
+hide footbox
+title Footer removed
+
+Alice -> Bob : Authentication Request
+Bob -> Alice : Authentication Response
+
+@enduml
+
