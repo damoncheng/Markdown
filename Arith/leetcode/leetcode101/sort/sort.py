@@ -1,5 +1,9 @@
 class Sort:
 
+    def merge_sort(self, nums):
+
+        pass
+
     def quick_sort(self, nums, left, right):
 
         if not (left < right):
