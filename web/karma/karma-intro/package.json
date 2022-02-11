@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "karma": "^3.1.4"
+    "karma": "^6.3.14"
   },
   "devDependencies": {
     "karma-chrome-launcher": "^2.2.0",
