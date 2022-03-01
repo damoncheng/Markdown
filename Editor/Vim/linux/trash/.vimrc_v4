@@ -68,10 +68,9 @@ Plugin 'Tagbar'
 Plugin 'ctags.vim'
 Plugin 'ctrlp.vim'
 Plugin 'dyng/ctrlsf.vim'
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'dense-analysis/ale'
-Plugin 'ojroques/vim-oscyank'
 
 " go
 Plugin 'fatih/vim-go'
@@ -169,14 +168,17 @@ let g:tagbar_type_go = {
     \ 'ctagsargs' : '-sort -silent'
 \ }
 
-map <leader>l :GoDef<CR>
+"YCM settings
+let g:ycm_key_list_select_completion = ['', '']
+let g:ycm_key_list_previous_completion = ['']
+let g:ycm_key_invoke_completion = ''
+nnoremap <leader>l :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>f :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 "UltiSnips setting
 let g:UltiSnipsExpandTrigger="<Tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
-"vim-oscyank
-vnoremap <leader>c :OSCYank<CR>
 
 "ale
 "let g:ale_python_pylint_options = '--load-plugins pylint_django'
